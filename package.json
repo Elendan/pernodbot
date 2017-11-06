@@ -1,0 +1,37 @@
+{
+  "name": "pernotbot",
+  "version": "1.0.0",
+  "description": "Pernot bot",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "postinstall": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guillaumerenard/pernotbot.git"
+  },
+  "keywords": [
+    "Chatbot",
+    "botframework"
+  ],
+  "author": "Guillaume RENARD",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/guillaumerenard/pernotbot/issues"
+  },
+  "homepage": "https://github.com/guillaumerenard/pernotbot#readme",
+  "dependencies": {
+    "@types/node": "^8.0.20",
+    "apiai": "^4.0.3",
+    "botbuilder": "^3.6.0",
+    "dotenv": "^4.0.0",
+    "restify": "^4.3.0",
+    "typescript": "^2.4.2"
+  },
+  "engines": {
+    "node": "6.11.1"
+  }
+}
