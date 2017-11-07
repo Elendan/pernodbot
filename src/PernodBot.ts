@@ -29,7 +29,18 @@ class PernodBot {
         
         // Dialogs
         new BrandsDialog().register(this.bot, "Brands", {
-            matches: "brands"
+            onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
+                if(context.intent) {
+                    if(/brands/.test(context.intent.intent)) {
+                        callback(null, context.intent.score, {
+                            intent: context.intent
+                        });
+                    }
+                }
+                else {
+                    callback(null, 0);
+                }
+            }
         });
         new DialogflowDialog().register(this.bot, "Dialogflow", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
