@@ -51,19 +51,19 @@ class ProductController {
             .buttons([{
                 type: "postBack",
                 title: "Description",
-                text: `send details about ${product.id}`,
+                diplayText: "Description",
                 value: `send details about ${product.id}`
             },
             {
                 type: "postBack",
                 title: "Buy this product 🛒",
-                text: "Buy this product",
+                diplayText: "Buy this product 🛒",
                 value: "Buy this product"
             },
             {
                 type: "postBack",
                 title: "Other informations",
-                text: `send informations about ${product.id}`,
+                diplayText: "Other informations",
                 value: `send informations about ${product.id}`
             }]);
         if((product.mediaList.length > 0) &&  product.mediaList[0].urls) {
