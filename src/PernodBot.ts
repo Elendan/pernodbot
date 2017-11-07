@@ -37,6 +37,9 @@ class PernodBot {
                             intent: context.intent
                         });
                     }
+                    else {
+                        callback(null, 0);
+                    }
                 }
                 else {
                     callback(null, 0);
