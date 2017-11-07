@@ -39,8 +39,6 @@ class DialogflowDialog extends BaseDialog{
                                     buttons.push({
                                         type: button.postback ? "openUrl" : "postBack",
                                         title: button.text,
-                                        text: button.text,
-                                        diplayText: button.text,
                                         value: button.postback || button.text
                                     });
                                 });
@@ -58,8 +56,6 @@ class DialogflowDialog extends BaseDialog{
                                     quickRepliesButtons.push({
                                         type: "postBack",
                                         title: replie,
-                                        text: replie,
-                                        diplayText: replie,
                                         value: replie
                                     });
                                 });

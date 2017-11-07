@@ -50,7 +50,6 @@ class BrandController {
             .buttons([{
                 type: "postBack",
                 title: `Choose ${brand.label}`,
-                diplayText: `Choose ${brand.label}`,
                 value: `research in brands ${brand.id}`
             }]);
         if(brand.medias.logoPrincipal.urls) {
