@@ -37,6 +37,7 @@ class BrandsDialog extends BaseDialog{
                                 .buttons([{
                                     type: "postBack",
                                     title: "Load more",
+                                    text: "Load more brands",
                                     value: "Load more brands"
                                 }])
                         );

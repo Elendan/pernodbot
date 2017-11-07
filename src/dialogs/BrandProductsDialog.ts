@@ -35,6 +35,7 @@ class BrandProductsDialog extends BaseDialog{
                                 .buttons([{
                                     type: "postBack",
                                     title: "Load more",
+                                    text: `search more brands ${parameters.entity.brands}`,
                                     value: `search more brands ${parameters.entity.brands}`
                                 }])
                         );
