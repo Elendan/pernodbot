@@ -3,6 +3,7 @@ import * as apiai from "apiai";
 import DialogflowRecognizer from "./dialogs/DialogflowRecognizer";
 import DialogflowDialog from "./dialogs/DialogflowDialog";
 import BrandsDialog from "./dialogs/BrandsDialog";
+import CategoriesDialog from "./dialogs/CategoriesDialog"
 
 class PernodBot {
 
@@ -30,6 +31,9 @@ class PernodBot {
         // Dialogs
         new BrandsDialog().register(this.bot, "Brands", {
             matches: "brands"
+        });
+        new CategoriesDialog().register(this.bot, "Categories", {
+            matches: "categories"
         });
         new DialogflowDialog().register(this.bot, "Dialogflow", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
