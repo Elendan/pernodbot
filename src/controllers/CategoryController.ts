@@ -1,17 +1,18 @@
 import * as https from "https";
-import Categories from "../models/Categories";
+import CategoriesResponse from "../models/CategoryResponse";
 
 class CategoryController {
 
     /**
      * Get Categories
-     * @param limit 
+     * @param pageLength 
+     * @param page
      */
-    public static getCategories(limit: number): Promise<Categories[]> {
+    public static getCategories(pageLength: number, page: number): Promise<CategoriesResponse> {
         return new Promise<any>((resolve, reject) => {
             https.get({
                 host: process.env.PERNOD_API_HOST,
-                path: `${process.env.PERNOD_API_PATH}/product/category?locale=en_US&pageLength=${limit}`,
+                path: `${process.env.PERNOD_API_PATH}/product/category?locale=en_US&pageLength=${pageLength}&start=${page}`,
                 headers: {
                     "Content-Type": "application/json",
                     "api_key": process.env.PERNOD_API_KEY
@@ -23,7 +24,7 @@ class CategoryController {
                 });
                 response.on("end", () => {
                     if(body) {
-                        resolve(JSON.parse(body).hits);
+                        resolve(JSON.parse(body));
                     }
                     else {
                         resolve(null);
