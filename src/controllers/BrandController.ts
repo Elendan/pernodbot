@@ -1,11 +1,14 @@
 import * as https from "https";
+import * as builder from "botbuilder";
 import BrandResponse from "../models/BrandResponse";
+import Brand from "../models/Brand";
 
 class BrandController {
 
     /**
      * Get brands
-     * @param limit 
+     * @param pageLength 
+     * @param page
      */
     public static getBrands(pageLength: number, page: number): Promise<BrandResponse> {
         return new Promise<any>((resolve, reject) => {
@@ -34,6 +37,30 @@ class BrandController {
                 });
             });
         });
+    }
+
+    /**
+     * Build a brand card
+     * @param brand 
+     * @param session 
+     */
+    public static buildBrandCard(brand: Brand, session: builder.Session): builder.HeroCard {
+        let brandCard = new builder.HeroCard(session)
+            .title(brand.label)
+            .buttons([{
+                type: "postBack",
+                title: `Choose ${brand.label}`,
+                text: `Choose ${brand.label}`,
+                diplayText: `Choose ${brand.label}`,
+                value: `research in brands ${brand.id}`
+            }]);
+        if(brand.medias.logoPrincipal.urls) {
+            brandCard.images([builder.CardImage.create(session, brand.medias.logoPrincipal.urls.original)]);
+        }
+        else {
+            brandCard.images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/logopr.jpg")]);
+        }
+        return brandCard;
     }
 
 }

@@ -3,6 +3,7 @@ import * as apiai from "apiai";
 import DialogflowRecognizer from "./dialogs/DialogflowRecognizer";
 import DialogflowDialog from "./dialogs/DialogflowDialog";
 import BrandsDialog from "./dialogs/BrandsDialog";
+import BrandProductDialog from "./dialogs/BrandProductsDialog";
 import CategoriesDialog from "./dialogs/CategoriesDialog"
 
 class PernodBot {
@@ -32,7 +33,24 @@ class PernodBot {
         new BrandsDialog().register(this.bot, "Brands", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if(context.intent) {
-                    if(/brands/.test(context.intent.intent)) {
+                    if(/^brands|load.brands$/.test(context.intent.intent)) {
+                        callback(null, context.intent.score, {
+                            intent: context.intent
+                        });
+                    }
+                    else {
+                        callback(null, 0);
+                    }
+                }
+                else {
+                    callback(null, 0);
+                }
+            }
+        });
+        new BrandProductDialog().register(this.bot, "BrandProducts", {
+            onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
+                if(context.intent) {
+                    if(/^research in brands|Search more brands$/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });

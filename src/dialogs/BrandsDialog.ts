@@ -25,18 +25,11 @@ class BrandsDialog extends BaseDialog{
                     let brandsMessageAttachments: builder.AttachmentType[] = [];
                     brandsMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                     brandResponse.hits.forEach(brand => {
-                        // Build brand card
-                        let brandCard = new builder.HeroCard(session)
-                            .title(brand.label);
-                        if(brand.medias.logoPrincipal.urls) {
-                            brandCard.images([builder.CardImage.create(session, brand.medias.logoPrincipal.urls.original)]);
-                        }
-                        else {
-                            brandCard.images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/logopr.jpg")]);
-                        }
-                        brandsMessageAttachments.push(brandCard);
+                        // Brand card
+                        brandsMessageAttachments.push(BrandController.buildBrandCard(brand, session));
                     });
                     if(brandResponse.nbPages > brandResponse.page) {
+                        // Load more brands card
                         brandsMessageAttachments.push(
                             new builder.HeroCard(session)
                                 .title("Load more")

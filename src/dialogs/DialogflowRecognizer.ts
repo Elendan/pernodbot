@@ -27,6 +27,10 @@ class DialogflowRecognizer extends builder.IntentRecognizer {
                     type: "fulfillment",
                     entity: response.result.fulfillment
                 });
+                result.entities.push({
+                    type: "parameters",
+                    entity: response.result.parameters
+                });
                 callback(null, result);
             });
             request.on("error", error => {
