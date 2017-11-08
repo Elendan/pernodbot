@@ -31,7 +31,7 @@ class CategoryProductDialog extends BaseDialog {
                         categoryProductMessageAttachments.push(
                             new builder.HeroCard(session)
                                 .title("Load more")
-                                .images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/logopr.jpg")])
+                                .images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/load-more.png")])
                                 .buttons([{
                                     type: "postBack",
                                     title: "Load more",
