@@ -5,7 +5,7 @@ import ProductController from "../controllers/ProductController";
 class CategoryProductDialog extends BaseDialog {
 
     private static readonly pageLength = 5;
-    private static readonly categoryProductIntentName = "research in category";
+    private static readonly categoryProductIntentName = "research in category ";
     private static readonly loadCategoryProductsIntentName = "search more categories";
 
     constructor() {

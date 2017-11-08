@@ -85,12 +85,7 @@ class PernodBot {
         new CategoryProductDialog().register(this.bot, "CategoryProducts", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if(context.intent) {
-                    if(/^research in category/.test(context.intent.intent)) {
-                        callback(null, context.intent.score, {
-                            intent: context.intent
-                        });
-                    }
-                    else if (/^search more categories/.test(context.intent.intent)) {
+                    if(/^research in category|search more categories$/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });
