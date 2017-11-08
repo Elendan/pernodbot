@@ -1,5 +1,7 @@
 import * as https from "https";
+import * as builder from "botbuilder";
 import CategoriesResponse from "../models/CategoryResponse";
+import Category from "../models/Categories"
 
 class CategoryController {
 
@@ -23,18 +25,35 @@ class CategoryController {
                     body += data;
                 });
                 response.on("end", () => {
-                    if(body) {
+                    if (body) {
                         resolve(JSON.parse(body));
                     }
                     else {
                         resolve(null);
-                    } 
+                    }
                 });
                 response.on("error", error => {
                     reject(error);
                 });
             });
         });
+    }
+
+    /**
+     * Build a category card
+     * @param category
+     * @param session 
+     */
+    public static buildCategoryCard(category: Category, session: builder.Session): builder.HeroCard {
+        let categoryCard = new builder.HeroCard(session)
+            .title(category.label)
+            .buttons([{
+                type: "postBack",
+                title: `Choose ${category.label}`,
+                value: `research in category ${category.id}`
+            }]);
+        categoryCard.images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/logopr.jpg")]);
+        return categoryCard;
     }
 
 }

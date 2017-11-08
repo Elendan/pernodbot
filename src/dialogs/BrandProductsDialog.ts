@@ -18,7 +18,7 @@ class BrandProductsDialog extends BaseDialog{
                 else if(args.intent.intent === BrandProductsDialog.loadBrandProductsIntentName) {
                     session.userData.brandProductPage++;
                 }
-                let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");        
+                let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");  
                 ProductController.getBrandProducts(parameters.entity.brands, BrandProductsDialog.pageLength, session.userData.brandProductPage).then(productResponse => {
                     let brandProductMessage = new builder.Message(session);
                     let brandProductMessageAttachments: builder.AttachmentType[] = [];

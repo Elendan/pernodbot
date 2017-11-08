@@ -5,6 +5,7 @@ import DialogflowDialog from "./dialogs/DialogflowDialog";
 import BrandsDialog from "./dialogs/BrandsDialog";
 import BrandProductDialog from "./dialogs/BrandProductsDialog";
 import CategoriesDialog from "./dialogs/CategoriesDialog"
+import CategoryProductDialog from "./dialogs/CatgoryProductsDialog"
 
 class PernodBot {
 
@@ -67,7 +68,7 @@ class PernodBot {
         new CategoriesDialog().register(this.bot, "Categories", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if(context.intent) {
-                    if(/categories/.test(context.intent.intent)) {
+                    if(/^categories|load.categories$/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });
@@ -81,6 +82,23 @@ class PernodBot {
                 }
             }
         });
+        new CategoryProductDialog().register(this.bot, "CategoryProducts", {
+            onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
+                if(context.intent) {
+                    if(/^research in category|Search more categories$/.test(context.intent.intent)) {
+                        callback(null, context.intent.score, {
+                            intent: context.intent
+                        });
+                    }
+                    else {
+                        callback(null, 0);
+                    }
+                }
+                else {
+                    callback(null, 0);
+                }
+            }
+        })
         new DialogflowDialog().register(this.bot, "Dialogflow", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if(context.intent) {

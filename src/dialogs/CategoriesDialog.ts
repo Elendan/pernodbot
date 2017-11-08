@@ -26,17 +26,7 @@ class CategoriesDialog extends BaseDialog {
                     categoriesMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                     categoryResponse.hits.forEach(category => {
                         let categoriesProductQuery = category.label.replace(/ /g, '+');
-                        let categoryCard = new builder.HeroCard(session)
-                            .title(category.label);
-                        categoryCard.images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/absinthe.png")]); // Faudra hardcoder ça, aucune image sur le pim
-                        categoryCard.buttons([{
-                            type: "postBack",
-                            title: "Show Products",
-                            text: "Show Products",
-                            diplayText: "Show Products",
-                            value: categoriesProductQuery
-                        }])
-                        categoriesMessageAttachments.push(categoryCard);
+                        categoriesMessageAttachments.push(CategoryController.buildCategoryCard(category, session));
                     });
                     if (categoryResponse.nbPages > categoryResponse.page) {
                         categoriesMessageAttachments.push(
