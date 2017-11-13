@@ -28,7 +28,7 @@ class CategoriesDialog extends BaseDialog {
                         let categoriesProductQuery = category.label.replace(/ /g, '+');
                         categoriesMessageAttachments.push(CategoryController.buildCategoryCard(category, session));
                     });
-                    if (categoryResponse.nbPages > categoryResponse.page) {
+                    if (categoryResponse.nbPages > categoryResponse.page + 1) {
                         categoriesMessageAttachments.push(
                             new builder.HeroCard(session)
                             .title("Load more")

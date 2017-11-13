@@ -28,7 +28,7 @@ class BrandsDialog extends BaseDialog{
                         // Brand card
                         brandsMessageAttachments.push(BrandController.buildBrandCard(brand, session));
                     });
-                    if(brandResponse.nbPages > brandResponse.page) {
+                    if(brandResponse.nbPages > brandResponse.page + 1) {
                         // Load more brands card
                         brandsMessageAttachments.push(
                             new builder.HeroCard(session)
