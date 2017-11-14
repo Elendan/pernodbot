@@ -25,6 +25,11 @@ class InfoDialog extends BaseDialog {
                             });
                         }
                     }
+                    quickRepliesButtons.push({
+                        type: "postBack",
+                        title: "Back to filters 🔙",
+                        value: "Back to filters 🔙"
+                    });
                     quickRepliesCard.buttons(quickRepliesButtons);
                     productMessageAttachments.push(quickRepliesCard);
                     productMessage.attachments(productMessageAttachments);
