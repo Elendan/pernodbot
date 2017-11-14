@@ -6,7 +6,6 @@ class ProductInfoDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
-                console.log(`args : ${JSON.stringify(args.intent.matched)}`);
                 switch (args.intent.matched[0]) {
                     case "Size":
                         if (session.userData.productSize === null || session.userData.productSize === undefined) {
