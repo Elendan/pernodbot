@@ -4,8 +4,10 @@ import DialogflowRecognizer from "./dialogs/DialogflowRecognizer";
 import DialogflowDialog from "./dialogs/DialogflowDialog";
 import BrandsDialog from "./dialogs/BrandsDialog";
 import BrandProductDialog from "./dialogs/BrandProductsDialog";
-import CategoriesDialog from "./dialogs/CategoriesDialog"
-import CategoryProductDialog from "./dialogs/CatgoryProductsDialog"
+import CategoriesDialog from "./dialogs/CategoriesDialog";
+import CategoryProductDialog from "./dialogs/CatgoryProductsDialog";
+import InfoDialog from "./dialogs/InfoDialog";
+import ProductInfoDialog from "./dialogs/ProductInfoDialog";
 
 class PernodBot {
 
@@ -98,7 +100,27 @@ class PernodBot {
                     callback(null, 0);
                 }
             }
-        })
+        });
+        new InfoDialog().register(this.bot, "InfoDialog", {
+            onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
+                if(context.intent) {
+                    if(/^get.infos/.test(context.intent.intent)) {
+                        callback(null, context.intent.score, {
+                            intent: context.intent
+                        });
+                    }
+                    else {
+                        callback(null, 0);
+                    }
+                }
+                else {
+                    callback(null, 0);
+                }
+            }
+        });
+        new ProductInfoDialog().register(this.bot, "ProductInfo", {
+            matches: /^Size|^Ingredients|^Consumption Tips|^Product History/
+        });
         new DialogflowDialog().register(this.bot, "Dialogflow", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if(context.intent) {
