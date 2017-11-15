@@ -8,6 +8,7 @@ import CategoriesDialog from "./dialogs/CategoriesDialog";
 import CategoryProductDialog from "./dialogs/CatgoryProductsDialog";
 import InfoDialog from "./dialogs/InfoDialog";
 import ProductInfoDialog from "./dialogs/ProductInfoDialog";
+import DescriptionDialog from "./dialogs/DescriptionDialog";
 
 class PernodBot {
 
@@ -120,6 +121,23 @@ class PernodBot {
         });
         new ProductInfoDialog().register(this.bot, "ProductInfo", {
             matches: /^Size|^Ingredients|^Consumption Tips|^Product History/
+        });
+        new DescriptionDialog().register(this.bot, "ProductDescription", {
+            onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
+                if(context.intent) {
+                    if(/^product.details/.test(context.intent.intent)) {
+                        callback(null, context.intent.score, {
+                            intent: context.intent
+                        });
+                    }
+                    else {
+                        callback(null, 0);
+                    }
+                }
+                else {
+                    callback(null, 0);
+                }
+            }
         });
         new DialogflowDialog().register(this.bot, "Dialogflow", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {

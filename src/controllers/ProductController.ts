@@ -118,7 +118,7 @@ class ProductController {
     public static getInformations(product: Product, session: builder.Session): string[] {
         let informations = [];
         if (product.size !== null && product.size !== undefined) {
-            informations.push("Size"); 
+            informations.push("Size");
             session.userData.productSize = product.size.label;
         }
         if (product.ingredientList !== null && product.ingredientList !== undefined) {

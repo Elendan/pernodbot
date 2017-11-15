@@ -2,24 +2,24 @@ import * as builder from "botbuilder";
 import * as apiai from "apiai";
 import BaseDialog from "./basedialog";
 
-class DialogflowDialog extends BaseDialog{
+class DialogflowDialog extends BaseDialog {
 
     constructor() {
         super();
         this.dialog = [
             (session, args, next) => {
                 let fulfillment = builder.EntityRecognizer.findEntity(args.intent.entities, "fulfillment");
-                if(fulfillment && (fulfillment.entity.messages.length > 0)) {
+                if (fulfillment && (fulfillment.entity.messages.length > 0)) {
                     let messages = fulfillment.entity.messages.filter(message => {
                         return message.platform === "facebook";
                     });
-                    if(messages.length === 0) {
+                    if (messages.length === 0) {
                         messages = fulfillment.entity.messages;
                     }
                     let responseMessage = new builder.Message(session);
                     let responseMessageAttachments: builder.AttachmentType[] = [];
                     messages.forEach(message => {
-                        switch(message.type) {
+                        switch (message.type) {
                             case 0:
                                 // Text
                                 responseMessage.text(message.speech);
@@ -29,7 +29,7 @@ class DialogflowDialog extends BaseDialog{
                             case 1:
                                 // Card
                                 responseMessage.attachmentLayout(builder.AttachmentLayout.carousel);
-                                let card =  new builder.HeroCard(session)
+                                let card = new builder.HeroCard(session)
                                     .title(message.title)
                                     .subtitle(message.subtitle)
                                     .text("")
@@ -50,7 +50,7 @@ class DialogflowDialog extends BaseDialog{
                                 // Quick replies
                                 responseMessage.text(message.title);
                                 responseMessage.attachmentLayout(builder.AttachmentLayout.list);
-                                let quickRepliesCard =  new builder.HeroCard(session);
+                                let quickRepliesCard = new builder.HeroCard(session);
                                 let quickRepliesButtons: builder.ICardAction[] = [];
                                 message.replies.forEach(replie => {
                                     quickRepliesButtons.push({
@@ -74,7 +74,7 @@ class DialogflowDialog extends BaseDialog{
                                 break;
                         }
                     });
-                    if(responseMessageAttachments.length > 0) {
+                    if (responseMessageAttachments.length > 0) {
                         session.send(responseMessage);
                     }
                 }
