@@ -1,6 +1,7 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import ProductController from "../controllers/ProductController";
+import MessagesController from "../controllers/MessagesController";
 
 class BrandProductsDialog extends BaseDialog{
 
@@ -47,10 +48,10 @@ class BrandProductsDialog extends BaseDialog{
                     brandProductMessage.attachments(brandProductMessageAttachments);
                     session.send(brandProductMessage);
                     if (productResponse.nbHits > 8) {
-                        quickRepliesCard = ProductController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by size");
+                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by size");
                     }
-                    quickRepliesCard = ProductController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, undefined, "Brands");
-                    session.send(ProductController.sendQuickReplies(session, quickRepliesCard));
+                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, undefined, "Brands");
+                    session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                     session.endDialog();
                 }, reason => {
                     session.send(reason);
