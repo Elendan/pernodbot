@@ -24,7 +24,7 @@ class MessagesController {
         buttons.push({
             type: "postBack",
             title: msg ? msg : `Back to ${type ? type : "Filters"} 🔙`,
-            value: `${type ? type : "Filters"}`
+            value: msg ? msg : `${type ? type : "Filters"}`
         });
         card.buttons(buttons);
         return card;
