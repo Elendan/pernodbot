@@ -143,7 +143,7 @@ class PernodBot {
         new AvailableSizesDialog().register(this.bot, "AvailableSizes",  {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if(context.intent) {
-                    if(/^filter.by.size/.test(context.intent.intent)) {
+                    if(/^filter.by.size|^filter.more.sizes/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });
