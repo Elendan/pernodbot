@@ -22,6 +22,8 @@ class CategoryProductDialog extends BaseDialog {
                 ProductController.getCategoryProducts(parameters.entity.category, CategoryProductDialog.pageLength, session.userData.categoryProductPage).then(productResponse => {
                     let categoryProductMessage = new builder.Message(session);
                     let categoryProductMessageAttachments: builder.AttachmentType[] = [];
+                    let quickRepliesButtons: builder.ICardAction[] = [];
+                    let quickRepliesCard = new builder.HeroCard(session);
                     categoryProductMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                     productResponse.hits.forEach(product => {
                         categoryProductMessageAttachments.push(ProductController.buildProductCard(product, session));
@@ -44,6 +46,11 @@ class CategoryProductDialog extends BaseDialog {
                     }
                     categoryProductMessage.attachments(categoryProductMessageAttachments);
                     session.send(categoryProductMessage);
+                    if (productResponse.nbHits > 8) {
+                        quickRepliesCard = ProductController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by size");
+                    }
+                    quickRepliesCard = ProductController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, undefined, "Brands");
+                    session.send(ProductController.sendQuickReplies(session, quickRepliesCard));
                     session.endDialog();
                 }, reason => {
                     session.send(reason);
