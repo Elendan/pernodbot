@@ -9,6 +9,7 @@ import CategoryProductDialog from "./dialogs/CatgoryProductsDialog";
 import InfoDialog from "./dialogs/InfoDialog";
 import ProductInfoDialog from "./dialogs/ProductInfoDialog";
 import DescriptionDialog from "./dialogs/DescriptionDialog";
+import AvailableSizesDialog from "./dialogs/AvailableSizesDialog";
 
 class PernodBot {
 
@@ -139,6 +140,23 @@ class PernodBot {
                 }
             }
         });
+        new AvailableSizesDialog().register(this.bot, "AvailableSizes",  {
+            onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
+                if(context.intent) {
+                    if(/^filter.by.size/.test(context.intent.intent)) {
+                        callback(null, context.intent.score, {
+                            intent: context.intent
+                        });
+                    }
+                    else {
+                        callback(null, 0);
+                    }
+                }
+                else {
+                    callback(null, 0);
+                }
+            }
+        })
         new DialogflowDialog().register(this.bot, "Dialogflow", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if(context.intent) {

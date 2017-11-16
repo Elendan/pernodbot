@@ -13,6 +13,7 @@ class CategoryProductDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
+                session.userData.availableSizes = [];
                 if ((session.userData.categoryProductPage == null) || (args.intent.intent === CategoryProductDialog.categoryProductIntentName)) {
                     session.userData.categoryProductPage = 0;
                 }
@@ -20,7 +21,16 @@ class CategoryProductDialog extends BaseDialog {
                     session.userData.categoryProductPage++;
                 }
                 let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
-                ProductController.getCategoryProducts(parameters.entity.category, CategoryProductDialog.pageLength, session.userData.categoryProductPage).then(productResponse => {
+                ProductController.getCategoryProducts(parameters.entity.category, 1000, session.userData.categoryProductPage).then(productResponse => {
+                    productResponse.hits.forEach(p => {
+                        if (p.size !== null) {
+                            session.userData.availableSizes.push(p.size.id);
+                        }
+                    });
+                    session.userData.availableSizes = new Set(session.userData.availableSizes);
+                    session.userData.availableSizes = Array.from(session.userData.availableSizes);
+                    session.userData.availableSizes = session.userData.availableSizes.sort(function(a, b) {return a - b});
+                }).then(() => ProductController.getCategoryProducts(parameters.entity.category, CategoryProductDialog.pageLength, session.userData.categoryProductPage).then(productResponse => {
                     let categoryProductMessage = new builder.Message(session);
                     let categoryProductMessageAttachments: builder.AttachmentType[] = [];
                     let quickRepliesButtons: builder.ICardAction[] = [];
@@ -56,7 +66,7 @@ class CategoryProductDialog extends BaseDialog {
                 }, reason => {
                     session.send(reason);
                     session.endDialog();
-                });
+                }));
             }
         ]
     }

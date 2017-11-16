@@ -11,7 +11,6 @@ class DescriptionDialog extends BaseDialog {
                 ProductController.getProductById(parameters.entity.product).then(product => {
                     let productMessage = new builder.Message(session);
                     let productMessageAttachments: builder.AttachmentType[] = [];
-                    productMessage.text(product.description === null || product.description === undefined ? "" : product.description);
                     productMessage.attachmentLayout(builder.AttachmentLayout.list);
                     let quickRepliesCard = new builder.HeroCard(session);
                     let quickRepliesButtons: builder.ICardAction[] = [];
@@ -21,6 +20,7 @@ class DescriptionDialog extends BaseDialog {
                             .images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)])
                         );
                     }
+                    productMessage.text(product.description === null || product.description === undefined ? "" : product.description);
                     session.userData.informations = ProductController.getInformations(product, session);
                     if (session.userData.informations !== null && session.userData.informations.length > 0) {
                         for (let i = 0; i < session.userData.informations.length; i++) {
