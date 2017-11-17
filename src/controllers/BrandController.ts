@@ -25,7 +25,7 @@ class BrandController {
                     body += data;
                 });
                 response.on("end", () => {
-                    if(body) {
+                    if (body) {
                         resolve(JSON.parse(body));
                     }
                     else {
@@ -52,7 +52,7 @@ class BrandController {
                 title: `Choose ${brand.label}`,
                 value: `research in brands ${brand.id}`
             }]);
-        if(brand.medias.logoPrincipal.urls) {
+        if (brand.medias.logoPrincipal.urls) {
             brandCard.images([builder.CardImage.create(session, brand.medias.logoPrincipal.urls.original)]);
         }
         else {

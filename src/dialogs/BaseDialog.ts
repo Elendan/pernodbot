@@ -11,7 +11,7 @@ abstract class BaseDialog {
      */
     public register(bot: builder.UniversalBot, path: string, action?: builder.ITriggerActionOptions): void {
         let dialog = bot.dialog(path, this.dialog);
-        if(action) {
+        if (action) {
             dialog.triggerAction(action);
         }
     }

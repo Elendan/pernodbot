@@ -43,7 +43,7 @@ class DialogflowRecognizer extends builder.IntentRecognizer {
         }
     }
 
-    
+
 
 }
 

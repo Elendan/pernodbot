@@ -26,7 +26,7 @@ class ProductController {
                     body += data;
                 });
                 response.on("end", () => {
-                    if(body) {
+                    if (body) {
                         resolve(JSON.parse(body));
                     }
                     else {
@@ -61,7 +61,7 @@ class ProductController {
                     body += data;
                 });
                 response.on("end", () => {
-                    if(body) {
+                    if (body) {
                         resolve(JSON.parse(body));
                     }
                     else {
@@ -75,7 +75,7 @@ class ProductController {
         });
     }
 
-    
+
     /**
      *  Get Product by ID
      * @param ProductId
@@ -95,7 +95,7 @@ class ProductController {
                     body += data;
                 });
                 response.on("end", () => {
-                    if(body) {
+                    if (body) {
                         resolve(JSON.parse(body));
                     }
                     else {
@@ -159,7 +159,7 @@ class ProductController {
                 title: "Other informations",
                 value: `send informations about ${product.id}`
             }]);
-        if((product.mediaList.length > 0) &&  product.mediaList[0].urls) {
+        if ((product.mediaList.length > 0) && product.mediaList[0].urls) {
             productCard.images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)]);
         }
         else {

@@ -35,12 +35,12 @@ class PernodBot {
 
         // Recognizer
         this.bot.recognizer(new DialogflowRecognizer(process.env.DIALOGFLOW_TOKEN));
-        
+
         // Dialogs
         new BrandsDialog().register(this.bot, "Brands", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
-                if(context.intent) {
-                    if(/^brands|load.brands$/.test(context.intent.intent)) {
+                if (context.intent) {
+                    if (/^brands|load.brands$/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });
@@ -56,8 +56,8 @@ class PernodBot {
         });
         new BrandProductDialog().register(this.bot, "BrandProducts", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
-                if(context.intent) {
-                    if(/^research in brands|Search more brands$/.test(context.intent.intent)) {
+                if (context.intent) {
+                    if (/^research in brands|Search more brands$/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });
@@ -73,8 +73,8 @@ class PernodBot {
         });
         new CategoriesDialog().register(this.bot, "Categories", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
-                if(context.intent) {
-                    if(/^categories|load.categories$/.test(context.intent.intent)) {
+                if (context.intent) {
+                    if (/^categories|load.categories$/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });
@@ -90,8 +90,8 @@ class PernodBot {
         });
         new CategoryProductDialog().register(this.bot, "CategoryProducts", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
-                if(context.intent) {
-                    if(/^research in category|search more categories$/.test(context.intent.intent)) {
+                if (context.intent) {
+                    if (/^research in category|search more categories$/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });
@@ -107,8 +107,8 @@ class PernodBot {
         });
         new InfoDialog().register(this.bot, "InfoDialog", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
-                if(context.intent) {
-                    if(/^get.infos/.test(context.intent.intent)) {
+                if (context.intent) {
+                    if (/^get.infos/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });
@@ -127,8 +127,8 @@ class PernodBot {
         });
         new DescriptionDialog().register(this.bot, "ProductDescription", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
-                if(context.intent) {
-                    if(/^product.details/.test(context.intent.intent)) {
+                if (context.intent) {
+                    if (/^product.details/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });
@@ -142,10 +142,10 @@ class PernodBot {
                 }
             }
         });
-        new AvailableSizesDialog().register(this.bot, "AvailableSizes",  {
+        new AvailableSizesDialog().register(this.bot, "AvailableSizes", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
-                if(context.intent) {
-                    if(/^filter.by.size|^filter.more.sizes/.test(context.intent.intent)) {
+                if (context.intent) {
+                    if (/^filter.by.size|^filter.more.sizes/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });
@@ -161,8 +161,8 @@ class PernodBot {
         });
         new ProductsPerSizeDialog().register(this.bot, "ProductsPerSize", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
-                if(context.intent) {
-                    if(/^product.size/.test(context.intent.intent)) {
+                if (context.intent) {
+                    if (/^product.size/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });
@@ -178,8 +178,8 @@ class PernodBot {
         });
         new BuyProductDialog().register(this.bot, "BuyProductButton", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
-                if(context.intent) {
-                    if(/^buy product/.test(context.intent.intent)) {
+                if (context.intent) {
+                    if (/^buy product/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });
@@ -195,7 +195,7 @@ class PernodBot {
         });
         new DialogflowDialog().register(this.bot, "Dialogflow", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
-                if(context.intent) {
+                if (context.intent) {
                     callback(null, context.intent.score, {
                         intent: context.intent
                     });

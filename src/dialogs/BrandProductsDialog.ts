@@ -32,7 +32,7 @@ class BrandProductsDialog extends BaseDialog {
                     });
                     session.userData.availableSizes = new Set(session.userData.availableSizes);
                     session.userData.availableSizes = Array.from(session.userData.availableSizes);
-                    session.userData.availableSizes = session.userData.availableSizes.sort(function(a, b) {return a - b});
+                    session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });
                 }).then(() => ProductController.getBrandProducts(parameters.entity.brands, BrandProductsDialog._pageLength, session.userData.brandProductPage).then(productResponse => {
                     let brandProductMessage = new builder.Message(session);
                     let brandProductMessageAttachments: builder.AttachmentType[] = [];

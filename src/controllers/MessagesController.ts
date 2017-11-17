@@ -56,14 +56,14 @@ class MessagesController {
                 .title("Buy on Auchan")
                 .images([builder.CardImage.create(session, "https://upload.wikimedia.org/wikipedia/commons/0/0a/Logo_Auchan_2015.jpg")])
                 .buttons(
-                    [
-                        {
-                            type: "openUrl",
-                            title: "Access WebSite",
-                            image: "https://upload.wikimedia.org/wikipedia/commons/0/0a/Logo_Auchan_2015.jpg",
-                            value: "https://www.auchan.fr/mumm-champagne-mumm-brut-cordon-rouge/p-c395487%3bjsessionid=6CC0CE5CFCE957F5D0994D20BD13DA41-n2?utm_source=Pernod-Ricard&utm_medium=brandwebsite&utm_campaign=Pernod%20Ricard%20ClickToBuy%20Solution"
-                        }
-                    ])
+                [
+                    {
+                        type: "openUrl",
+                        title: "Access WebSite",
+                        image: "https://upload.wikimedia.org/wikipedia/commons/0/0a/Logo_Auchan_2015.jpg",
+                        value: "https://www.auchan.fr/mumm-champagne-mumm-brut-cordon-rouge/p-c395487%3bjsessionid=6CC0CE5CFCE957F5D0994D20BD13DA41-n2?utm_source=Pernod-Ricard&utm_medium=brandwebsite&utm_campaign=Pernod%20Ricard%20ClickToBuy%20Solution"
+                    }
+                ])
         );
         card.attachments(cardAttachments);
         return card;

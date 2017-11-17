@@ -31,15 +31,15 @@ class CategoriesDialog extends BaseDialog {
                     if (categoryResponse.nbPages > categoryResponse.page + 1) {
                         categoriesMessageAttachments.push(
                             new builder.HeroCard(session)
-                            .title("Load more")
-                            .images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/load-more.png")])
-                            .buttons([{
-                                type: "postBack",
-                                title: "Load more",
-                                text: "Load more",
-                                diplayText: "Load more",
-                                value: "Load more categories"
-                            }])
+                                .title("Load more")
+                                .images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/load-more.png")])
+                                .buttons([{
+                                    type: "postBack",
+                                    title: "Load more",
+                                    text: "Load more",
+                                    diplayText: "Load more",
+                                    value: "Load more categories"
+                                }])
                         );
                     }
                     else {

@@ -32,7 +32,7 @@ class CategoryProductDialog extends BaseDialog {
                     });
                     session.userData.availableSizes = new Set(session.userData.availableSizes);
                     session.userData.availableSizes = Array.from(session.userData.availableSizes);
-                    session.userData.availableSizes = session.userData.availableSizes.sort(function(a, b) {return a - b});
+                    session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });
                 }).then(() => ProductController.getCategoryProducts(parameters.entity.category, CategoryProductDialog._pageLength, session.userData.categoryProductPage).then(productResponse => {
                     let categoryProductMessage = new builder.Message(session);
                     let categoryProductMessageAttachments: builder.AttachmentType[] = [];

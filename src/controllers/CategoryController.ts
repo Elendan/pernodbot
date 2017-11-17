@@ -4,7 +4,7 @@ import CategoriesResponse from "../models/CategoryResponse";
 import Category from "../models/Categories"
 
 class CategoryController {
-    
+
     /**
      * Get images
      * @param categoryId

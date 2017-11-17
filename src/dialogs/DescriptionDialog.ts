@@ -17,7 +17,7 @@ class DescriptionDialog extends BaseDialog {
                     if (product.mediaList.length > 0 && product.mediaList[0].urls) {
                         productMessageAttachments.push(
                             new builder.HeroCard(session)
-                            .images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)])
+                                .images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)])
                         );
                     }
                     productMessage.text(product.description === null || product.description === undefined ? "" : product.description);

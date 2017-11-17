@@ -2,7 +2,7 @@ import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import BrandController from "../controllers/BrandController";
 
-class BrandsDialog extends BaseDialog{
+class BrandsDialog extends BaseDialog {
 
     private static readonly _pageLength = 5;
     private static readonly _brandsIntentName = "brands";
@@ -12,10 +12,10 @@ class BrandsDialog extends BaseDialog{
         super();
         this.dialog = [
             (session, args, next) => {
-                if((session.userData.brandPage == null) || (args.intent.intent === BrandsDialog._brandsIntentName)) {
+                if ((session.userData.brandPage == null) || (args.intent.intent === BrandsDialog._brandsIntentName)) {
                     session.userData.brandPage = 0;
                 }
-                else if(args.intent.intent === BrandsDialog._loadBrandsIntentName) {
+                else if (args.intent.intent === BrandsDialog._loadBrandsIntentName) {
                     session.userData.brandPage++;
                 }
                 // Get brands
@@ -28,7 +28,7 @@ class BrandsDialog extends BaseDialog{
                         // Brand card
                         brandsMessageAttachments.push(BrandController.buildBrandCard(brand, session));
                     });
-                    if(brandResponse.nbPages > brandResponse.page + 1) {
+                    if (brandResponse.nbPages > brandResponse.page + 1) {
                         // Load more brands card
                         brandsMessageAttachments.push(
                             new builder.HeroCard(session)
