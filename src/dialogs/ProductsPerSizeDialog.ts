@@ -15,14 +15,15 @@ class ProductsPerSizeDialog extends BaseDialog {
         this.dialog = [
             (session, args, next) => {
                 let productList: Product[] = [];
-                let ProductMessage = new builder.Message(session);
+                let productMessage = new builder.Message(session);
                 let productMessageAttachments: builder.AttachmentType[] = [];
                 let quickRepliesCard = new builder.HeroCard(session);
                 let quickRepliesButtons: builder.ICardAction[] = [];
-                ProductMessage.attachmentLayout(builder.AttachmentLayout.carousel);
+                productMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                 let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
-                session.userData.sizeProductPage = 0;
-                session.userData.displayedProductsOfSize = 5;
+                if (session.userData.sizeProductPage === null || session.userData.sizeProductPage === 0) {
+                    session.userData.displayedProductsOfSize = 5;
+                }
                 switch (session.userData.productType) {
                     case ProductType.Brand:
                         ProductController.getBrandProducts(session.userData.idToRetrieve, ProductsPerSizeDialog._pageLength, 0).then(productResponse => {
@@ -35,12 +36,31 @@ class ProductsPerSizeDialog extends BaseDialog {
                             session.send(reason);
                             session.endDialog();
                         }).then(() => {
-                            while (session.userData.sizeProductPage < session.userData.displayedProductsOfSize) {
+                            while (session.userData.sizeProductPage < session.userData.displayedProductsOfSize && session.userData.sizeProductPage < productList.length) {
                                 productMessageAttachments.push(ProductController.buildProductCard(productList[session.userData.sizeProductPage], session));
                                 session.userData.sizeProductPage++;
                             }
-                            ProductMessage.attachments(productMessageAttachments);
-                            session.send(ProductMessage);
+                            if (session.userData.sizeProductPage < productList.length) {
+                                productMessageAttachments.push(
+                                    new builder.HeroCard(session)
+                                        .title("Load more")
+                                        .images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/load-more.png")])
+                                        .buttons([
+                                            {
+                                                type: "postBack",
+                                                title: "Load more",
+                                                value: parameters.entity.number
+                                            }
+                                        ])
+                                );
+                                session.userData.displayedProductsOfSize += 5;
+                            }
+                            else {
+                                session.userData.sizeProductPage = 0;
+                                session.userData.displayedProductsOfSize = 5;
+                            }
+                            productMessage.attachments(productMessageAttachments);
+                            session.send(productMessage);
                             session.endDialog();
                         });
                         break;
@@ -55,12 +75,31 @@ class ProductsPerSizeDialog extends BaseDialog {
                             session.send(reason);
                             session.endDialog();
                         }).then(() => {
-                            while (session.userData.sizeProductPage < session.userData.displayedProductsOfSize) {
+                            while (session.userData.sizeProductPage < session.userData.displayedProductsOfSize && session.userData.sizeProductPage < productList.length) {
                                 productMessageAttachments.push(ProductController.buildProductCard(productList[session.userData.sizeProductPage], session));
                                 session.userData.sizeProductPage++;
                             }
-                            ProductMessage.attachments(productMessageAttachments);
-                            session.send(ProductMessage);
+                            if (session.userData.sizeProductPage < productList.length) {
+                                productMessageAttachments.push(
+                                    new builder.HeroCard(session)
+                                        .title("Load more")
+                                        .images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/load-more.png")])
+                                        .buttons([
+                                            {
+                                                type: "postBack",
+                                                title: "Load more",
+                                                value: parameters.entity.number
+                                            }
+                                        ])
+                                );
+                                session.userData.displayedProductsOfSize += 5;
+                            }
+                            else {
+                                session.userData.sizeProductPage = 0;
+                                session.userData.displayedProductsOfSize = 5;
+                            }
+                            productMessage.attachments(productMessageAttachments);
+                            session.send(productMessage);
                             session.endDialog();
                         });
                         break;
