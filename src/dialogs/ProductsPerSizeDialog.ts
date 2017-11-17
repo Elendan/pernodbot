@@ -45,8 +45,24 @@ class ProductsPerSizeDialog extends BaseDialog {
                         });
                         break;
                     case ProductType.Category:
-                        session.send(session.userData.idToRetrieve);
-                        session.endDialog();
+                        ProductController.getCategoryProducts(session.userData.idToRetrieve, ProductsPerSizeDialog._pageLength, 0).then(productResponse => {
+                            productResponse.hits.forEach(product => {
+                                if (product.size !== null && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {
+                                    productList.push(product)
+                                }
+                            });
+                        }, reason => {
+                            session.send(reason);
+                            session.endDialog();
+                        }).then(() => {
+                            while (session.userData.sizeProductPage < session.userData.displayedProductsOfSize) {
+                                productMessageAttachments.push(ProductController.buildProductCard(productList[session.userData.sizeProductPage], session));
+                                session.userData.sizeProductPage++;
+                            }
+                            ProductMessage.attachments(productMessageAttachments);
+                            session.send(ProductMessage);
+                            session.endDialog();
+                        });
                         break;
                     case ProductType.Classic:
                         break;
