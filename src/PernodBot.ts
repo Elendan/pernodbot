@@ -10,6 +10,8 @@ import InfoDialog from "./dialogs/InfoDialog";
 import ProductInfoDialog from "./dialogs/ProductInfoDialog";
 import DescriptionDialog from "./dialogs/DescriptionDialog";
 import AvailableSizesDialog from "./dialogs/AvailableSizesDialog";
+import ProductsPerSizeDialog from "./dialogs/ProductsPerSizeDialog";
+import BuyProductDialog from "./dialogs/BuyProductDialog";
 
 class PernodBot {
 
@@ -156,7 +158,41 @@ class PernodBot {
                     callback(null, 0);
                 }
             }
-        })
+        });
+        new ProductsPerSizeDialog().register(this.bot, "ProductsPerSize", {
+            onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
+                if(context.intent) {
+                    if(/^product.size/.test(context.intent.intent)) {
+                        callback(null, context.intent.score, {
+                            intent: context.intent
+                        });
+                    }
+                    else {
+                        callback(null, 0);
+                    }
+                }
+                else {
+                    callback(null, 0);
+                }
+            }
+        });
+        new BuyProductDialog().register(this.bot, "BuyProductButton", {
+            onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
+                if(context.intent) {
+                    if(/^buy product/.test(context.intent.intent)) {
+                        callback(null, context.intent.score, {
+                            intent: context.intent
+                        });
+                    }
+                    else {
+                        callback(null, 0);
+                    }
+                }
+                else {
+                    callback(null, 0);
+                }
+            }
+        });
         new DialogflowDialog().register(this.bot, "Dialogflow", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if(context.intent) {

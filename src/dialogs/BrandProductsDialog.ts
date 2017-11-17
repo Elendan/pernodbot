@@ -2,6 +2,7 @@ import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import ProductController from "../controllers/ProductController";
 import MessagesController from "../controllers/MessagesController";
+import ProductType from "../enums/ProductType";
 
 class BrandProductsDialog extends BaseDialog {
 
@@ -14,6 +15,7 @@ class BrandProductsDialog extends BaseDialog {
         this.dialog = [
             (session, args, next) => {
                 session.userData.availableSizes = [];
+                session.userData.productType = ProductType.Brand;
                 if ((session.userData.brandProductPage == null) || (args.intent.intent === BrandProductsDialog.brandProductsIntentName)) {
                     session.userData.brandProductPage = 0;
                 }
