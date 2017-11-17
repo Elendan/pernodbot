@@ -4,8 +4,7 @@ import CategoriesResponse from "../models/CategoryResponse";
 import Category from "../models/Categories"
 
 class CategoryController {
-
-    //#region IMAGES
+    
     /**
      * Get images
      * @param categoryId
@@ -17,7 +16,6 @@ class CategoryController {
         categoryId = categoryId.replace("whiskey", "whisky");
         return (`http://tools.expertime.digital/bot/${categoryId}.png`);
     }
-    //#endregion IMAGES
 
     /**
      * Get Categories

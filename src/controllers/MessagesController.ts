@@ -24,12 +24,15 @@ class MessagesController {
         buttons.push({
             type: "postBack",
             title: msg ? msg : `Back to ${type ? type : "Filters"} 🔙`,
-            value: msg ? msg : `${type ? type : "Filters"}`
+            value: msg ? msg : type ? type : "Filters"
         });
         card.buttons(buttons);
         return card;
     }
 
+    /**
+     * @param session 
+     */
     public static BuyProductCarousel(session: builder.Session): builder.Message {
         let card = new builder.Message(session);
         let cardAttachments: builder.AttachmentType[] = [];

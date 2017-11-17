@@ -4,22 +4,22 @@ import CategoryController from "../controllers/CategoryController";
 
 class CategoriesDialog extends BaseDialog {
 
-    private static readonly pageLength = 5;
-    private static readonly categoriesIntentName = "categories";
-    private static readonly loadCategoriesIntentName = "load.categories";
+    private static readonly _pageLength = 5;
+    private static readonly _categoriesIntentName = "categories";
+    private static readonly _loadCategoriesIntentName = "load.categories";
 
     constructor() {
         super();
         this.dialog = [
             (session, args, next) => {
-                if ((session.userData.categoryPage == null) || args.intent.intent === CategoriesDialog.categoriesIntentName) {
+                if ((session.userData.categoryPage == null) || args.intent.intent === CategoriesDialog._categoriesIntentName) {
                     session.userData.categoryPage = 0;
                 }
-                else if (args.intent.intent === CategoriesDialog.loadCategoriesIntentName) {
+                else if (args.intent.intent === CategoriesDialog._loadCategoriesIntentName) {
                     session.userData.categoryPage++;
                 }
                 //Get categories
-                CategoryController.getCategories(CategoriesDialog.pageLength, session.userData.categoryPage).then(categoryResponse => {
+                CategoryController.getCategories(CategoriesDialog._pageLength, session.userData.categoryPage).then(categoryResponse => {
                     session.userData.categoryPage = categoryResponse.page;
                     let categoriesMessage = new builder.Message(session);
                     let categoriesMessageAttachments: builder.AttachmentType[] = [];

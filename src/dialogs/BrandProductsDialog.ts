@@ -6,9 +6,9 @@ import ProductType from "../enums/ProductType";
 
 class BrandProductsDialog extends BaseDialog {
 
-    private static readonly pageLength = 5;
-    private static readonly brandProductsIntentName = "research in brands";
-    private static readonly loadBrandProductsIntentName = "Search more brands";
+    private static readonly _pageLength = 5;
+    private static readonly _brandProductsIntentName = "research in brands";
+    private static readonly _loadBrandProductsIntentName = "Search more brands";
 
     constructor() {
         super();
@@ -16,13 +16,14 @@ class BrandProductsDialog extends BaseDialog {
             (session, args, next) => {
                 session.userData.availableSizes = [];
                 session.userData.productType = ProductType.Brand;
-                if ((session.userData.brandProductPage == null) || (args.intent.intent === BrandProductsDialog.brandProductsIntentName)) {
+                if ((session.userData.brandProductPage == null) || (args.intent.intent === BrandProductsDialog._brandProductsIntentName)) {
                     session.userData.brandProductPage = 0;
                 }
-                else if (args.intent.intent === BrandProductsDialog.loadBrandProductsIntentName) {
+                else if (args.intent.intent === BrandProductsDialog._loadBrandProductsIntentName) {
                     session.userData.brandProductPage++;
                 }
                 let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
+                session.userData.idToRetrieve = parameters.entity.brands;
                 ProductController.getBrandProducts(parameters.entity.brands, 1000, session.userData.brandProductPage).then(productResponse => {
                     productResponse.hits.forEach(p => {
                         if (p.size !== null) {
@@ -32,7 +33,7 @@ class BrandProductsDialog extends BaseDialog {
                     session.userData.availableSizes = new Set(session.userData.availableSizes);
                     session.userData.availableSizes = Array.from(session.userData.availableSizes);
                     session.userData.availableSizes = session.userData.availableSizes.sort(function(a, b) {return a - b});
-                }).then(() => ProductController.getBrandProducts(parameters.entity.brands, BrandProductsDialog.pageLength, session.userData.brandProductPage).then(productResponse => {
+                }).then(() => ProductController.getBrandProducts(parameters.entity.brands, BrandProductsDialog._pageLength, session.userData.brandProductPage).then(productResponse => {
                     let brandProductMessage = new builder.Message(session);
                     let brandProductMessageAttachments: builder.AttachmentType[] = [];
                     let quickRepliesButtons: builder.ICardAction[] = [];
