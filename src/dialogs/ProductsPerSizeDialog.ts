@@ -21,7 +21,6 @@ class ProductsPerSizeDialog extends BaseDialog {
                 let quickRepliesButtons: builder.ICardAction[] = [];
                 ProductMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                 let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
-                console.log(JSON.stringify(<string>parameters.entity.number + "0"));
                 session.userData.sizeProductPage = 0;
                 session.userData.displayedProductsOfSize = 5;
                 switch (session.userData.productType) {
@@ -32,8 +31,6 @@ class ProductsPerSizeDialog extends BaseDialog {
                                     productList.push(product)
                                 }
                             });
-                            console.log(productList[0].productName);
-                            console.log(productList[1].productName);
                         }, reason => {
                             session.send(reason);
                             session.endDialog();
