@@ -6,9 +6,9 @@ import ProductType from "../enums/ProductType";
 
 class CategoryProductDialog extends BaseDialog {
 
-    private static readonly _pageLength = 5;
-    private static readonly _categoryProductIntentName = "research in category";
-    private static readonly _loadCategoryProductsIntentName = "search more categories";
+    private static readonly _pageLength: number = 5;
+    private static readonly _categoryProductIntentName: string = "research in category";
+    private static readonly _loadCategoryProductsIntentName: string = "search more categories";
 
     constructor() {
         super();

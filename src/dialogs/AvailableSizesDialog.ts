@@ -4,9 +4,9 @@ import MessagesController from "./../controllers/MessagesController"
 
 class AvailableSizesDialog extends BaseDialog {
 
-    private static readonly _filterBySizeIntentName = "filter.by.size";
-    private static readonly _filterMoreSizeIntentName = "filter.more.sizes";
-    private static readonly _repliesPerCard = 5;
+    private static readonly _filterBySizeIntentName: string = "filter.by.size";
+    private static readonly _filterMoreSizeIntentName: string = "filter.more.sizes";
+    private static readonly _repliesPerCard: number = 5;
 
     constructor() {
         super();

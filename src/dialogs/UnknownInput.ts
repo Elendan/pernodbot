@@ -1,30 +1,32 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import ProductController from "../controllers/ProductController";
-import MessagesController from "../controllers/MessagesController";
 import ProductType from "../enums/ProductType";
+import MessagesController from "../controllers/MessagesController";
 
-class BrandProductsDialog extends BaseDialog {
+class UnknownInput extends BaseDialog {
 
+    private static readonly _searchMoreProductIntentName: string = "search.more.products";
+    private static readonly _defaultFallbackIntent: string = "Default Fallback Intent";
+    private static readonly _undefinedIntentName: string = "undefined";
     private static readonly _pageLength: number = 5;
-    private static readonly _brandProductsIntentName: string = "research in brands";
-    private static readonly _loadBrandProductsIntentName: string = "Search more brands";
 
     constructor() {
         super();
         this.dialog = [
             (session, args, next) => {
                 session.userData.availableSizes = [];
-                session.userData.productType = ProductType.Brand;
-                if ((session.userData.brandProductPage == null) || (args.intent.intent === BrandProductsDialog._brandProductsIntentName)) {
-                    session.userData.brandProductPage = 0;
+                session.userData.productType = ProductType.Classic;
+                console.log(session.message.text);
+                if ((session.userData.productPage == null) || (args.intent.intent === UnknownInput._undefinedIntentName) || (args.intent.intent === UnknownInput._defaultFallbackIntent)) {
+                    session.userData.productPage = 0;
                 }
-                else if (args.intent.intent === BrandProductsDialog._loadBrandProductsIntentName) {
-                    session.userData.brandProductPage++;
+                else if (args.intent.intent === UnknownInput._searchMoreProductIntentName) {
+                    session.userData.productPage++;
                 }
-                let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
-                session.userData.idToRetrieve = parameters.entity.brands;
-                ProductController.getBrandProducts(parameters.entity.brands, 1000, session.userData.brandProductPage).then(productResponse => {
+                session.userData.idToRetrieve = session.message.text.replace(/Search more products /, '');
+                console.log("Id to retrieve: " + session.userData.idToRetrieve)
+                ProductController.getProductFromInput(session.userData.idToRetrieve, 1000, 0).then(productResponse => {
                     productResponse.hits.forEach(p => {
                         if (p.size !== null) {
                             session.userData.availableSizes.push(p.size.id);
@@ -33,37 +35,36 @@ class BrandProductsDialog extends BaseDialog {
                     session.userData.availableSizes = new Set(session.userData.availableSizes);
                     session.userData.availableSizes = Array.from(session.userData.availableSizes);
                     session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });
-                }).then(() => ProductController.getBrandProducts(parameters.entity.brands, BrandProductsDialog._pageLength, session.userData.brandProductPage).then(productResponse => {
-                    let brandProductMessage = new builder.Message(session);
-                    let brandProductMessageAttachments: builder.AttachmentType[] = [];
+                }).then(() => ProductController.getProductFromInput(session.userData.idToRetrieve, UnknownInput._pageLength, session.userData.productPage).then(productResponse => {
+                    let productMessage = new builder.Message(session);
+                    let productMessageAttachments: builder.AttachmentType[] = [];
                     let quickRepliesButtons: builder.ICardAction[] = [];
                     let quickRepliesCard = new builder.HeroCard(session);
-                    brandProductMessage.attachmentLayout(builder.AttachmentLayout.carousel);
+                    productMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                     productResponse.hits.forEach(product => {
-                        brandProductMessageAttachments.push(ProductController.buildProductCard(product, session));
+                        productMessageAttachments.push(ProductController.buildProductCard(product, session));
                     });
                     if (productResponse.nbPages > productResponse.page + 1) {
-                        // Load more brand product card
-                        brandProductMessageAttachments.push(
+                        productMessageAttachments.push(
                             new builder.HeroCard(session)
                                 .title("Load more")
                                 .images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/load-more.png")])
                                 .buttons([{
                                     type: "postBack",
                                     title: "Load more",
-                                    value: `search more brands ${parameters.entity.brands}`
+                                    value: `Search more products ${session.userData.idToRetrieve}`
                                 }])
                         );
                     }
                     else {
-                        session.userData.brandProductPage = 0;
+                        session.userData.productPage = 0;
                     }
-                    brandProductMessage.attachments(brandProductMessageAttachments);
-                    session.send(brandProductMessage);
+                    productMessage.attachments(productMessageAttachments);
+                    session.send(productMessage);
                     if (productResponse.nbHits > 8) {
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by size");
                     }
-                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, undefined, "Brands");
+                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                     session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                     session.endDialog();
                 }, reason => {
@@ -75,4 +76,4 @@ class BrandProductsDialog extends BaseDialog {
     }
 }
 
-export default BrandProductsDialog;
+export default UnknownInput;

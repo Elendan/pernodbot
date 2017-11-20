@@ -4,9 +4,9 @@ import CategoryController from "../controllers/CategoryController";
 
 class CategoriesDialog extends BaseDialog {
 
-    private static readonly _pageLength = 5;
-    private static readonly _categoriesIntentName = "categories";
-    private static readonly _loadCategoriesIntentName = "load.categories";
+    private static readonly _pageLength: number = 5;
+    private static readonly _categoriesIntentName: string = "categories";
+    private static readonly _loadCategoriesIntentName: string = "load.categories";
 
     constructor() {
         super();

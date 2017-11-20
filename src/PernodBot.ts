@@ -12,6 +12,7 @@ import DescriptionDialog from "./dialogs/DescriptionDialog";
 import AvailableSizesDialog from "./dialogs/AvailableSizesDialog";
 import ProductsPerSizeDialog from "./dialogs/ProductsPerSizeDialog";
 import BuyProductDialog from "./dialogs/BuyProductDialog";
+import UnknownInput from "./dialogs/UnknownInput";
 
 class PernodBot {
 
@@ -180,6 +181,23 @@ class PernodBot {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if (context.intent) {
                     if (/^buy product/.test(context.intent.intent)) {
+                        callback(null, context.intent.score, {
+                            intent: context.intent
+                        });
+                    }
+                    else {
+                        callback(null, 0);
+                    }
+                }
+                else {
+                    callback(null, 0);
+                }
+            }
+        });
+        new UnknownInput().register(this.bot, "unknownInput", {
+            onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
+                if (context.intent) {
+                    if (/^undefined|^search.more.products|^Default Fallback Intent/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });

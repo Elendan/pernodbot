@@ -111,6 +111,45 @@ class ProductController {
 
 
     /**
+     *  Get Product from user input
+     * @param userInput
+     * @param pageLength
+     * @param page
+     */
+    public static getProductFromInput(userInput: string, pageLength: number, page: number): Promise<ProductResponse> {
+        return new Promise<any>((resolve, reject) => {
+            if (!userInput) {
+                return ;
+            }
+            userInput = userInput.replace(/ /g, '+');
+            https.get({
+                host: process.env.PERNOD_API_HOST,
+                path: `${process.env.PERNOD_API_PATH}/product?q=${userInput}&retailerId=en_US-walmart&pageLength=${pageLength}&start=${page}`,
+                headers: {
+                    "Content-Type": "application/json",
+                    "api_key": process.env.PERNOD_API_KEY
+                }
+            }, response => {
+                let body = "";
+                response.on("data", data => {
+                    body += data;
+                });
+                response.on("end", () => {
+                    if (body) {
+                        resolve(JSON.parse(body));
+                    }
+                    else {
+                        resolve(null);
+                    }
+                });
+                response.on("error", error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+
+    /**
      * Get product informations
      * @param product 
      * @param session 

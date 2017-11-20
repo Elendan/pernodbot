@@ -4,9 +4,9 @@ import BrandController from "../controllers/BrandController";
 
 class BrandsDialog extends BaseDialog {
 
-    private static readonly _pageLength = 5;
-    private static readonly _brandsIntentName = "brands";
-    private static readonly _loadBrandsIntentName = "load.brands";
+    private static readonly _pageLength: number = 5;
+    private static readonly _brandsIntentName: string = "brands";
+    private static readonly _loadBrandsIntentName: string = "load.brands";
 
     constructor() {
         super();

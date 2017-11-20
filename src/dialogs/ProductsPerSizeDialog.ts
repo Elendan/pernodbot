@@ -6,9 +6,7 @@ import ProductType from "../enums/ProductType";
 
 class ProductsPerSizeDialog extends BaseDialog {
 
-    private static readonly _pageLength = 1000;
-    private static readonly _displayedProducts = 0;
-    private static readonly _productsPerCarousel = 5;
+    private static readonly _pageLength: number = 1000;
 
     constructor() {
         super();
