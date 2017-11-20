@@ -102,6 +102,45 @@ class ProductsPerSizeDialog extends BaseDialog {
                             session.endDialog();
                         });
                         break;
+                    case ProductType.Classic:
+                        ProductController.getProductFromInput(session.userData.idToRetrieve, ProductsPerSizeDialog._pageLength, 0).then(productResponse => {
+                            productResponse.hits.forEach(product => {
+                                if (product.size !== null && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {
+                                    productList.push(product)
+                                }
+                            });
+                        }, reason => {
+                            session.send(reason);
+                            session.endDialog();
+                        }).then(() => {
+                            while (session.userData.sizeProductPage < session.userData.displayedProductsOfSize && session.userData.sizeProductPage < productList.length) {
+                                productMessageAttachments.push(ProductController.buildProductCard(productList[session.userData.sizeProductPage], session));
+                                session.userData.sizeProductPage++;
+                            }
+                            if (session.userData.sizeProductPage < productList.length) {
+                                productMessageAttachments.push(
+                                    new builder.HeroCard(session)
+                                        .title("Load more")
+                                        .images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/load-more.png")])
+                                        .buttons([
+                                            {
+                                                type: "postBack",
+                                                title: "Load more",
+                                                value: parameters.entity.number
+                                            }
+                                        ])
+                                );
+                                session.userData.displayedProductsOfSize += 5;
+                            }
+                            else {
+                                session.userData.sizeProductPage = 0;
+                                session.userData.displayedProductsOfSize = 5;
+                            }
+                            productMessage.attachments(productMessageAttachments);
+                            session.send(productMessage);
+                            session.endDialog();
+                        });
+                        break;
                     default:
                         session.send("Invalid argument");
                         session.endDialog();

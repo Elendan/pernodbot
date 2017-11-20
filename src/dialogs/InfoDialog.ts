@@ -8,9 +8,7 @@ class InfoDialog extends BaseDialog {
         this.dialog = [
             (session, args, next) => {
                 let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
-                console.log(JSON.stringify(parameters));
                 ProductController.getProductById(parameters.entity.product).then(product => {
-                    console.log(product);
                     if (parameters.entity.product !== undefined && parameters.entity.product !== null && parameters.entity.product.length > 0) {
                         session.userData.informations = ProductController.getInformations(product, session);
                     }

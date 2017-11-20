@@ -17,7 +17,6 @@ class UnknownInput extends BaseDialog {
             (session, args, next) => {
                 session.userData.availableSizes = [];
                 session.userData.productType = ProductType.Classic;
-                console.log(session.message.text);
                 if ((session.userData.productPage == null) || (args.intent.intent === UnknownInput._undefinedIntentName) || (args.intent.intent === UnknownInput._defaultFallbackIntent)) {
                     session.userData.productPage = 0;
                 }
@@ -25,7 +24,6 @@ class UnknownInput extends BaseDialog {
                     session.userData.productPage++;
                 }
                 session.userData.idToRetrieve = session.message.text.replace(/Search more products /, '');
-                console.log("Id to retrieve: " + session.userData.idToRetrieve)
                 ProductController.getProductFromInput(session.userData.idToRetrieve, 1000, 0).then(productResponse => {
                     productResponse.hits.forEach(p => {
                         if (p.size !== null) {
