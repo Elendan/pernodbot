@@ -21,8 +21,9 @@ class ProductsPerSizeDialog extends BaseDialog {
                 let quickRepliesButtons: builder.ICardAction[] = [];
                 productMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                 let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
-                if (session.userData.sizeProductPage === null || session.userData.sizeProductPage === 0) {
+                if (session.userData.sizeProductPage === null || session.userData.sizeProductPage === 0 || (session.userData.oldSize !== <string>parameters.entity.number && session.userData.oldSize !== <string>parameters.entity.number + "0")) {
                     session.userData.displayedProductsOfSize = 5;
+                    session.userData.oldSize = parameters.entity.number;
                 }
                 switch (session.userData.productType) {
                     case ProductType.Brand:
@@ -102,8 +103,6 @@ class ProductsPerSizeDialog extends BaseDialog {
                             session.send(productMessage);
                             session.endDialog();
                         });
-                        break;
-                    case ProductType.Classic:
                         break;
                     default:
                         session.send("Invalid argument");

@@ -12,6 +12,7 @@ class AvailableSizesDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
+                session.userData.sizeProductPage = 0;
                 session.userData.rest = session.userData.availableSizes.length % AvailableSizesDialog._repliesPerCard;
                 if (args.intent.intent === AvailableSizesDialog._filterBySizeIntentName) {
                     session.userData.repliesAlreadyDisplayed = 0;
