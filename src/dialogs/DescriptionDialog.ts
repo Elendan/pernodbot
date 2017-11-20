@@ -23,18 +23,23 @@ class DescriptionDialog extends BaseDialog {
                     productMessage.text(product.description === null || product.description === undefined ? "" : product.description);
                     session.userData.informations = ProductController.getInformations(product, session);
                     if (session.userData.informations !== null && session.userData.informations.length > 0) {
-                        for (let i = 0; i < session.userData.informations.length; i++) {
+                        quickRepliesButtons.push({
+                            type: "postBack",
+                            title: "Buy this product 🛒",
+                            value: "Buy this product"
+                        });
+                        if (session.userData.informations.length > 0) {
                             quickRepliesButtons.push({
                                 type: "postBack",
-                                title: session.userData.informations[i],
-                                value: session.userData.informations[i]
-                            });
+                                title: "More Details",
+                                value: "More Details"
+                            })
                         }
                     }
                     quickRepliesButtons.push({
                         type: "postBack",
-                        title: "Back to filters 🔙",
-                        value: "Back to filters 🔙"
+                        title: "Back to Filters 🔙",
+                        value: "Back to Filters 🔙"
                     });
                     quickRepliesCard.buttons(quickRepliesButtons);
                     productMessageAttachments.push(quickRepliesCard);

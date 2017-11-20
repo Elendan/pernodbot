@@ -108,7 +108,7 @@ class PernodBot {
         new InfoDialog().register(this.bot, "InfoDialog", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if (context.intent) {
-                    if (/^get.infos/.test(context.intent.intent)) {
+                    if (/^get.infos|^product.detail.payload/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });

@@ -5,10 +5,14 @@ class MessagesController {
     /** 
      * @param session 
      * @param card 
+     * @param msg
      */
-    public static sendQuickReplies(session: builder.Session, card: builder.HeroCard): builder.Message {
+    public static sendQuickReplies(session: builder.Session, card: builder.HeroCard, msg?: string): builder.Message {
         let newMessage = new builder.Message(session);
         let newMessageAttachment: builder.AttachmentType[] = [];
+        if (msg) {
+            newMessage.text(msg);
+        }
         newMessageAttachment.push(card);
         newMessage.attachments(newMessageAttachment);
         return newMessage;

@@ -1,11 +1,14 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
+import MessagesController from "./../controllers/MessagesController";
 
 class ProductInfoDialog extends BaseDialog {
     constructor() {
         super();
         this.dialog = [
             (session, args, next) => {
+                let quickRepliesCard = new builder.HeroCard(session);
+                let quickRepliesButtons: builder.ICardAction[] = [];
                 switch (args.intent.matched[0]) {
                     case "Size":
                         if (session.userData.productSize === null || session.userData.productSize === undefined) {
@@ -35,6 +38,10 @@ class ProductInfoDialog extends BaseDialog {
                         session.send("Not found");
                         break;
                 }
+                quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Buy this product 🛒");
+                quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "More Details");
+                quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
+                session.send(MessagesController.sendQuickReplies(session, quickRepliesCard, "What do you want to do ?"));
                 session.endDialog();
             }
         ]
