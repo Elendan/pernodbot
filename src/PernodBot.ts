@@ -13,6 +13,7 @@ import AvailableSizesDialog from "./dialogs/AvailableSizesDialog";
 import ProductsPerSizeDialog from "./dialogs/ProductsPerSizeDialog";
 import BuyProductDialog from "./dialogs/BuyProductDialog";
 import UnknownInput from "./dialogs/UnknownInput";
+import GreetingsDialog from "./dialogs/GreetingsDialog";
 
 class PernodBot {
 
@@ -38,6 +39,23 @@ class PernodBot {
         this.bot.recognizer(new DialogflowRecognizer(process.env.DIALOGFLOW_TOKEN));
 
         // Dialogs
+        new GreetingsDialog().register(this.bot, "start", {
+            onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
+                if (context.intent) {
+                    if (/^start.dialog/.test(context.intent.intent)) {
+                        callback(null, context.intent.score, {
+                            intent: context.intent
+                        });
+                    }
+                    else {
+                        callback(null, 0);
+                    }
+                }
+                else {
+                    callback(null, 0);
+                }
+            }
+        });
         new BrandsDialog().register(this.bot, "Brands", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if (context.intent) {
