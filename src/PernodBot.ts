@@ -5,7 +5,7 @@ import DialogflowDialog from "./dialogs/DialogflowDialog";
 import BrandsDialog from "./dialogs/BrandsDialog";
 import BrandProductDialog from "./dialogs/BrandProductsDialog";
 import CategoriesDialog from "./dialogs/CategoriesDialog";
-import CategoryProductDialog from "./dialogs/CatgoryProductsDialog";
+import CategoryProductDialog from "./dialogs/CategoryProductsDialog";
 import InfoDialog from "./dialogs/InfoDialog";
 import ProductInfoDialog from "./dialogs/ProductInfoDialog";
 import DescriptionDialog from "./dialogs/DescriptionDialog";
