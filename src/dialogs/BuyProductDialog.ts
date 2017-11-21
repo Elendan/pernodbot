@@ -9,8 +9,13 @@ class BuyProductDialog extends BaseDialog {
         this.dialog = [
             (session, args, next) => {
                 let carousel = new builder.Message(session);
+                let quickRepliesCard = new builder.HeroCard(session);
+                let quickRepliesButtons: builder.ICardAction[] =  [];
+                quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Back to Brands 🔙", "Brands");
+                quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                 carousel = MessagesController.BuyProductCarousel(session);
                 session.send(carousel);
+                session.send(MessagesController.sendQuickReplies(session, quickRepliesCard, "What do you want to do ?"));
                 session.endDialog();
             }
         ]
