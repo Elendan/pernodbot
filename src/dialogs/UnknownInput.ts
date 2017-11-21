@@ -57,6 +57,14 @@ class UnknownInput extends BaseDialog {
                     else {
                         session.userData.productPage = 0;
                     }
+                    if (productResponse.nbHits === 0) {
+                        session.send("Sorry, we could not find this product.");
+                        quickRepliesCard.text("What do you want to do ?")
+                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Back to Menu 🔙", "Filters");
+                        session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+                        session.endDialog();
+                        return;
+                    }
                     productMessage.attachments(productMessageAttachments);
                     session.send(productMessage);
                     if (productResponse.nbHits > 8) {

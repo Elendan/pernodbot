@@ -1,6 +1,7 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import ProductController from "../controllers/ProductController";
+import MessagesController from "../controllers/MessagesController";
 
 class InfoDialog extends BaseDialog {
     constructor() {
@@ -26,12 +27,7 @@ class InfoDialog extends BaseDialog {
                             });
                         }
                     }
-                    quickRepliesButtons.push({
-                        type: "postBack",
-                        title: "Back to filters 🔙",
-                        value: "Back to filters 🔙"
-                    });
-                    quickRepliesCard.buttons(quickRepliesButtons);
+                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                     productMessageAttachments.push(quickRepliesCard);
                     productMessage.attachments(productMessageAttachments);
                     productMessage.text("Want to know more about");

@@ -27,8 +27,8 @@ class MessagesController {
     public static addQuickRepliesButtons(card: builder.HeroCard, buttons: builder.ICardAction[], msg?: string, type?: string): builder.HeroCard {
         buttons.push({
             type: "postBack",
-            title: msg ? msg : `Back to ${type ? type : "Filters"} 🔙`,
-            value: msg ? msg : type ? type : "Filters"
+            title: msg ? msg : `Back to ${type ? type : "Menu"} 🔙`,
+            value: msg && type ? type : msg ? msg : type ? type : "Filters"
         });
         card.buttons(buttons);
         return card;

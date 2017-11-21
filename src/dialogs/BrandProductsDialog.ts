@@ -61,7 +61,7 @@ class BrandProductsDialog extends BaseDialog {
                     brandProductMessage.attachments(brandProductMessageAttachments);
                     session.send(brandProductMessage);
                     if (productResponse.nbHits > 8) {
-                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by size");
+                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by Size");
                     }
                     quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, undefined, "Brands");
                     session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
