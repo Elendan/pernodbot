@@ -18,7 +18,7 @@ class InfoDialog extends BaseDialog {
                     let quickRepliesCard = new builder.HeroCard(session);
                     let quickRepliesButtons: builder.ICardAction[] = [];
                     if (session.userData.informations !== null && session.userData.informations.length > 0) {
-                        for (let i = 0; i < session.userData.informations.length; i++) {
+                        for (let i in session.userData.informations) {
                             quickRepliesButtons.push({
                                 type: "postBack",
                                 title: session.userData.informations[i],
@@ -34,7 +34,7 @@ class InfoDialog extends BaseDialog {
                     quickRepliesCard.buttons(quickRepliesButtons);
                     productMessageAttachments.push(quickRepliesCard);
                     productMessage.attachments(productMessageAttachments);
-                    session.send("Want to know more about:");
+                    productMessage.text("Want to know more about");
                     session.send(productMessage);
                     session.endDialog();
                 }, reason => {

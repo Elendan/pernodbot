@@ -19,22 +19,24 @@ class DescriptionDialog extends BaseDialog {
                             new builder.HeroCard(session)
                                 .images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)])
                         );
+                        productMessage.attachments(productMessageAttachments);
+                        session.send(productMessage);
+                        productMessageAttachments.pop();
                     }
-                    productMessage.text(product.description === null || product.description === undefined ? "" : product.description);
+                    session.send(!product.description ? "No description available for this product." : product.description);
+                    quickRepliesCard.text("What do you want to do ?");
                     session.userData.informations = ProductController.getInformations(product, session);
-                    if (session.userData.informations !== null && session.userData.informations.length > 0) {
+                    if (session.userData.informations && session.userData.informations.length > 0) {
                         quickRepliesButtons.push({
                             type: "postBack",
                             title: "Buy this product 🛒",
                             value: "Buy this product"
                         });
-                        if (session.userData.informations.length > 0) {
-                            quickRepliesButtons.push({
-                                type: "postBack",
-                                title: "More Details",
-                                value: "More Details"
-                            })
-                        }
+                        quickRepliesButtons.push({
+                            type: "postBack",
+                            title: "More Details",
+                            value: "More Details"
+                        });
                     }
                     quickRepliesButtons.push({
                         type: "postBack",

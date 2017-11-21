@@ -52,11 +52,14 @@ class BrandController {
                 title: `Choose ${brand.label}`,
                 value: `research in brands ${brand.id}`
             }]);
-        if (brand.medias.logoPrincipal.urls) {
+        if (!brand.medias.logoPrincipal.urls || (!brand.medias.logoPrincipal.urls.original && !brand.medias.logoPrincipal.urls.bamArticleFull)) {
+            brandCard.images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/logopr.jpg")]);
+        }
+        else if (brand.medias.logoPrincipal.urls.original && (~brand.medias.logoPrincipal.urls.original.indexOf(".png") || ~brand.medias.logoPrincipal.urls.original.indexOf(".jpg"))) {
             brandCard.images([builder.CardImage.create(session, brand.medias.logoPrincipal.urls.original)]);
         }
         else {
-            brandCard.images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/logopr.jpg")]);
+            brandCard.images([builder.CardImage.create(session, brand.medias.logoPrincipal.urls.bamArticleFull)])
         }
         return brandCard;
     }

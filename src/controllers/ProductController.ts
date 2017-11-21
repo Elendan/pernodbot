@@ -119,7 +119,7 @@ class ProductController {
     public static getProductFromInput(userInput: string, pageLength: number, page: number): Promise<ProductResponse> {
         return new Promise<any>((resolve, reject) => {
             if (!userInput) {
-                return ;
+                return;
             }
             userInput = userInput.replace(/ /g, '+');
             https.get({
@@ -198,11 +198,14 @@ class ProductController {
                 title: "Other informations",
                 value: `send informations about ${product.id}`
             }]);
-        if ((product.mediaList.length > 0) && product.mediaList[0].urls) {
-            productCard.images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)]);
+        if ((product.mediaList.length <= 0 || !product.mediaList[0].urls) || (!product.mediaList[0].urls.bamArticleFull && !product.mediaList[0].urls.original)) {
+            productCard.images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/bouteille-manquante.jpg")]);
+        }
+        else if (product.mediaList[0].urls.original && (~product.mediaList[0].urls.original.indexOf(".jpg") || ~product.mediaList[0].urls.original.indexOf(".png"))) {
+            productCard.images([builder.CardImage.create(session, product.mediaList[0].urls.original)]);
         }
         else {
-            productCard.images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/bouteille-manquante.jpg")]);
+            productCard.images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)]);
         }
         return productCard;
     }
