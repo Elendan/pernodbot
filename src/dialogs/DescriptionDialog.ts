@@ -1,6 +1,7 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import ProductController from "../controllers/ProductController";
+import MessagesController from "../controllers/MessagesController";
 
 class DescriptionDialog extends BaseDialog {
     constructor() {
@@ -14,7 +15,7 @@ class DescriptionDialog extends BaseDialog {
                     productMessage.attachmentLayout(builder.AttachmentLayout.list);
                     let quickRepliesCard = new builder.HeroCard(session);
                     let quickRepliesButtons: builder.ICardAction[] = [];
-                    if (product.mediaList.length > 0 && product.mediaList[0].urls) {
+                    if (product.mediaList && product.mediaList[0].urls) {
                         productMessageAttachments.push(
                             new builder.HeroCard(session)
                                 .images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)])
@@ -27,23 +28,10 @@ class DescriptionDialog extends BaseDialog {
                     quickRepliesCard.text("What do you want to do ?");
                     session.userData.informations = ProductController.getInformations(product, session);
                     if (session.userData.informations && session.userData.informations.length > 0) {
-                        quickRepliesButtons.push({
-                            type: "postBack",
-                            title: "Buy this product 🛒",
-                            value: "Buy this product"
-                        });
-                        quickRepliesButtons.push({
-                            type: "postBack",
-                            title: "More Details",
-                            value: "More Details"
-                        });
+                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "More Details", "More Details");
                     }
-                    quickRepliesButtons.push({
-                        type: "postBack",
-                        title: "Back to Filters 🔙",
-                        value: "Back to Filters 🔙"
-                    });
-                    quickRepliesCard.buttons(quickRepliesButtons);
+                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Buy this product 🛒", "Buy this product")
+                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Back to Menu 🔙");
                     productMessageAttachments.push(quickRepliesCard);
                     productMessage.attachments(productMessageAttachments);
                     session.send(productMessage);
