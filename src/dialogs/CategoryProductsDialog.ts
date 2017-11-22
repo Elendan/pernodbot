@@ -26,7 +26,11 @@ class CategoryProductDialog extends BaseDialog {
                 session.userData.idToRetrieve = parameters.entity.category;
                 ProductController.getCategoryProducts(parameters.entity.category, 1000, session.userData.categoryProductPage).then(productResponse => {
                     productResponse.hits.forEach(p => {
-                        if (p.size !== null && p.size.id[p.size.id.length - 1] !== '0') {
+                        if (p.size !== null) {
+                            let toSlice = MessagesController.CheckSize(p.size.id);
+                            if (MessagesController.CheckSize(p.size.id) !== 0) {
+                                p.size.id = p.size.id.slice(0, toSlice);
+                            }
                             session.userData.availableSizes.push(p.size.id);
                         }
                     });
