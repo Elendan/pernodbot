@@ -2,6 +2,7 @@ import * as https from "https";
 import * as builder from "botbuilder";
 import ProductResponse from "../models/ProductResponse";
 import Product from "../models/Product";
+import MessagesController from "../controllers/MessagesController";
 
 class ProductController {
 
@@ -208,6 +209,45 @@ class ProductController {
             productCard.images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)]);
         }
         return productCard;
+    }
+
+    /**
+     * Display product cards
+     * @param session 
+     * @param productList 
+     * @param productMessageAttachments 
+     * @param parameters 
+     * @param productMessage 
+     * @param quickRepliesCard 
+     */
+    public static productsPerSize(session: builder.Session, productList: Product[], productMessageAttachments: builder.AttachmentType[], parameters: builder.IEntity, productMessage: builder.Message, quickRepliesCard: builder.HeroCard) {
+        while (session.userData.sizeProductPage < session.userData.displayedProductsOfSize && session.userData.sizeProductPage < productList.length) {
+            productMessageAttachments.push(ProductController.buildProductCard(productList[session.userData.sizeProductPage], session));
+            session.userData.sizeProductPage++;
+        }
+        if (session.userData.sizeProductPage < productList.length) {
+            productMessageAttachments.push(
+                new builder.HeroCard(session)
+                    .title("Load more")
+                    .images([builder.CardImage.create(session, "http://tools.expertime.digital/bot/load-more.png")])
+                    .buttons([
+                        {
+                            type: "postBack",
+                            title: "Load more",
+                            value: parameters.entity.number
+                        }
+                    ])
+            );
+            session.userData.displayedProductsOfSize += 5;
+        }
+        else {
+            session.userData.sizeProductPage = 0;
+            session.userData.displayedProductsOfSize = 5;
+        }
+        productMessage.attachments(productMessageAttachments);
+        session.send(productMessage);
+        session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+        session.endDialog();
     }
 }
 
