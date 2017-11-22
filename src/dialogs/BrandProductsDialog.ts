@@ -14,6 +14,7 @@ class BrandProductsDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
+                session.send("Understood, let me search that for you ⏳");
                 session.userData.availableSizes = [];
                 session.userData.productType = ProductType.Brand;
                 if ((session.userData.brandProductPage == null) || (args.intent.intent === BrandProductsDialog._brandProductsIntentName)) {

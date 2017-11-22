@@ -15,6 +15,7 @@ class UnknownInput extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
+                session.send("Understood, let me search that for you ⏳");
                 session.userData.availableSizes = [];
                 session.userData.productType = ProductType.Classic;
                 if ((session.userData.productPage == null) || (args.intent.intent === UnknownInput._undefinedIntentName) || (args.intent.intent === UnknownInput._defaultFallbackIntent)) {
