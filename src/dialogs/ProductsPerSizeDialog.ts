@@ -1,8 +1,9 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
-import ProductController from "../controllers/ProductController";
 import Product from "../models/Product";
 import ProductType from "../enums/ProductType";
+import ProductController from "../controllers/ProductController";
+import MessagesController from "../controllers/MessagesController";
 
 class ProductsPerSizeDialog extends BaseDialog {
 
@@ -25,6 +26,7 @@ class ProductsPerSizeDialog extends BaseDialog {
                 }
                 switch (session.userData.productType) {
                     case ProductType.Brand:
+                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, undefined, "Brands");
                         ProductController.getBrandProducts(session.userData.idToRetrieve, ProductsPerSizeDialog._pageLength, 0).then(productResponse => {
                             productResponse.hits.forEach(product => {
                                 if (product.size !== null && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {
@@ -60,10 +62,12 @@ class ProductsPerSizeDialog extends BaseDialog {
                             }
                             productMessage.attachments(productMessageAttachments);
                             session.send(productMessage);
+                            session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                             session.endDialog();
                         });
                         break;
                     case ProductType.Category:
+                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, undefined, "Categories");
                         ProductController.getCategoryProducts(session.userData.idToRetrieve, ProductsPerSizeDialog._pageLength, 0).then(productResponse => {
                             productResponse.hits.forEach(product => {
                                 if (product.size !== null && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {
@@ -99,10 +103,12 @@ class ProductsPerSizeDialog extends BaseDialog {
                             }
                             productMessage.attachments(productMessageAttachments);
                             session.send(productMessage);
+                            session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                             session.endDialog();
                         });
                         break;
                     case ProductType.Classic:
+                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                         ProductController.getProductFromInput(session.userData.idToRetrieve, ProductsPerSizeDialog._pageLength, 0).then(productResponse => {
                             productResponse.hits.forEach(product => {
                                 if (product.size !== null && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {
@@ -138,6 +144,7 @@ class ProductsPerSizeDialog extends BaseDialog {
                             }
                             productMessage.attachments(productMessageAttachments);
                             session.send(productMessage);
+                            session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                             session.endDialog();
                         });
                         break;
