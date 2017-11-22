@@ -3,6 +3,7 @@ import * as builder from "botbuilder";
 
 class MessagesController {
     /** 
+     * returns the message to be sent
      * @param session 
      * @param card 
      * @param msg
@@ -19,6 +20,7 @@ class MessagesController {
     }
 
     /**
+     * Adds buttons to a quick reply herocard
      * @param card 
      * @param buttons 
      * @param msg 
@@ -35,6 +37,7 @@ class MessagesController {
     }
 
     /**
+     * Sends shop carousel
      * @param session 
      */
     public static BuyProductCarousel(session: builder.Session): builder.Message {

@@ -17,7 +17,7 @@ class BrandProductsDialog extends BaseDialog {
                 session.send("Understood, let me search that for you ⏳");
                 session.userData.availableSizes = [];
                 session.userData.productType = ProductType.Brand;
-                if ((session.userData.brandProductPage == null) || (args.intent.intent === BrandProductsDialog._brandProductsIntentName)) {
+                if (!session.userData.brandProductPage || (args.intent.intent === BrandProductsDialog._brandProductsIntentName)) {
                     session.userData.brandProductPage = 0;
                 }
                 else if (args.intent.intent === BrandProductsDialog._loadBrandProductsIntentName) {
@@ -27,8 +27,8 @@ class BrandProductsDialog extends BaseDialog {
                 session.userData.idToRetrieve = parameters.entity.brands;
                 ProductController.getBrandProducts(parameters.entity.brands, 1000, session.userData.brandProductPage).then(productResponse => {
                     productResponse.hits.forEach(p => {
-                        if (p.size !== null) {
-                            session.userData.availableSizes.push(String(parseFloat(p.size.id)));
+                        if (p.size) {
+                            session.userData.availableSizes.push(`${parseFloat(p.size.id)}`);
                         }
                     });
                     session.userData.availableSizes = new Set(session.userData.availableSizes);
@@ -64,7 +64,7 @@ class BrandProductsDialog extends BaseDialog {
                     if (productResponse.nbHits > 8) {
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by Size");
                     }
-                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, undefined, "Brands");
+                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, null, "Brands");
                     session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                     session.endDialog();
                 }, reason => {

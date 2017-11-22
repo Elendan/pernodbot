@@ -11,26 +11,30 @@ class ProductInfoDialog extends BaseDialog {
                 let quickRepliesButtons: builder.ICardAction[] = [];
                 switch (args.intent.matched[0]) {
                     case "Size":
-                        if (session.userData.productSize === null || session.userData.productSize === undefined) {
+                        if (!session.userData.productSize) {
                             session.send("None");
+                            break;
                         }
                         session.send(`The bottle's size is ${session.userData.productSize}`);
                         break;
                     case "Ingredients":
-                        if (session.userData.productIngredients === null || session.userData.productIngredients === undefined) {
+                        if (!session.userData.productIngredients) {
                             session.send("None");
+                            break;
                         }
                         session.send(session.userData.productIngredients);
                         break;
                     case "Consumption Tips":
-                        if (session.userData.consumptionTips === null || session.userData.consumptionTips === undefined) {
+                        if (!session.userData.consumptionTips) {
                             session.send("None");
+                            break;
                         }
                         session.send(session.userData.consumptionTips);
                         break;
                     case "Product History":
-                        if (session.userData.productHistory === null || session.userData.productHistory === undefined) {
+                        if (!session.userData.productHistory) {
                             session.send("None");
+                            break;
                         }
                         session.send(session.userData.productHistory);
                         break;

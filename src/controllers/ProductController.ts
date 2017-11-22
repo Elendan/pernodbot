@@ -157,19 +157,19 @@ class ProductController {
      */
     public static getInformations(product: Product, session: builder.Session): string[] {
         let informations = [];
-        if (product.size !== null && product.size !== undefined) {
+        if (product.size) {
             informations.push("Size");
             session.userData.productSize = product.size.label;
         }
-        if (product.ingredientList !== null && product.ingredientList !== undefined) {
+        if (product.ingredientList) {
             informations.push("Ingredients");
             session.userData.productIngredients = product.ingredientList;
         }
-        if (product.consumptionTips !== null && product.consumptionTips !== undefined) {
+        if (product.consumptionTips) {
             informations.push("Consumption Tips");
             session.userData.consumptionTips = product.consumptionTips;
         }
-        if (product.productHistory !== null && product.productHistory !== undefined) {
+        if (product.productHistory) {
             informations.push("Product History");
             session.userData.productHistory = product.productHistory;
         }

@@ -20,16 +20,16 @@ class ProductsPerSizeDialog extends BaseDialog {
                 let quickRepliesButtons: builder.ICardAction[] = [];
                 productMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                 let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
-                if (session.userData.sizeProductPage === null || session.userData.sizeProductPage === 0 || (session.userData.oldSize !== <string>parameters.entity.number && session.userData.oldSize !== <string>parameters.entity.number + "0")) {
+                if (!session.userData.sizeProductPage || session.userData.sizeProductPage === 0 || (session.userData.oldSize !== <string>parameters.entity.number && session.userData.oldSize !== <string>parameters.entity.number + "0")) {
                     session.userData.displayedProductsOfSize = 5;
                     session.userData.oldSize = parameters.entity.number;
                 }
                 switch (session.userData.productType) {
                     case ProductType.Brand:
-                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, undefined, "Brands");
+                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, null, "Brands");
                         ProductController.getBrandProducts(session.userData.idToRetrieve, ProductsPerSizeDialog._pageLength, 0).then(productResponse => {
                             productResponse.hits.forEach(product => {
-                                if (product.size !== null && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {
+                                if (product.size && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {
                                     productList.push(product)
                                 }
                             });
@@ -41,10 +41,10 @@ class ProductsPerSizeDialog extends BaseDialog {
                         });
                         break;
                     case ProductType.Category:
-                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, undefined, "Categories");
+                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, null, "Categories");
                         ProductController.getCategoryProducts(session.userData.idToRetrieve, ProductsPerSizeDialog._pageLength, 0).then(productResponse => {
                             productResponse.hits.forEach(product => {
-                                if (product.size !== null && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {
+                                if (product.size && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {
                                     productList.push(product)
                                 }
                             });
@@ -59,7 +59,7 @@ class ProductsPerSizeDialog extends BaseDialog {
                     quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                         ProductController.getProductFromInput(session.userData.idToRetrieve, ProductsPerSizeDialog._pageLength, 0).then(productResponse => {
                             productResponse.hits.forEach(product => {
-                                if (product.size !== null && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {
+                                if (product.size && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {
                                     productList.push(product)
                                 }
                             });

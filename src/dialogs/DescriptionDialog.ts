@@ -27,7 +27,7 @@ class DescriptionDialog extends BaseDialog {
                     session.send(!product.description ? "No description available for this product." : product.description);
                     quickRepliesCard.text("What do you want to do ?");
                     session.userData.informations = ProductController.getInformations(product, session);
-                    if (session.userData.informations && session.userData.informations.length > 0) {
+                    if (session.userData.informations && session.userData.informations.length) {
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "More Details", "More Details");
                     }
                     quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Buy this product 🛒", "Buy this product")

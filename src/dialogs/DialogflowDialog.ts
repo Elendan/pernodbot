@@ -9,11 +9,11 @@ class DialogflowDialog extends BaseDialog {
         this.dialog = [
             (session, args, next) => {
                 let fulfillment = builder.EntityRecognizer.findEntity(args.intent.entities, "fulfillment");
-                if (fulfillment && (fulfillment.entity.messages.length > 0)) {
+                if (fulfillment && (fulfillment.entity.messages.length)) {
                     let messages = fulfillment.entity.messages.filter(message => {
                         return message.platform === "facebook";
                     });
-                    if (messages.length === 0) {
+                    if (!messages.length) {
                         messages = fulfillment.entity.messages;
                     }
                     let responseMessage = new builder.Message(session);
@@ -74,7 +74,7 @@ class DialogflowDialog extends BaseDialog {
                                 break;
                         }
                     });
-                    if (responseMessageAttachments.length > 0) {
+                    if (responseMessageAttachments.length) {
                         session.send(responseMessage);
                     }
                 }

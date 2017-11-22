@@ -27,8 +27,8 @@ class UnknownInput extends BaseDialog {
                 session.userData.idToRetrieve = session.message.text.replace(/Search more products /, '');
                 ProductController.getProductFromInput(session.userData.idToRetrieve, 1000, 0).then(productResponse => {
                     productResponse.hits.forEach(p => {
-                        if (p.size !== null) {
-                            session.userData.availableSizes.push(String(parseFloat(p.size.id)));
+                        if (p.size) {
+                            session.userData.availableSizes.push(`${parseFloat(p.size.id)}`);
                         }
                     });
                     session.userData.availableSizes = new Set(session.userData.availableSizes);

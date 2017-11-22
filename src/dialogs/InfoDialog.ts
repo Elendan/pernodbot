@@ -10,7 +10,7 @@ class InfoDialog extends BaseDialog {
             (session, args, next) => {
                 let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
                 ProductController.getProductById(parameters.entity.product).then(product => {
-                    if (parameters.entity.product !== undefined && parameters.entity.product !== null && parameters.entity.product.length > 0) {
+                    if (parameters.entity.product && parameters.entity.product.length) {
                         session.userData.informations = ProductController.getInformations(product, session);
                     }
                     let productMessage = new builder.Message(session);
@@ -18,7 +18,7 @@ class InfoDialog extends BaseDialog {
                     productMessage.attachmentLayout(builder.AttachmentLayout.list);
                     let quickRepliesCard = new builder.HeroCard(session);
                     let quickRepliesButtons: builder.ICardAction[] = [];
-                    if (session.userData.informations !== null && session.userData.informations.length > 0) {
+                    if (session.userData.informations && session.userData.informations.length) {
                         for (let i in session.userData.informations) {
                             quickRepliesButtons.push({
                                 type: "postBack",
