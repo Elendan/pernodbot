@@ -1,6 +1,7 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import CategoryController from "../controllers/CategoryController";
+import MessagesController from "../controllers/MessagesController";
 
 class CategoriesDialog extends BaseDialog {
 
@@ -12,6 +13,9 @@ class CategoriesDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
+                let quickRepliesCard = new builder.HeroCard(session);
+                let quickRepliesButtons: builder.ICardAction[] = [];
+                quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                 if ((session.userData.categoryPage == null) || args.intent.intent === CategoriesDialog._categoriesIntentName) {
                     session.userData.categoryPage = 0;
                 }
@@ -47,6 +51,7 @@ class CategoriesDialog extends BaseDialog {
                     }
                     categoriesMessage.attachments(categoriesMessageAttachments);
                     session.send(categoriesMessage);
+                    session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                     session.endDialog();
                 }, reason => {
                     session.send(reason);

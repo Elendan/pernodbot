@@ -1,6 +1,7 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import BrandController from "../controllers/BrandController";
+import MessagesController from "../controllers/MessagesController";
 
 class BrandsDialog extends BaseDialog {
 
@@ -12,6 +13,9 @@ class BrandsDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
+                let quickRepliesCard = new builder.HeroCard(session);
+                let quickRepliesButtons: builder.ICardAction[] = [];
+                quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                 if ((session.userData.brandPage == null) || (args.intent.intent === BrandsDialog._brandsIntentName)) {
                     session.userData.brandPage = 0;
                 }
@@ -46,6 +50,7 @@ class BrandsDialog extends BaseDialog {
                     }
                     brandsMessage.attachments(brandsMessageAttachments);
                     session.send(brandsMessage);
+                    session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                     session.endDialog();
                 }, reason => {
                     session.send(reason);
