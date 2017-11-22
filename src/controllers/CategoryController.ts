@@ -19,7 +19,7 @@ class CategoryController {
 
     /**
      * Get Categories
-     * @param pageLength 
+     * @param pageLength
      * @param page
      */
     public static getCategories(pageLength: number, page: number): Promise<CategoriesResponse> {

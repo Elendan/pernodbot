@@ -59,7 +59,7 @@ class CategoryProductDialog extends BaseDialog {
                         session.userData.categoryProductPage = 0;
                     }
                     categoryProductMessage.attachments(categoryProductMessageAttachments);
-                    session.send(categoryProductMessage);
+                    session.send(categoryProductMessageAttachments.length ? categoryProductMessage : "Sorry, this category does not contain any products yet.");
                     if (productResponse.nbHits > 8) {
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by size");
                     }

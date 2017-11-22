@@ -59,7 +59,7 @@ class BrandProductsDialog extends BaseDialog {
                         session.userData.brandProductPage = 0;
                     }
                     brandProductMessage.attachments(brandProductMessageAttachments);
-                    session.send(brandProductMessage);
+                    session.send(brandProductMessageAttachments.length ? brandProductMessage : "Sorry, we don't have any products of this brand yet");
                     if (productResponse.nbHits > 8) {
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by Size");
                     }
