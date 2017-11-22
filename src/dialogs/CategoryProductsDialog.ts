@@ -28,11 +28,7 @@ class CategoryProductDialog extends BaseDialog {
                 ProductController.getCategoryProducts(parameters.entity.category, 1000, session.userData.categoryProductPage).then(productResponse => {
                     productResponse.hits.forEach(p => {
                         if (p.size !== null) {
-                            let toSlice = MessagesController.CheckSize(p.size.id);
-                            if (MessagesController.CheckSize(p.size.id) !== 0) {
-                                p.size.id = p.size.id.slice(0, toSlice);
-                            }
-                            session.userData.availableSizes.push(p.size.id);
+                            session.userData.availableSizes.push(parseFloat(p.size.id));
                         }
                     });
                     session.userData.availableSizes = new Set(session.userData.availableSizes);

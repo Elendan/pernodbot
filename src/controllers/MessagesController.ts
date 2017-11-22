@@ -72,18 +72,6 @@ class MessagesController {
         card.attachments(cardAttachments);
         return card;
     }
-
-    /**
-     * @param size 
-     */
-    public static CheckSize(size: string): number {
-        for (let i = size.length - 1; i > 0; i--) {
-            if (size[i] !== '0') {
-                return i + 1;
-            }
-        }
-        return 0;
-    }
 }
 
 export default MessagesController;
