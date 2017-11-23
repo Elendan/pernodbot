@@ -9,6 +9,7 @@ class BrandProductsDialog extends BaseDialog {
     private static readonly _pageLength: number = 5;
     private static readonly _brandProductsIntentName: string = "research in brands";
     private static readonly _loadBrandProductsIntentName: string = "Search more brands";
+    private static _isFirstRound: boolean;
 
     constructor() {
         super();
@@ -19,18 +20,22 @@ class BrandProductsDialog extends BaseDialog {
                 if (session.userData.brandProductPage == null || (args.intent.intent === BrandProductsDialog._brandProductsIntentName)) {
                     session.userData.availableSizes = [];
                     session.userData.brandProductPage = 0;
+                    BrandProductsDialog._isFirstRound = true;
                 }
                 else if (args.intent.intent === BrandProductsDialog._loadBrandProductsIntentName) {
                     session.userData.brandProductPage++;
+                    BrandProductsDialog._isFirstRound = false;
                 }
                 let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
                 session.userData.idToRetrieve = parameters.entity.brands;
-                ProductController.getBrandProducts(parameters.entity.brands, 1000, session.userData.brandProductPage).then(productResponse => {
-                    productResponse.hits.forEach(p => {
-                        if (p.size) {
-                            session.userData.availableSizes.push(`${parseFloat(p.size.id)}`);
-                        }
-                    });
+                ProductController.getBrandProducts(parameters.entity.brands, 1000, session.userData.brandProductPage, BrandProductsDialog._isFirstRound).then(productResponse => {
+                    if (productResponse !== null) {
+                        productResponse.hits.forEach(p => {
+                            if (p.size) {
+                                session.userData.availableSizes.push(`${parseFloat(p.size.id)}`);
+                            }
+                        });
+                    }
                     session.userData.availableSizes = new Set(session.userData.availableSizes);
                     session.userData.availableSizes = Array.from(session.userData.availableSizes);
                     session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });

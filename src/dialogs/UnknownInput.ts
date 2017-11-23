@@ -10,6 +10,7 @@ class UnknownInput extends BaseDialog {
     private static readonly _defaultFallbackIntent: string = "Default Fallback Intent";
     private static readonly _undefinedIntentName: string = "undefined";
     private static readonly _pageLength: number = 5;
+    public static _isFirstRound: boolean;
 
     constructor() {
         super();
@@ -20,17 +21,21 @@ class UnknownInput extends BaseDialog {
                 if ((session.userData.productPage == null) || (args.intent.intent === UnknownInput._undefinedIntentName) || (args.intent.intent === UnknownInput._defaultFallbackIntent)) {
                     session.userData.productPage = 0;
                     session.userData.availableSizes = [];
+                    UnknownInput._isFirstRound = true;
                 }
                 else if (args.intent.intent === UnknownInput._searchMoreProductIntentName) {
                     session.userData.productPage++;
+                    UnknownInput._isFirstRound = false;
                 }
                 session.userData.idToRetrieve = session.message.text.replace(/Search more products /, '');
-                ProductController.getProductFromInput(session.userData.idToRetrieve, 1000, 0).then(productResponse => {
-                    productResponse.hits.forEach(p => {
-                        if (p.size) {
-                            session.userData.availableSizes.push(`${parseFloat(p.size.id)}`);
-                        }
-                    });
+                ProductController.getProductFromInput(session.userData.idToRetrieve, 1000, 0, UnknownInput._isFirstRound).then(productResponse => {
+                    if (productResponse !== null) {
+                        productResponse.hits.forEach(p => {
+                            if (p.size) {
+                                session.userData.availableSizes.push(`${parseFloat(p.size.id)}`);
+                            }
+                        });
+                    }
                     session.userData.availableSizes = new Set(session.userData.availableSizes);
                     session.userData.availableSizes = Array.from(session.userData.availableSizes);
                     session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });

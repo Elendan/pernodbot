@@ -12,8 +12,11 @@ class ProductController {
      * @param pageLength 
      * @param page
      */
-    public static getBrandProducts(brandId: string, pageLength: number, page: number): Promise<ProductResponse> {
+    public static getBrandProducts(brandId: string, pageLength: number, page: number, round?: boolean): Promise<ProductResponse> {
         return new Promise<any>((resolve, reject) => {
+            if (round === false) {
+                resolve(null);
+            }
             https.get({
                 host: process.env.PERNOD_API_HOST,
                 path: `${process.env.PERNOD_API_PATH}/product?brandId=${brandId}&retailerId=en_US-walmart&pageLength=${pageLength}&start=${page}`,
@@ -47,8 +50,11 @@ class ProductController {
      * @param pageLength 
      * @param page
      */
-    public static getCategoryProducts(categoryId: string, pageLength: number, page: number): Promise<ProductResponse> {
+    public static getCategoryProducts(categoryId: string, pageLength: number, page: number, round?: boolean): Promise<ProductResponse> {
         return new Promise<any>((resolve, reject) => {
+            if (round === false) {
+                resolve(null);
+            }
             https.get({
                 host: process.env.PERNOD_API_HOST,
                 path: `${process.env.PERNOD_API_PATH}/product?categoryId=${categoryId}&retailerId=en_US-walmart&pageLength=${pageLength}&start=${page}`,
@@ -117,10 +123,10 @@ class ProductController {
      * @param pageLength
      * @param page
      */
-    public static getProductFromInput(userInput: string, pageLength: number, page: number): Promise<ProductResponse> {
+    public static getProductFromInput(userInput: string, pageLength: number, page: number, round?: boolean): Promise<ProductResponse> {
         return new Promise<any>((resolve, reject) => {
-            if (!userInput) {
-                return;
+            if (round === false) {
+                resolve(null);
             }
             userInput = userInput.replace(/ /g, '+');
             https.get({
