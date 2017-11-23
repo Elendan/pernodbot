@@ -10,6 +10,7 @@ class UnknownInput extends BaseDialog {
     private static readonly _defaultFallbackIntent: string = "Default Fallback Intent";
     private static readonly _undefinedIntentName: string = "undefined";
     private static readonly _pageLength: number = 5;
+    private static readonly _maxPageLength: number = 1000;
     public static _isFirstRound: boolean;
 
     constructor() {
@@ -28,7 +29,7 @@ class UnknownInput extends BaseDialog {
                     UnknownInput._isFirstRound = false;
                 }
                 session.userData.idToRetrieve = session.message.text.replace(/Search more products /, '');
-                ProductController.getProductFromInput(session.userData.idToRetrieve, 1000, 0, UnknownInput._isFirstRound).then(productResponse => {
+                ProductController.getProductFromInput(session.userData.idToRetrieve, UnknownInput._maxPageLength, 0, UnknownInput._isFirstRound).then(productResponse => {
                     if (productResponse !== null) {
                         productResponse.hits.forEach(p => {
                             if (p.size) {

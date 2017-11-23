@@ -7,6 +7,7 @@ import ProductType from "../enums/ProductType";
 class CategoryProductDialog extends BaseDialog {
 
     private static readonly _pageLength: number = 5;
+    private static readonly _maxPageLength: number = 1000;
     private static readonly _categoryProductIntentName: string = "research in category";
     private static readonly _loadCategoryProductsIntentName: string = "search more categories";
     private static _isFirstRound: boolean;
@@ -28,7 +29,7 @@ class CategoryProductDialog extends BaseDialog {
                 }
                 let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
                 session.userData.idToRetrieve = parameters.entity.category;
-                ProductController.getCategoryProducts(parameters.entity.category, 1000, session.userData.categoryProductPage, CategoryProductDialog._isFirstRound).then(productResponse => {
+                ProductController.getCategoryProducts(parameters.entity.category, CategoryProductDialog._maxPageLength, session.userData.categoryProductPage, CategoryProductDialog._isFirstRound).then(productResponse => {
                     if (productResponse !== null) {
                         productResponse.hits.forEach(p => {
                             if (p.size) {
