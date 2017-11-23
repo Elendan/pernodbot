@@ -15,7 +15,7 @@ class DescriptionDialog extends BaseDialog {
                     productMessage.attachmentLayout(builder.AttachmentLayout.list);
                     let quickRepliesCard = new builder.HeroCard(session);
                     let quickRepliesButtons: builder.ICardAction[] = [];
-                    if (product.mediaList.length && product.mediaList[0].urls) {
+                    if (product.mediaList && product.mediaList.length && product.mediaList[0].urls) {
                         productMessageAttachments.push(
                             new builder.HeroCard(session)
                                 .images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)])
