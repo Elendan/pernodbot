@@ -16,7 +16,7 @@ class CategoriesDialog extends BaseDialog {
                 let quickRepliesCard = new builder.HeroCard(session);
                 let quickRepliesButtons: builder.ICardAction[] = [];
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
-                if (!session.userData.categoryPage || args.intent.intent === CategoriesDialog._categoriesIntentName) {
+                if (session.userData.categoryPage == null || args.intent.intent === CategoriesDialog._categoriesIntentName) {
                     session.userData.categoryPage = 0;
                 }
                 else if (args.intent.intent === CategoriesDialog._loadCategoriesIntentName) {

@@ -17,7 +17,7 @@ class CategoryProductDialog extends BaseDialog {
                 session.send("Understood, let me search that for you ⏳");
                 session.userData.availableSizes = [];
                 session.userData.productType = ProductType.Category;
-                if (!session.userData.categoryProductPage|| (args.intent.intent === CategoryProductDialog._categoryProductIntentName)) {
+                if (session.userData.categoryProductPage == null || (args.intent.intent === CategoryProductDialog._categoryProductIntentName)) {
                     session.userData.categoryProductPage = 0;
                 }
                 else if (args.intent.intent === CategoryProductDialog._loadCategoryProductsIntentName) {

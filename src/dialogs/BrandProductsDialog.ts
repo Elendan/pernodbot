@@ -17,7 +17,7 @@ class BrandProductsDialog extends BaseDialog {
                 session.send("Understood, let me search that for you ⏳");
                 session.userData.availableSizes = [];
                 session.userData.productType = ProductType.Brand;
-                if (!session.userData.brandProductPage || (args.intent.intent === BrandProductsDialog._brandProductsIntentName)) {
+                if (session.userData.brandProductPage == null || (args.intent.intent === BrandProductsDialog._brandProductsIntentName)) {
                     session.userData.brandProductPage = 0;
                 }
                 else if (args.intent.intent === BrandProductsDialog._loadBrandProductsIntentName) {

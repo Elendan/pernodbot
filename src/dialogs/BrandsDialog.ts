@@ -16,7 +16,7 @@ class BrandsDialog extends BaseDialog {
                 let quickRepliesCard = new builder.HeroCard(session);
                 let quickRepliesButtons: builder.ICardAction[] = [];
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
-                if (!session.userData.brandPage || (args.intent.intent === BrandsDialog._brandsIntentName)) {
+                if (session.userData.brandPage == null || (args.intent.intent === BrandsDialog._brandsIntentName)) {
                     session.userData.brandPage = 0;
                 }
                 else if (args.intent.intent === BrandsDialog._loadBrandsIntentName) {
