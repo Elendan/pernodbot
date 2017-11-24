@@ -6,10 +6,10 @@ import ProductType from "../enums/ProductType";
 
 class CategoryProductDialog extends BaseDialog {
 
-    private static readonly _pageLength: number = 5;
-    private static readonly _maxPageLength: number = 1000;
-    private static readonly _categoryProductIntentName: string = "research in category";
     private static readonly _loadCategoryProductsIntentName: string = "search more categories";
+    private static readonly _categoryProductIntentName: string = "research in category";
+    private static readonly _maxPageLength: number = 1000;
+    private static readonly _pageLength: number = 5;
     private static _isFirstRound: boolean;
 
     constructor() {

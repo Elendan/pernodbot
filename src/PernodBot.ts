@@ -14,6 +14,7 @@ import ProductsPerSizeDialog from "./dialogs/ProductsPerSizeDialog";
 import BuyProductDialog from "./dialogs/BuyProductDialog";
 import UnknownInput from "./dialogs/UnknownInput";
 import GreetingsDialog from "./dialogs/GreetingsDialog";
+import BackToFiltersDialog from "./dialogs/BackToFiltersDialog";
 
 class PernodBot {
 
@@ -216,6 +217,23 @@ class PernodBot {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if (context.intent) {
                     if (/^undefined|^search.more.products|^Default Fallback Intent/.test(context.intent.intent)) {
+                        callback(null, context.intent.score, {
+                            intent: context.intent
+                        });
+                    }
+                    else {
+                        callback(null, 0);
+                    }
+                }
+                else {
+                    callback(null, 0);
+                }
+            }
+        });
+        new BackToFiltersDialog().register(this.bot, "BackToFilters", {
+            onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
+                if (context.intent) {
+                    if (/^back.to.filters/.test(context.intent.intent)) {
                         callback(null, context.intent.score, {
                             intent: context.intent
                         });

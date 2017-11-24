@@ -9,9 +9,9 @@ class UnknownInput extends BaseDialog {
     private static readonly _searchMoreProductIntentName: string = "search.more.products";
     private static readonly _defaultFallbackIntent: string = "Default Fallback Intent";
     private static readonly _undefinedIntentName: string = "undefined";
-    private static readonly _pageLength: number = 5;
     private static readonly _maxPageLength: number = 1000;
-    public static _isFirstRound: boolean;
+    private static readonly _pageLength: number = 5;
+    private static _isFirstRound: boolean;
 
     constructor() {
         super();
