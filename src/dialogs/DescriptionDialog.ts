@@ -19,7 +19,7 @@ class DescriptionDialog extends BaseDialog {
                         productMessageAttachments.push(
                             new builder.HeroCard(session)
                                 .images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)])
-                                .text(product.productName)
+                                .title(product.productName)
                         );
                         productMessage.attachments(productMessageAttachments);
                         session.send(productMessage);
