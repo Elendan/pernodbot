@@ -72,8 +72,8 @@ class BrandProductsDialog extends BaseDialog {
                             session.userData.quickReplies = MessengerController.QuickReplies();
                             let facebookMessage = new builder.Message(session);
                             if (brandProductMessageAttachments.length) {
-                                facebookMessage.attachments(brandProductMessageAttachments);
                                 facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
+                                facebookMessage.attachments(brandProductMessageAttachments);
                             }
                             else {
                                 facebookMessage.text("Sorry, we don't have any products of this brand yet");
