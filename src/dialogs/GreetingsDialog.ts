@@ -17,22 +17,22 @@ class GreetingsDialog extends BaseDialog {
                 if (session.message.source === "facebook") {
                     let facebookMessage = new builder.Message(session);
                     facebookMessage.sourceEvent({
-                        "messages": [
-                            {
-                                "type": MessageTypes.Text,
-                                "speech": "Hello and welcome in the Pernod Ricard's catalog of products.",
-                                "platform": "facebook"
-                            },
-                            {
-                                "type": MessageTypes.QuickReplies,
-                                "title": "You can find products using the buttons below or simply typing the name of the product.",
-                                "replies": [
-                                    "Brands 🍾",
-                                    "Categories 🍸"
-                                ],
-                                "platform": "facebook"
-                            }
-                        ]
+                        facebook: {
+                            messages: [
+                                {
+                                    type: MessageTypes.Text,
+                                    speech: "Hello and welcome in the Pernod Ricard's catalog of products."
+                                },
+                                {
+                                    type: MessageTypes.QuickReplies,
+                                    title: "You can find products using the buttons below or simply typing the name of the product.",
+                                    replies: [
+                                        "Brands 🍾",
+                                        "Categories 🍸"
+                                    ]
+                                }
+                            ]
+                        }
                     });
                     session.send(facebookMessage);
                 }
