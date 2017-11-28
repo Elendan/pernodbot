@@ -51,10 +51,9 @@ class CategoriesDialog extends BaseDialog {
                         session.userData.categoryPage = 0;
                     }
                     categoriesMessage.attachments(categoriesMessageAttachments);
-                    session.send(categoriesMessage);
                     switch (session.message.source) {
                         case "facebook":
-                            let facebookMessage = new builder.Message(session);
+                            let facebookMessage = new builder.Message(session).attachments(categoriesMessageAttachments);
                             facebookMessage.sourceEvent({
                                 facebook: {
                                     quick_replies: [
@@ -70,6 +69,7 @@ class CategoriesDialog extends BaseDialog {
                             break;
                         default:
                             session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+                            session.send(categoriesMessage);
                             break;
                     }
                     session.endDialog();

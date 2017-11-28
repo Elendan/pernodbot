@@ -49,10 +49,9 @@ class BrandsDialog extends BaseDialog {
                         session.userData.brandPage = 0;
                     }
                     brandsMessage.attachments(brandsMessageAttachments);
-                    session.send(brandsMessage);
                     switch (session.message.source) {
                         case "facebook":
-                            let facebookMessage = new builder.Message(session);
+                            let facebookMessage = new builder.Message(session).attachments(brandsMessageAttachments);
                             facebookMessage.sourceEvent({
                                 facebook: {
                                     quick_replies: [
@@ -67,6 +66,7 @@ class BrandsDialog extends BaseDialog {
                             session.send(facebookMessage);
                             break;
                         default:
+                            session.send(brandsMessage);
                             session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                             break;
                     }
