@@ -1,6 +1,7 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import MessagesController from "./../controllers/MessagesController"
+import MessengerController from "./../controllers/MessengerController"
 
 class AvailableSizesDialog extends BaseDialog {
 
@@ -12,6 +13,7 @@ class AvailableSizesDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
+                session.userData.availableSizesStructure = MessengerController.AvailableSizes();
                 session.userData.sizeProductPage = 0;
                 session.userData.rest = session.userData.availableSizes.length % AvailableSizesDialog._repliesPerCard;
                 if (args.intent.intent === AvailableSizesDialog._filterBySizeIntentName) {
@@ -25,24 +27,24 @@ class AvailableSizesDialog extends BaseDialog {
                 let quickRepliesCard = new builder.HeroCard(session);
                 while (session.userData.repliesAlreadyDisplayed < session.userData.repliesToDisplay) {
                     quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, session.userData.availableSizes[session.userData.repliesAlreadyDisplayed]);
+                    session.userData.availableSizesStructure.facebook.quick_replies.push({
+                        content_type: "text",
+                        title: session.userData.availableSizes[session.userData.repliesAlreadyDisplayed],
+                        payload: session.userData.availableSizes[session.userData.repliesAlreadyDisplayed]
+                    });
                     session.userData.repliesAlreadyDisplayed++;
                 }
                 if (session.userData.repliesAlreadyDisplayed < session.userData.availableSizes.length) {
-                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "More Sizes")
+                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "More Sizes");
+                    session.userData.availableSizesStructure.facebook.quick_replies.push({
+                        content_type: "text",
+                        title: "More Sizes",
+                        payload: "More Sizes"
+                    });
                 }
                 if (session.message.source === "facebook") {
                     let facebookMessage = new builder.Message(session).text("Choose a size among the following.");
-                    facebookMessage.sourceEvent({
-                        facebook: {
-                            quick_replies: [
-                                {
-                                    content_type:"text",
-                                    title:"Available sizes",
-                                    payload:"Available sizes"
-                                }
-                            ]
-                        }
-                    });
+                    facebookMessage.sourceEvent(session.userData.availableSizesStructure);
                     session.send(facebookMessage);
                 }
                 else {
