@@ -43,6 +43,7 @@ class AvailableSizesDialog extends BaseDialog {
                             ]
                         }
                     });
+                    session.send(facebookMessage);
                 }
                 else {
                     session.send("Choose a size among the following.");
