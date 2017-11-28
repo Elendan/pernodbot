@@ -15,21 +15,21 @@ class GreetingsDialog extends BaseDialog {
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Brands 🍾");
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Categories 🍸");
                 if (session.message.source === "facebook") {
-                    let facebookMessage = new builder.Message(session);
+                    let facebookMessage = new builder.Message(session).text("Hello and welcome in the Pernod Ricard's catalog of products.");
+                    session.send(facebookMessage);
+                    facebookMessage.text("You can find products using the buttons below or simply typing the name of the product.");
                     facebookMessage.sourceEvent({
                         facebook: {
-                            messages: [
+                            quick_replies: [
                                 {
-                                    type: MessageTypes.Text,
-                                    speech: "Hello and welcome in the Pernod Ricard's catalog of products."
+                                    content_type: "text",
+                                    title: "Brands 🍾",
+                                    payload: "Brands"
                                 },
                                 {
-                                    type: MessageTypes.QuickReplies,
-                                    title: "You can find products using the buttons below or simply typing the name of the product.",
-                                    replies: [
-                                        "Brands 🍾",
-                                        "Categories 🍸"
-                                    ]
+                                    content_type: "text",
+                                    title: "Categories 🍸",
+                                    payload: "Categories"
                                 }
                             ]
                         }
