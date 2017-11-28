@@ -65,7 +65,8 @@ class CategoriesDialog extends BaseDialog {
                                         }
                                     ]
                                 }
-                            })
+                            });
+                            session.send(facebookMessage);
                             break;
                         default:
                             session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
