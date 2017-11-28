@@ -34,6 +34,7 @@ class GreetingsDialog extends BaseDialog {
                             }
                         ]
                     });
+                    session.send(facebookMessage);
                 }
                 else {
                     session.send("Hello and welcome in the Pernod Ricard's catalog of products.");
