@@ -52,6 +52,7 @@ class BrandsDialog extends BaseDialog {
                     switch (session.message.source) {
                         case "facebook":
                             let facebookMessage = new builder.Message(session).attachments(brandsMessageAttachments);
+                            facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                             facebookMessage.sourceEvent({
                                 facebook: {
                                     quick_replies: [

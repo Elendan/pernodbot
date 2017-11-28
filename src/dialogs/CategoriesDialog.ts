@@ -54,6 +54,7 @@ class CategoriesDialog extends BaseDialog {
                     switch (session.message.source) {
                         case "facebook":
                             let facebookMessage = new builder.Message(session).attachments(categoriesMessageAttachments);
+                            facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                             facebookMessage.sourceEvent({
                                 facebook: {
                                     quick_replies: [
