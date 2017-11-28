@@ -73,6 +73,7 @@ class BrandProductsDialog extends BaseDialog {
                             let facebookMessage = new builder.Message(session);
                             if (brandProductMessageAttachments.length) {
                                 facebookMessage.attachments(brandProductMessageAttachments);
+                                facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                             }
                             else {
                                 facebookMessage.text("Sorry, we don't have any products of this brand yet");
@@ -80,7 +81,7 @@ class BrandProductsDialog extends BaseDialog {
                             if (productResponse.nbHits > 8) {
                                 session.userData.quickReplies.facebook.quick_replies.push("Filter by Size");
                             }
-                            session.userData.quickReplies.facebook.quick_replies.push("Back to Categories 🔙");
+                            session.userData.quickReplies.facebook.quick_replies.push("Back to Brands 🔙");
                             facebookMessage.sourceEvent(session.userData.quickReplies);
                             session.send(facebookMessage);
                             break;
