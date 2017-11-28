@@ -76,7 +76,7 @@ class CategoryProductDialog extends BaseDialog {
                                 facebookMessage.attachments(categoryProductMessageAttachments);
                             }
                             else {
-                                facebookMessage.text("Sorry, we don't have any products of this brand yet");
+                                facebookMessage.text("Sorry, we don't have any products in this category yet.");
                             }
                             if (productResponse.nbHits > 8) {
                                 session.userData.quickReplies.facebook.quick_replies.push({
