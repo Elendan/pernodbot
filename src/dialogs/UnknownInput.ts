@@ -109,6 +109,7 @@ class UnknownInput extends BaseDialog {
                                 title: "Back to Menu 🔙",
                                 payload: "Filters"
                             });
+                            facebookMessage.sourceEvent(session.userData.quickReplies);
                             session.send(facebookMessage);
                             break;
                         default:
