@@ -2,12 +2,14 @@ import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import ProductController from "../controllers/ProductController";
 import MessagesController from "../controllers/MessagesController";
+import MessengerController from "../controllers/MessengerController";
 
 class DescriptionDialog extends BaseDialog {
     constructor() {
         super();
         this.dialog = [
             (session, args, next) => {
+                session.userData.quickReplies = MessengerController.QuickReplies();
                 let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
                 ProductController.getProductById(parameters.entity.product).then(product => {
                     let productMessage = new builder.Message(session);
@@ -38,16 +40,42 @@ class DescriptionDialog extends BaseDialog {
                         }
                     }
                     session.send(!product.description ? "No description available for this product." : product.description);
-                    quickRepliesCard.text("What do you want to do ?");
                     session.userData.informations = ProductController.getInformations(product, session);
                     if (session.userData.informations && session.userData.informations.length) {
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "More Details", "More Details");
+                        session.userData.quickReplies.facebook.quick_replies.push({
+                            content_type: "text",
+                            title: "More Details",
+                            payload: "More Details"
+                        });
                     }
-                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Buy this product 🛒", "Buy this product")
-                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Back to Menu 🔙");
-                    productMessageAttachments.push(quickRepliesCard);
-                    productMessage.attachments(productMessageAttachments);
-                    session.send(productMessage);
+                    switch (session.message.source) {
+                        case "facebook":
+                            let facebookMessage = new builder.Message(session).text("What do you want to do ?");
+                            session.userData.quickReplies.facebook.quick_replies.push(
+                                {
+                                    content_type: "text",
+                                    title: "Buy this product 🛒",
+                                    payload: "Buy this product 🛒"
+                                },
+                                {
+                                    content_type: "text",
+                                    title: "Back to Menu 🔙",
+                                    payload: "Back to Menu 🔙"
+                                }
+                            );
+                            facebookMessage.sourceEvent(session.userData.quickReplies);
+                            session.send(facebookMessage);
+                            break;
+                        default:
+                            quickRepliesCard.text("What do you want to do ?");
+                            quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Buy this product 🛒", "Buy this product")
+                            quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Back to Menu 🔙");
+                            productMessageAttachments.push(quickRepliesCard);
+                            productMessage.attachments(productMessageAttachments);
+                            session.send(productMessage);
+                            break;
+                    }
                     session.endDialog();
                 }, reason => {
                     session.send(reason);
