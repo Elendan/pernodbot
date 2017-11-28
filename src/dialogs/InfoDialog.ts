@@ -2,12 +2,14 @@ import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import ProductController from "../controllers/ProductController";
 import MessagesController from "../controllers/MessagesController";
+import MessengerController from "../controllers/MessengerController";
 
 class InfoDialog extends BaseDialog {
     constructor() {
         super();
         this.dialog = [
             (session, args, next) => {
+                session.userData.quickReplies = MessengerController.QuickReplies();
                 let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
                 ProductController.getProductById(parameters.entity.product).then(product => {
                     if (parameters.entity.product && parameters.entity.product.length) {
@@ -25,13 +27,27 @@ class InfoDialog extends BaseDialog {
                                 title: session.userData.informations[i],
                                 value: session.userData.informations[i]
                             });
+                            session.userData.quickReplies.facebook.quick_replies.push({
+                                content_type: "text",
+                                title: session.userData.informations[i],
+                                payload: session.userData.informations[i]
+                            });
                         }
                     }
                     quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                     productMessageAttachments.push(quickRepliesCard);
                     productMessage.attachments(productMessageAttachments);
-                    productMessage.text("Want to know more about");
-                    session.send(productMessage);
+                    switch (session.message.source) {
+                        case "facebook":
+                            let facebookMessage = new builder.Message(session).text("Want to know more about");
+                            facebookMessage.sourceEvent(session.userData.quickReplies);
+                            session.send(facebookMessage);
+                            break;
+                        default:
+                            productMessage.text("Want to know more about");
+                            session.send(productMessage);
+                            break;
+                    }
                     session.endDialog();
                 }, reason => {
                     session.send(reason);
