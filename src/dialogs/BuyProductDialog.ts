@@ -13,10 +13,10 @@ class BuyProductDialog extends BaseDialog {
                 let quickRepliesButtons: builder.ICardAction[] = [];
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                 carousel = MessagesController.BuyProductCarousel(session);
-                session.send(carousel);
                 switch (session.message.source) {
                     case "facebook":
-                        let facebookMessage = new builder.Message(session);
+                        let facebookMessage = new builder.Message(session)
+                        session.send(carousel);
                         facebookMessage.sourceEvent({
                             facebook: {
                                 quick_replies: [
@@ -31,6 +31,7 @@ class BuyProductDialog extends BaseDialog {
                         session.send(facebookMessage);
                         break;
                     default:
+                        session.send(carousel);
                         session.send(MessagesController.sendQuickReplies(session, quickRepliesCard, "What do you want to do ?"));
                         break;
                 }
