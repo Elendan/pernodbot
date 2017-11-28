@@ -1,11 +1,24 @@
 import * as builder from "botbuilder";
 import * as apiai from "apiai";
 import BaseDialog from "./basedialog";
+import MessageTypes from "../enums/MessageTypes";
 
 class DialogflowDialog extends BaseDialog {
 
   private messengerResponse(session: builder.Session, messages: any[]): void {
+    messages.forEach(message => {
+      switch (message.type) {
+        case MessageTypes.Text:
+        break;
+        case MessageTypes.Card:
+        break;
+        case MessageTypes.QuickReplies:
+        break;
+        case MessageTypes.Image:
+        break;
+      }
 
+    });
   }
 
 
@@ -14,14 +27,12 @@ class DialogflowDialog extends BaseDialog {
     let responseMessageAttachments: builder.AttachmentType[] = [];
     messages.forEach(message => {
       switch (message.type) {
-        case 0:
-          // Text
+        case MessageTypes.Text:
           responseMessage.text(message.speech);
           session.send(responseMessage);
           responseMessage = new builder.Message(session);
           break;
-        case 1:
-          // Card
+        case MessageTypes.Card:
           responseMessage.attachmentLayout(builder.AttachmentLayout.carousel);
           let card = new builder.HeroCard(session)
             .title(message.title)
@@ -40,8 +51,7 @@ class DialogflowDialog extends BaseDialog {
           responseMessageAttachments.push(card);
           responseMessage.attachments(responseMessageAttachments);
           break;
-        case 2:
-          // Quick replies
+        case MessageTypes.QuickReplies:
           responseMessage.text(message.title);
           responseMessage.attachmentLayout(builder.AttachmentLayout.list);
           let quickRepliesCard = new builder.HeroCard(session);
@@ -57,8 +67,7 @@ class DialogflowDialog extends BaseDialog {
           responseMessageAttachments.push(quickRepliesCard);
           responseMessage.attachments(responseMessageAttachments);
           break;
-        case 3:
-          // Image
+        case MessageTypes.Image:
           responseMessage.attachmentLayout(builder.AttachmentLayout.carousel);
           responseMessageAttachments.push(new builder.HeroCard(session)
             .images([builder.CardImage.create(session, message.imageUrl)]));
@@ -68,7 +77,6 @@ class DialogflowDialog extends BaseDialog {
           break;
       }
     });
-
     if (responseMessageAttachments.length > 0) {
       session.send(responseMessage);
     }

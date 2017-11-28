@@ -30,8 +30,24 @@ class AvailableSizesDialog extends BaseDialog {
                 if (session.userData.repliesAlreadyDisplayed < session.userData.availableSizes.length) {
                     quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "More Sizes")
                 }
-                session.send("Choose a size among the following.");
-                session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+                if (session.message.source === "facebook") {
+                    let facebookMessage = new builder.Message(session).text("Choose a size among the following.");
+                    facebookMessage.sourceEvent({
+                        facebook: {
+                            quick_replies: [
+                                {
+                                    content_type:"text",
+                                    title:"Available sizes",
+                                    payload:"Available sizes"
+                                }
+                            ]
+                        }
+                    });
+                }
+                else {
+                    session.send("Choose a size among the following.");
+                    session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+                }
                 session.endDialog();
             }
         ]
