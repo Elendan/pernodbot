@@ -3,6 +3,7 @@ import BaseDialog from "./basedialog";
 import ProductController from "../controllers/ProductController";
 import ProductType from "../enums/ProductType";
 import MessagesController from "../controllers/MessagesController";
+import MessengerController from "../controllers/MessengerController";
 
 class UnknownInput extends BaseDialog {
 
@@ -17,6 +18,7 @@ class UnknownInput extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
+                session.userData.quickReplies = MessengerController.QuickReplies();
                 session.send("Understood, let me search that for you ⏳");
                 session.userData.productType = ProductType.Classic;
                 if ((session.userData.productPage == null) || (args.intent.intent === UnknownInput._undefinedIntentName) || (args.intent.intent === UnknownInput._defaultFallbackIntent)) {
@@ -66,19 +68,59 @@ class UnknownInput extends BaseDialog {
                     }
                     if (productResponse.nbHits === 0) {
                         session.send("Sorry, we could not find this product.");
-                        quickRepliesCard.text("What do you want to do ?")
-                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Back to Menu 🔙", "Filters");
-                        session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+                        switch (session.message.source) {
+                            case "facebook":
+                                let facebookMessage = new builder.Message(session).text("What do you want to do ?");
+                                facebookMessage.sourceEvent({
+                                    facebook: {
+                                        quick_replies: [
+                                            {
+                                                content_type: "text",
+                                                title: "Back to Menu 🔙",
+                                                payload: "Filters"
+                                            }
+                                        ]
+                                    }
+                                });
+                                session.send(facebookMessage);
+                                break;
+                            default:
+                                quickRepliesCard.text("What do you want to do ?")
+                                quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Back to Menu 🔙", "Filters");
+                                session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+                                break;
+                        }
                         session.endDialog();
                         return;
                     }
-                    productMessage.attachments(productMessageAttachments);
-                    session.send(productMessage);
-                    if (productResponse.nbHits > 8) {
-                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by size");
+                    switch (session.message.source) {
+                        case "facebook":
+                            let facebookMessage = new builder.Message(session).attachments(productMessageAttachments);
+                            facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
+                            if (productResponse.nbHits > 8) {
+                                session.userData.quickReplies.facebook.quick_replies.push({
+                                    content_type: "text",
+                                    title: "Filter by Size",
+                                    payload: "Filter by Size"
+                                });
+                            }
+                            session.userData.quickReplies.facebook.quick_replies.push({
+                                content_type: "text",
+                                title: "Back to Menu 🔙",
+                                payload: "Filters"
+                            });
+                            session.send(facebookMessage);
+                            break;
+                        default:
+                            productMessage.attachments(productMessageAttachments);
+                            session.send(productMessage);
+                            if (productResponse.nbHits > 8) {
+                                quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by size");
+                            }
+                            quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
+                            session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+                            break;
                     }
-                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
-                    session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                     session.endDialog();
                 }, reason => {
                     session.send(reason);
