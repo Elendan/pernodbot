@@ -16,7 +16,8 @@ class BuyProductDialog extends BaseDialog {
                 switch (session.message.source) {
                     case "facebook":
                         let facebookMessage = new builder.Message(session)
-                        session.send(carousel);
+                        facebookMessage = carousel;
+                        facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                         facebookMessage.sourceEvent({
                             facebook: {
                                 quick_replies: [
