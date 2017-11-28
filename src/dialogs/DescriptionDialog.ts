@@ -16,14 +16,26 @@ class DescriptionDialog extends BaseDialog {
                     let quickRepliesCard = new builder.HeroCard(session);
                     let quickRepliesButtons: builder.ICardAction[] = [];
                     if (product.mediaList && product.mediaList.length && product.mediaList[0].urls) {
-                        productMessageAttachments.push(
-                            new builder.HeroCard(session)
-                                .images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)])
-                                .title(product.productName)
-                        );
-                        productMessage.attachments(productMessageAttachments);
-                        session.send(productMessage);
-                        productMessageAttachments.pop();
+                        switch (session.message.source) {
+                            case "facebook":
+                                let image = new builder.Message(session).addAttachment({
+                                    contentUrl: product.mediaList[0].urls.bamArticleFull,
+                                    contentType: "image/png",
+                                    name: "image"
+                                });
+                                session.send(image);
+                                break;
+                            default:
+                                productMessageAttachments.push(
+                                    new builder.HeroCard(session)
+                                        .images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)])
+                                        .title(product.productName)
+                                );
+                                productMessage.attachments(productMessageAttachments);
+                                session.send(productMessage);
+                                productMessageAttachments.pop();
+                                break;
+                        }
                     }
                     session.send(!product.description ? "No description available for this product." : product.description);
                     quickRepliesCard.text("What do you want to do ?");
