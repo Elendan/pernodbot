@@ -3,6 +3,7 @@ import BaseDialog from "./basedialog";
 import ProductController from "../controllers/ProductController";
 import MessagesController from "../controllers/MessagesController";
 import ProductType from "../enums/ProductType";
+import MessengerController from "../controllers/MessengerController"
 
 class BrandProductsDialog extends BaseDialog {
 
@@ -66,12 +67,32 @@ class BrandProductsDialog extends BaseDialog {
                         session.userData.brandProductPage = 0;
                     }
                     brandProductMessage.attachments(brandProductMessageAttachments);
-                    session.send(brandProductMessageAttachments.length ? brandProductMessage : "Sorry, we don't have any products of this brand yet");
-                    if (productResponse.nbHits > 8) {
-                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by Size");
+                    switch (session.message.source) {
+                        case "facebook":
+                            session.userData.quickReplies = MessengerController.QuickReplies();
+                            let facebookMessage = new builder.Message(session);
+                            if (brandProductMessageAttachments.length) {
+                                facebookMessage.attachments(brandProductMessageAttachments);
+                            }
+                            else {
+                                facebookMessage.text("Sorry, we don't have any products of this brand yet");
+                            }
+                            if (productResponse.nbHits > 8) {
+                                session.userData.quickReplies.facebook.quick_replies.push("Filter by Size");
+                            }
+                            session.userData.quickReplies.facebook.quick_replies.push("Back to Categories 🔙");
+                            facebookMessage.sourceEvent(session.userData.quickReplies);
+                            session.send(facebookMessage);
+                            break;
+                        default:
+                            session.send(brandProductMessageAttachments.length ? brandProductMessage : "Sorry, we don't have any products of this brand yet");
+                            if (productResponse.nbHits > 8) {
+                                quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by Size");
+                            }
+                            quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, null, "Brands");
+                            session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+                            break;
                     }
-                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, null, "Brands");
-                    session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                     session.endDialog();
                 }, reason => {
                     session.send(reason);
