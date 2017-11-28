@@ -3,6 +3,7 @@ import * as builder from "botbuilder";
 import ProductResponse from "../models/ProductResponse";
 import Product from "../models/Product";
 import MessagesController from "../controllers/MessagesController";
+import ProductType from "../enums/ProductType";
 
 class ProductController {
 
@@ -251,8 +252,29 @@ class ProductController {
             session.userData.displayedProductsOfSize = 5;
         }
         productMessage.attachments(productMessageAttachments);
-        session.send(productMessage);
-        session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+        switch (session.message.source) {
+            case "facebook":
+                let facebookMessage = new builder.Message(session);
+                facebookMessage.attachments(productMessageAttachments);
+                facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
+                facebookMessage.sourceEvent({
+                    facebook: {
+                        quick_replies: [
+                            {
+                                content_type: "text",
+                                title: `Back to ${session.userData.productType === ProductType.Brand ? "Brands" : session.userData.productType === ProductType.Category ? "Categories" : "Menu"} 🔙`,
+                                payload: session.userData.productType === ProductType.Brand ? "Brands" : session.userData.productType === ProductType.Category ? "Categories" : "Filters"
+                            }
+                        ]
+                    }
+                });
+                session.send(facebookMessage);
+                break;
+            default:
+                session.send(productMessage);
+                session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+                break;
+        }
         session.endDialog();
     }
 }
