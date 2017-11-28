@@ -79,9 +79,17 @@ class BrandProductsDialog extends BaseDialog {
                                 facebookMessage.text("Sorry, we don't have any products of this brand yet");
                             }
                             if (productResponse.nbHits > 8) {
-                                session.userData.quickReplies.facebook.quick_replies.push("Filter by Size");
+                                session.userData.quickReplies.facebook.quick_replies.push({
+                                    content_type: "text",
+                                    title: "Filter by Size",
+                                    payload: "Filter by Size"
+                                });
                             }
-                            session.userData.quickReplies.facebook.quick_replies.push("Back to Brands 🔙");
+                            session.userData.quickReplies.facebook.quick_replies.push({
+                                content_type: "text",
+                                title: "Back to Brands 🔙",
+                                payload: "Brands"
+                            });
                             facebookMessage.sourceEvent(session.userData.quickReplies);
                             session.send(facebookMessage);
                             break;
