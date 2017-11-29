@@ -9,15 +9,17 @@ class DialogflowDialog extends BaseDialog {
     messages.forEach(message => {
       switch (message.type) {
         case MessageTypes.Text:
-        break;
+          let response = new builder.Message(session);
+          response.text(message.speech);
+          session.send(response);
+          break;
         case MessageTypes.Card:
-        break;
+          break;
         case MessageTypes.QuickReplies:
-        break;
+          break;
         case MessageTypes.Image:
-        break;
+          break;
       }
-
     });
   }
 
