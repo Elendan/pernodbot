@@ -2,25 +2,32 @@ import * as builder from "botbuilder";
 import * as apiai from "apiai";
 import BaseDialog from "./basedialog";
 import MessageTypes from "../enums/MessageTypes";
+import MessengerController from "../controllers/MessengerController";
 
 class DialogflowDialog extends BaseDialog {
 
   private messengerResponse(session: builder.Session, messages: any[]): void {
+    let quickReplies = MessengerController.QuickReplies();
+    let facebookReply = new builder.Message(session);
     messages.forEach(message => {
       switch (message.type) {
         case MessageTypes.Text:
-          let response = new builder.Message(session);
-          response.text(message.speech);
-          session.send(response);
+          facebookReply.text(message.speech);
+          session.send(facebookReply);
           break;
         case MessageTypes.Card:
           break;
         case MessageTypes.QuickReplies:
+          quickReplies.facebook.quick_replies.push(JSON.stringify(message.speech));
           break;
         case MessageTypes.Image:
           break;
       }
     });
+    if (quickReplies.facebook.quick_replies.length) {
+      facebookReply.sourceEvent(quickReplies);
+      session.send(facebookReply);
+    }
   }
 
 
