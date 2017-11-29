@@ -42,14 +42,16 @@ class AvailableSizesDialog extends BaseDialog {
                         payload: "More Sizes"
                     });
                 }
-                if (session.message.source === "facebook") {
-                    let facebookMessage = new builder.Message(session).text("Choose a size among the following.");
-                    facebookMessage.sourceEvent(session.userData.quickReplies);
-                    session.send(facebookMessage);
-                }
-                else {
-                    session.send("Choose a size among the following.");
-                    session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+                switch (session.message.source) {
+                    case "facebook":
+                        let facebookMessage = new builder.Message(session).text("Choose a size among the following.");
+                        facebookMessage.sourceEvent(session.userData.quickReplies);
+                        session.send(facebookMessage);
+                        break;
+                    default:
+                        session.send("Choose a size among the following.");
+                        session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
+                        break;
                 }
                 session.endDialog();
             }
