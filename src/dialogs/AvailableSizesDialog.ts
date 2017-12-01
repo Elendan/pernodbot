@@ -44,7 +44,7 @@ class AvailableSizesDialog extends BaseDialog {
                 }
                 switch (session.message.source) {
                     case "facebook":
-                        let facebookMessage = new builder.Message(session).text("Choose a size among the following.");
+                        const facebookMessage = new builder.Message(session).text("Choose a size among the following.");
                         facebookMessage.sourceEvent(session.userData.quickReplies);
                         session.send(facebookMessage);
                         break;
