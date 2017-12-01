@@ -10,13 +10,15 @@ class GreetingsDialog extends BaseDialog {
         this.dialog = [
             (session, args, next) => {
                 let quickRepliesCard = new builder.HeroCard(session);
-                let quickRepliesButtons: builder.ICardAction[] = [];
+                const quickRepliesButtons: builder.ICardAction[] = [];
+
                 quickRepliesCard.text("You can find products using the buttons below or simply typing the name of the product.");
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Brands 🍾");
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Categories 🍸");
                 switch (session.message.source) {
                     case "facebook":
-                        let facebookMessage = new builder.Message(session).text("Hello and welcome in the Pernod Ricard's catalog of products.");
+                        const facebookMessage = new builder.Message(session).text("Hello and welcome in the Pernod Ricard's catalog of products.");
+                        
                         session.send(facebookMessage);
                         facebookMessage.text("You can find products using the buttons below or simply typing the name of the product.");
                         facebookMessage.sourceEvent({

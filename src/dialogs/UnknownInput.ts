@@ -43,9 +43,9 @@ class UnknownInput extends BaseDialog {
                     session.userData.availableSizes = Array.from(session.userData.availableSizes);
                     session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });
                 }).then(() => ProductController.getProductFromInput(session.userData.idToRetrieve, UnknownInput._pageLength, session.userData.productPage).then(productResponse => {
-                    let productMessage = new builder.Message(session);
-                    let productMessageAttachments: builder.AttachmentType[] = [];
-                    let quickRepliesButtons: builder.ICardAction[] = [];
+                    const productMessage = new builder.Message(session);
+                    const productMessageAttachments: builder.AttachmentType[] = [];
+                    const quickRepliesButtons: builder.ICardAction[] = [];
                     let quickRepliesCard = new builder.HeroCard(session);
                     productMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                     productResponse.hits.forEach(product => {
@@ -95,7 +95,7 @@ class UnknownInput extends BaseDialog {
                     }
                     switch (session.message.source) {
                         case "facebook":
-                            let facebookMessage = new builder.Message(session).attachments(productMessageAttachments);
+                            const facebookMessage = new builder.Message(session).attachments(productMessageAttachments);
                             facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                             if (productResponse.nbHits > 8) {
                                 session.userData.quickReplies.facebook.quick_replies.push({

@@ -15,6 +15,7 @@ class BrandsDialog extends BaseDialog {
             (session, args, next) => {
                 let quickRepliesCard = new builder.HeroCard(session);
                 let quickRepliesButtons: builder.ICardAction[] = [];
+
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                 if (session.userData.brandPage == null || (args.intent.intent === BrandsDialog._brandsIntentName)) {
                     session.userData.brandPage = 0;
@@ -24,9 +25,10 @@ class BrandsDialog extends BaseDialog {
                 }
                 // Get brands
                 BrandController.getBrands(BrandsDialog._pageLength, session.userData.brandPage).then(brandResponse => {
-                    session.userData.brandPage = brandResponse.page;
                     let brandsMessage = new builder.Message(session);
                     let brandsMessageAttachments: builder.AttachmentType[] = [];
+                    
+                    session.userData.brandPage = brandResponse.page;
                     brandsMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                     brandResponse.hits.forEach(brand => {
                         // Brand card
@@ -51,7 +53,7 @@ class BrandsDialog extends BaseDialog {
                     brandsMessage.attachments(brandsMessageAttachments);
                     switch (session.message.source) {
                         case "facebook":
-                            let facebookMessage = new builder.Message(session).attachments(brandsMessageAttachments);
+                            const facebookMessage = new builder.Message(session).attachments(brandsMessageAttachments);
                             facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                             facebookMessage.sourceEvent({
                                 facebook: {

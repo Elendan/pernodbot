@@ -152,7 +152,6 @@ class PernodBot {
                 else {
                     callback(null, 0);
                 }
-
             }
         });
         new BuyProductDialog().register(this.bot, "BuyProductButton", {
@@ -190,7 +189,6 @@ class PernodBot {
                 else {
                     callback(null, 0);
                 }
-
             }
         });
         new DialogflowDialog().register(this.bot, "Dialogflow", {

@@ -13,6 +13,9 @@ class AvailableSizesDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
+                let quickRepliesButtons: builder.ICardAction[] = [];
+                let quickRepliesCard = new builder.HeroCard(session);
+                
                 session.userData.quickReplies = MessengerController.QuickReplies();
                 session.userData.sizeProductPage = 0;
                 session.userData.rest = session.userData.availableSizes.length % AvailableSizesDialog._repliesPerCard;
@@ -23,8 +26,6 @@ class AvailableSizesDialog extends BaseDialog {
                 else if (args.intent.intent === AvailableSizesDialog._filterMoreSizeIntentName) {
                     session.userData.repliesToDisplay += session.userData.rest !== 0 && session.userData.repliesToDisplay + session.userData.rest === session.userData.availableSizes.length ? session.userData.rest : AvailableSizesDialog._repliesPerCard;
                 }
-                let quickRepliesButtons: builder.ICardAction[] = [];
-                let quickRepliesCard = new builder.HeroCard(session);
                 while (session.userData.repliesAlreadyDisplayed < session.userData.repliesToDisplay) {
                     quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, session.userData.availableSizes[session.userData.repliesAlreadyDisplayed]);
                     session.userData.quickReplies.facebook.quick_replies.push({
@@ -45,6 +46,7 @@ class AvailableSizesDialog extends BaseDialog {
                 switch (session.message.source) {
                     case "facebook":
                         const facebookMessage = new builder.Message(session).text("Choose a size among the following.");
+                        
                         facebookMessage.sourceEvent(session.userData.quickReplies);
                         session.send(facebookMessage);
                         break;

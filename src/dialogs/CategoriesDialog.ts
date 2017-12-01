@@ -14,7 +14,8 @@ class CategoriesDialog extends BaseDialog {
         this.dialog = [
             (session, args, next) => {
                 let quickRepliesCard = new builder.HeroCard(session);
-                let quickRepliesButtons: builder.ICardAction[] = [];
+                const quickRepliesButtons: builder.ICardAction[] = [];
+
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                 if (session.userData.categoryPage == null || args.intent.intent === CategoriesDialog._categoriesIntentName) {
                     session.userData.categoryPage = 0;
@@ -53,7 +54,8 @@ class CategoriesDialog extends BaseDialog {
                     categoriesMessage.attachments(categoriesMessageAttachments);
                     switch (session.message.source) {
                         case "facebook":
-                            let facebookMessage = new builder.Message(session).attachments(categoriesMessageAttachments);
+                            const facebookMessage = new builder.Message(session).attachments(categoriesMessageAttachments);
+                            
                             facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                             facebookMessage.sourceEvent({
                                 facebook: {

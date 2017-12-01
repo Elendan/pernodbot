@@ -28,7 +28,7 @@ class CategoryProductDialog extends BaseDialog {
                     session.userData.categoryProductPage++;
                     CategoryProductDialog._isFirstRound = false;
                 }
-                let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
+                const parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
                 session.userData.idToRetrieve = parameters.entity.category;
                 ProductController.getCategoryProducts(parameters.entity.category, CategoryProductDialog._maxPageLength, session.userData.categoryProductPage, CategoryProductDialog._isFirstRound).then(productResponse => {
                     if (productResponse !== null) {
@@ -42,10 +42,11 @@ class CategoryProductDialog extends BaseDialog {
                     session.userData.availableSizes = Array.from(session.userData.availableSizes);
                     session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });
                 }).then(() => ProductController.getCategoryProducts(parameters.entity.category, CategoryProductDialog._pageLength, session.userData.categoryProductPage).then(productResponse => {
-                    let categoryProductMessage = new builder.Message(session);
-                    let categoryProductMessageAttachments: builder.AttachmentType[] = [];
-                    let quickRepliesButtons: builder.ICardAction[] = [];
+                    const categoryProductMessage = new builder.Message(session);
+                    const categoryProductMessageAttachments: builder.AttachmentType[] = [];
+                    const quickRepliesButtons: builder.ICardAction[] = [];
                     let quickRepliesCard = new builder.HeroCard(session);
+                    
                     categoryProductMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                     productResponse.hits.forEach(product => {
                         categoryProductMessageAttachments.push(ProductController.buildProductCard(product, session));
@@ -70,7 +71,8 @@ class CategoryProductDialog extends BaseDialog {
                     switch (session.message.source) {
                         case "facebook":
                             session.userData.quickReplies = MessengerController.QuickReplies();
-                            let facebookMessage = new builder.Message(session);
+                            const facebookMessage = new builder.Message(session);
+
                             if (categoryProductMessageAttachments.length) {
                                 facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                                 facebookMessage.attachments(categoryProductMessageAttachments);

@@ -10,16 +10,16 @@ class InfoDialog extends BaseDialog {
         this.dialog = [
             (session, args, next) => {
                 session.userData.quickReplies = MessengerController.QuickReplies();
-                let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
+                const parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
                 ProductController.getProductById(parameters.entity.product).then(product => {
                     if (parameters.entity.product && parameters.entity.product.length) {
                         session.userData.informations = ProductController.getInformations(product, session);
                     }
-                    let productMessage = new builder.Message(session);
-                    let productMessageAttachments: builder.AttachmentType[] = [];
+                    const productMessage = new builder.Message(session);
+                    const productMessageAttachments: builder.AttachmentType[] = [];
                     productMessage.attachmentLayout(builder.AttachmentLayout.list);
                     let quickRepliesCard = new builder.HeroCard(session);
-                    let quickRepliesButtons: builder.ICardAction[] = [];
+                    const quickRepliesButtons: builder.ICardAction[] = [];
                     if (session.userData.informations && session.userData.informations.length) {
                         for (let i in session.userData.informations) {
                             quickRepliesButtons.push({
@@ -39,7 +39,7 @@ class InfoDialog extends BaseDialog {
                     productMessage.attachments(productMessageAttachments);
                     switch (session.message.source) {
                         case "facebook":
-                            let facebookMessage = new builder.Message(session).text("Want to know more about");
+                            const facebookMessage = new builder.Message(session).text("Want to know more about");
                             facebookMessage.sourceEvent(session.userData.quickReplies);
                             session.send(facebookMessage);
                             break;

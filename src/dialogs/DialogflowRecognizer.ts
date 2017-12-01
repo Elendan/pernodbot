@@ -11,9 +11,9 @@ class DialogflowRecognizer extends builder.IntentRecognizer {
     }
 
     public onRecognize(context: builder.IRecognizeContext, callback: (err: Error, result: builder.IIntentRecognizerResult) => void): void {
-        let result: builder.IIntentRecognizerResult = { score: 1, intent: "None", intents: [], entities: [] };
+        const result: builder.IIntentRecognizerResult = { score: 1, intent: "None", intents: [], entities: [] };
         if (context && context.message && context.message.text) {
-            let request = this.apiaiApp.textRequest(context.message.text, {
+            const request = this.apiaiApp.textRequest(context.message.text, {
                 sessionId: `${Math.random()}`
             });
             request.on("response", response => {

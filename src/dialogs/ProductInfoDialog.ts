@@ -8,7 +8,7 @@ class ProductInfoDialog extends BaseDialog {
         this.dialog = [
             (session, args, next) => {
                 let quickRepliesCard = new builder.HeroCard(session);
-                let quickRepliesButtons: builder.ICardAction[] = [];
+                const quickRepliesButtons: builder.ICardAction[] = [];
                 let messageSent: string;
                 switch (args.intent.matched[0]) {
                     case "Size":
@@ -45,7 +45,7 @@ class ProductInfoDialog extends BaseDialog {
                 }
                 switch (session.message.source) {
                     case "facebook":
-                        let facebookMessage = new builder.Message(session).text(messageSent);
+                        const facebookMessage = new builder.Message(session).text(messageSent);
                         session.send(facebookMessage);
                         facebookMessage.text("What do you want to do ?");
                         facebookMessage.sourceEvent({

@@ -8,7 +8,7 @@ class DialogflowDialog extends BaseDialog {
 
   private messengerResponse(session: builder.Session, messages: any[]): void {
     let quickReplies = MessengerController.QuickReplies();
-    let facebookReply = new builder.Message(session);
+    const facebookReply = new builder.Message(session);
     messages.forEach(message => {
       switch (message.type) {
         case MessageTypes.Text:
@@ -33,7 +33,7 @@ class DialogflowDialog extends BaseDialog {
 
   private defaultResponse(session: builder.Session, messages: any[]): void {
     let responseMessage = new builder.Message(session);
-    let responseMessageAttachments: builder.AttachmentType[] = [];
+    const responseMessageAttachments: builder.AttachmentType[] = [];
     messages.forEach(message => {
       switch (message.type) {
         case MessageTypes.Text:
@@ -95,7 +95,7 @@ class DialogflowDialog extends BaseDialog {
     super();
     this.dialog = [
       (session, args, next) => {
-        let fulfillment = builder.EntityRecognizer.findEntity(args.intent.entities, "fulfillment");
+        const fulfillment = builder.EntityRecognizer.findEntity(args.intent.entities, "fulfillment");
         if (fulfillment && (fulfillment.entity.messages.length)) {
           let messages = fulfillment.entity.messages.filter(message => {
             return message.platform === "facebook";

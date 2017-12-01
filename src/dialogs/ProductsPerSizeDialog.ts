@@ -13,13 +13,14 @@ class ProductsPerSizeDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
-                let productList: Product[] = [];
-                let productMessage = new builder.Message(session);
-                let productMessageAttachments: builder.AttachmentType[] = [];
+                const productList: Product[] = [];
+                const productMessage = new builder.Message(session);
+                const productMessageAttachments: builder.AttachmentType[] = [];
                 let quickRepliesCard = new builder.HeroCard(session);
-                let quickRepliesButtons: builder.ICardAction[] = [];
+                const quickRepliesButtons: builder.ICardAction[] = [];
+
                 productMessage.attachmentLayout(builder.AttachmentLayout.carousel);
-                let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
+                const parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
                 if (session.userData.sizeProductPage == 0 || session.userData.sizeProductPage === 0 || (session.userData.oldSize !== <string>parameters.entity.number && session.userData.oldSize !== <string>parameters.entity.number + "0")) {
                     session.userData.displayedProductsOfSize = 5;
                     session.userData.oldSize = parameters.entity.number;

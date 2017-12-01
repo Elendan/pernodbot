@@ -28,7 +28,8 @@ class BrandProductsDialog extends BaseDialog {
                     session.userData.brandProductPage++;
                     BrandProductsDialog._isFirstRound = false;
                 }
-                let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
+                const parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
+
                 session.userData.idToRetrieve = parameters.entity.brands;
                 ProductController.getBrandProducts(parameters.entity.brands, BrandProductsDialog._maxPageLength, session.userData.brandProductPage, BrandProductsDialog._isFirstRound).then(productResponse => {
                     if (productResponse !== null) {
@@ -46,6 +47,7 @@ class BrandProductsDialog extends BaseDialog {
                     let brandProductMessageAttachments: builder.AttachmentType[] = [];
                     let quickRepliesButtons: builder.ICardAction[] = [];
                     let quickRepliesCard = new builder.HeroCard(session);
+
                     brandProductMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                     productResponse.hits.forEach(product => {
                         brandProductMessageAttachments.push(ProductController.buildProductCard(product, session));
@@ -69,8 +71,9 @@ class BrandProductsDialog extends BaseDialog {
                     brandProductMessage.attachments(brandProductMessageAttachments);
                     switch (session.message.source) {
                         case "facebook":
+                            const facebookMessage = new builder.Message(session);
+                            
                             session.userData.quickReplies = MessengerController.QuickReplies();
-                            let facebookMessage = new builder.Message(session);
                             if (brandProductMessageAttachments.length) {
                                 facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                                 facebookMessage.attachments(brandProductMessageAttachments);

@@ -11,6 +11,7 @@ class BuyProductDialog extends BaseDialog {
                 let carousel = new builder.Message(session);
                 let quickRepliesCard = new builder.HeroCard(session);
                 let quickRepliesButtons: builder.ICardAction[] = [];
+
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                 carousel = MessagesController.BuyProductCarousel(session);
                 switch (session.message.source) {

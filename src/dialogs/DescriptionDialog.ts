@@ -10,13 +10,13 @@ class DescriptionDialog extends BaseDialog {
         this.dialog = [
             (session, args, next) => {
                 session.userData.quickReplies = MessengerController.QuickReplies();
-                let parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
+                const parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
                 ProductController.getProductById(parameters.entity.product).then(product => {
-                    let productMessage = new builder.Message(session);
-                    let productMessageAttachments: builder.AttachmentType[] = [];
+                    const productMessage = new builder.Message(session);
+                    const productMessageAttachments: builder.AttachmentType[] = [];
                     productMessage.attachmentLayout(builder.AttachmentLayout.list);
                     let quickRepliesCard = new builder.HeroCard(session);
-                    let quickRepliesButtons: builder.ICardAction[] = [];
+                    const quickRepliesButtons: builder.ICardAction[] = [];
                     if (product.mediaList && product.mediaList.length && product.mediaList[0].urls) {
                         switch (session.message.source) {
                             case "facebook":
@@ -51,7 +51,8 @@ class DescriptionDialog extends BaseDialog {
                     }
                     switch (session.message.source) {
                         case "facebook":
-                            let facebookMessage = new builder.Message(session).text("What do you want to do ?");
+                            const facebookMessage = new builder.Message(session).text("What do you want to do ?");
+                            
                             session.userData.quickReplies.facebook.quick_replies.push(
                                 {
                                     content_type: "text",
