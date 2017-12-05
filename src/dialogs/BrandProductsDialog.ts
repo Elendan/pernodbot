@@ -52,6 +52,11 @@ class BrandProductsDialog extends BaseDialog {
                     productResponse.hits.forEach(product => {
                         brandProductMessageAttachments.push(ProductController.buildProductCard(product, session));
                     });
+                    if (!brandProductMessageAttachments.length) {
+                        session.send("Sorry, we don't have any products of this brand yet");
+                        session.endDialog();
+                        return;
+                    }
                     if (productResponse.nbPages > productResponse.page + 1) {
                         // Load more brand product card
                         brandProductMessageAttachments.push(
@@ -75,13 +80,8 @@ class BrandProductsDialog extends BaseDialog {
                             const facebookMessage = new builder.Message(session);
 
                             session.userData.quickReplies = MessengerController.QuickReplies();
-                            if (brandProductMessageAttachments.length) {
-                                facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
-                                facebookMessage.attachments(brandProductMessageAttachments);
-                            }
-                            else {
-                                facebookMessage.text("Sorry, we don't have any products of this brand yet");
-                            }
+                            facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
+                            facebookMessage.attachments(brandProductMessageAttachments);
                             if (productResponse.nbHits > 8) {
                                 session.userData.quickReplies.facebook.quick_replies.push({
                                     content_type: "text",
@@ -98,7 +98,7 @@ class BrandProductsDialog extends BaseDialog {
                             session.send(facebookMessage);
                             break;
                         default:
-                            session.send(brandProductMessageAttachments.length ? brandProductMessage : "Sorry, we don't have any products of this brand yet");
+                            session.send(brandProductMessage);
                             if (productResponse.nbHits > 8) {
                                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by Size");
                             }
