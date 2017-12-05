@@ -40,7 +40,7 @@ class CategoryProductDialog extends BaseDialog {
                         });
                     }
                     // sort sizes by ascending order
-                    session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });
+                    session.userData.availableSizes = session.userData.availableSizes.sort((a, b) => { return a - b });
                 }).then(() => ProductController.getCategoryProducts(parameters.entity.category, CategoryProductDialog._pageLength, session.userData.categoryProductPage).then(productResponse => {
                     const categoryProductMessage = new builder.Message(session);
                     const categoryProductMessageAttachments: builder.AttachmentType[] = [];

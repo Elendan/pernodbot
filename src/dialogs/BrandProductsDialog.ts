@@ -41,7 +41,7 @@ class BrandProductsDialog extends BaseDialog {
                         });
                     }
                     // sort sizes by ascending order
-                    session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });
+                    session.userData.availableSizes = session.userData.availableSizes.sort((a, b) => { return a - b });
                 }).then(() => ProductController.getBrandProducts(parameters.entity.brands, BrandProductsDialog._pageLength, session.userData.brandProductPage).then(productResponse => {
                     let brandProductMessage = new builder.Message(session);
                     let brandProductMessageAttachments: builder.AttachmentType[] = [];

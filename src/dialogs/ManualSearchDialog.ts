@@ -40,7 +40,7 @@ class ManualSearchDialog extends BaseDialog {
                         });
                     }
                     // sort sizes by ascending order
-                    session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });
+                    session.userData.availableSizes = session.userData.availableSizes.sort((a, b) => { return a - b });
                 }).then(() => ProductController.getProductFromInput(session.userData.idToRetrieve, ManualSearchDialog._pageLength, session.userData.productPage).then(productResponse => {
                     const productMessage = new builder.Message(session);
                     const productMessageAttachments: builder.AttachmentType[] = [];
