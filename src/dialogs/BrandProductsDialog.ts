@@ -31,16 +31,16 @@ class BrandProductsDialog extends BaseDialog {
                 const parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
 
                 session.userData.idToRetrieve = parameters.entity.brands;
+                // Gets every sizes
                 ProductController.getBrandProducts(parameters.entity.brands, BrandProductsDialog._maxPageLength, session.userData.brandProductPage, BrandProductsDialog._isFirstRound).then(productResponse => {
                     if (productResponse !== null) {
                         productResponse.hits.forEach(p => {
-                            if (p.size) {
+                            if (p.size && !session.userData.availableSizes.includes(`${parseFloat(p.size.id)}`)) {
                                 session.userData.availableSizes.push(`${parseFloat(p.size.id)}`);
                             }
                         });
                     }
-                    session.userData.availableSizes = new Set(session.userData.availableSizes);
-                    session.userData.availableSizes = Array.from(session.userData.availableSizes);
+                    // sort sizes by ascending order
                     session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });
                 }).then(() => ProductController.getBrandProducts(parameters.entity.brands, BrandProductsDialog._pageLength, session.userData.brandProductPage).then(productResponse => {
                     let brandProductMessage = new builder.Message(session);
@@ -69,6 +69,7 @@ class BrandProductsDialog extends BaseDialog {
                         session.userData.brandProductPage = 0;
                     }
                     brandProductMessage.attachments(brandProductMessageAttachments);
+                    // Defines message type depending on the chatting platform
                     switch (session.message.source) {
                         case "facebook":
                             const facebookMessage = new builder.Message(session);

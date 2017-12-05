@@ -12,7 +12,7 @@ import DescriptionDialog from "./dialogs/DescriptionDialog";
 import AvailableSizesDialog from "./dialogs/AvailableSizesDialog";
 import ProductsPerSizeDialog from "./dialogs/ProductsPerSizeDialog";
 import BuyProductDialog from "./dialogs/BuyProductDialog";
-import UnknownInput from "./dialogs/UnknownInput";
+import ManualSearchDialog from "./dialogs/ManualSearchDialog";
 import GreetingsDialog from "./dialogs/GreetingsDialog";
 import BackToFiltersDialog from "./dialogs/BackToFiltersDialog";
 
@@ -166,7 +166,7 @@ class PernodBot {
                 }
             }
         });
-        new UnknownInput().register(this.bot, "unknownInput", {
+        new ManualSearchDialog().register(this.bot, "unknownInput", {
             onFindAction: (context: builder.IFindActionRouteContext, callback: (err: Error, score: number, routeData?: builder.IActionRouteData) => void) => {
                 if (context.intent && /^undefined|^search.more.products|^Default Fallback Intent/.test(context.intent.intent)) {
                     callback(null, context.intent.score, {

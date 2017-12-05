@@ -52,6 +52,7 @@ class CategoriesDialog extends BaseDialog {
                         session.userData.categoryPage = 0;
                     }
                     categoriesMessage.attachments(categoriesMessageAttachments);
+                    // Defines message type depending on the chatting platform
                     switch (session.message.source) {
                         case "facebook":
                             const facebookMessage = new builder.Message(session).attachments(categoriesMessageAttachments);

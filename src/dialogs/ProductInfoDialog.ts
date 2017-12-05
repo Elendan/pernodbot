@@ -44,6 +44,7 @@ class ProductInfoDialog extends BaseDialog {
                         break;
                 }
                 switch (session.message.source) {
+                    // Defines message type depending on the chatting platform
                     case "facebook":
                         const facebookMessage = new builder.Message(session).text(messageSent);
                         session.send(facebookMessage);

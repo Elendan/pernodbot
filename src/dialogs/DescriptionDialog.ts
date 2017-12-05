@@ -18,6 +18,7 @@ class DescriptionDialog extends BaseDialog {
                     let quickRepliesCard = new builder.HeroCard(session);
                     const quickRepliesButtons: builder.ICardAction[] = [];
                     if (product.mediaList && product.mediaList.length && product.mediaList[0].urls) {
+                        // Defines message type depending on the chatting platform
                         switch (session.message.source) {
                             case "facebook":
                                 let image = new builder.Message(session).addAttachment({
@@ -49,6 +50,7 @@ class DescriptionDialog extends BaseDialog {
                             payload: "More Details"
                         });
                     }
+                    // Defines message type depending on the chatting platform
                     switch (session.message.source) {
                         case "facebook":
                             const facebookMessage = new builder.Message(session).text("What do you want to do ?");

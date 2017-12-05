@@ -13,7 +13,7 @@ class AvailableSizesDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
-                let quickRepliesButtons: builder.ICardAction[] = [];
+                const quickRepliesButtons: builder.ICardAction[] = [];
                 let quickRepliesCard = new builder.HeroCard(session);
                 
                 session.userData.quickReplies = MessengerController.QuickReplies();

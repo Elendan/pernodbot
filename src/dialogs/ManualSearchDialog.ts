@@ -5,7 +5,7 @@ import ProductType from "../enums/ProductType";
 import MessagesController from "../controllers/MessagesController";
 import MessengerController from "../controllers/MessengerController";
 
-class UnknownInput extends BaseDialog {
+class ManualSearchDialog extends BaseDialog {
 
     private static readonly _searchMoreProductIntentName: string = "search.more.products";
     private static readonly _defaultFallbackIntent: string = "Default Fallback Intent";
@@ -21,28 +21,27 @@ class UnknownInput extends BaseDialog {
                 session.userData.quickReplies = MessengerController.QuickReplies();
                 session.send("Understood, let me search that for you ⏳");
                 session.userData.productType = ProductType.Classic;
-                if ((session.userData.productPage == null) || (args.intent.intent === UnknownInput._undefinedIntentName) || (args.intent.intent === UnknownInput._defaultFallbackIntent)) {
+                if ((session.userData.productPage == null) || (args.intent.intent === ManualSearchDialog._undefinedIntentName) || (args.intent.intent === ManualSearchDialog._defaultFallbackIntent)) {
                     session.userData.productPage = 0;
                     session.userData.availableSizes = [];
-                    UnknownInput._isFirstRound = true;
+                    ManualSearchDialog._isFirstRound = true;
                 }
-                else if (args.intent.intent === UnknownInput._searchMoreProductIntentName) {
+                else if (args.intent.intent === ManualSearchDialog._searchMoreProductIntentName) {
                     session.userData.productPage++;
-                    UnknownInput._isFirstRound = false;
+                    ManualSearchDialog._isFirstRound = false;
                 }
                 session.userData.idToRetrieve = session.message.text.replace(/Search more products /, '');
-                ProductController.getProductFromInput(session.userData.idToRetrieve, UnknownInput._maxPageLength, 0, UnknownInput._isFirstRound).then(productResponse => {
+                ProductController.getProductFromInput(session.userData.idToRetrieve, ManualSearchDialog._maxPageLength, 0, ManualSearchDialog._isFirstRound).then(productResponse => {
                     if (productResponse !== null) {
                         productResponse.hits.forEach(p => {
-                            if (p.size) {
+                            if (p.size && !session.userData.availableSizes.includes(`${parseFloat(p.size.id)}`)) {
                                 session.userData.availableSizes.push(`${parseFloat(p.size.id)}`);
                             }
                         });
                     }
-                    session.userData.availableSizes = new Set(session.userData.availableSizes);
-                    session.userData.availableSizes = Array.from(session.userData.availableSizes);
+                    // sort sizes by ascending order
                     session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });
-                }).then(() => ProductController.getProductFromInput(session.userData.idToRetrieve, UnknownInput._pageLength, session.userData.productPage).then(productResponse => {
+                }).then(() => ProductController.getProductFromInput(session.userData.idToRetrieve, ManualSearchDialog._pageLength, session.userData.productPage).then(productResponse => {
                     const productMessage = new builder.Message(session);
                     const productMessageAttachments: builder.AttachmentType[] = [];
                     const quickRepliesButtons: builder.ICardAction[] = [];
@@ -68,6 +67,7 @@ class UnknownInput extends BaseDialog {
                     }
                     if (productResponse.nbHits === 0) {
                         session.send("Sorry, we could not find this product.");
+                        // Defines message type depending on the chatting platform
                         switch (session.message.source) {
                             case "facebook":
                                 let facebookMessage = new builder.Message(session).text("What do you want to do ?");
@@ -93,6 +93,7 @@ class UnknownInput extends BaseDialog {
                         session.endDialog();
                         return;
                     }
+                    // Defines message type depending on the chatting platform
                     switch (session.message.source) {
                         case "facebook":
                             const facebookMessage = new builder.Message(session).attachments(productMessageAttachments);
@@ -132,4 +133,4 @@ class UnknownInput extends BaseDialog {
     }
 }
 
-export default UnknownInput;
+export default ManualSearchDialog;

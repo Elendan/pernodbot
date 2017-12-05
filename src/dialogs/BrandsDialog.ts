@@ -51,6 +51,7 @@ class BrandsDialog extends BaseDialog {
                         session.userData.brandPage = 0;
                     }
                     brandsMessage.attachments(brandsMessageAttachments);
+                    // Defines message type depending on the chatting platform
                     switch (session.message.source) {
                         case "facebook":
                             const facebookMessage = new builder.Message(session).attachments(brandsMessageAttachments);

@@ -30,16 +30,16 @@ class CategoryProductDialog extends BaseDialog {
                 }
                 const parameters = builder.EntityRecognizer.findEntity(args.intent.entities, "parameters");
                 session.userData.idToRetrieve = parameters.entity.category;
+                // Get all products size
                 ProductController.getCategoryProducts(parameters.entity.category, CategoryProductDialog._maxPageLength, session.userData.categoryProductPage, CategoryProductDialog._isFirstRound).then(productResponse => {
                     if (productResponse !== null) {
                         productResponse.hits.forEach(p => {
-                            if (p.size) {
+                            if (p.size && !session.userData.availableSizes.includes(`${parseFloat(p.size.id)}`)) {
                                 session.userData.availableSizes.push(`${parseFloat(p.size.id)}`);
                             }
                         });
                     }
-                    session.userData.availableSizes = new Set(session.userData.availableSizes);
-                    session.userData.availableSizes = Array.from(session.userData.availableSizes);
+                    // sort sizes by ascending order
                     session.userData.availableSizes = session.userData.availableSizes.sort(function (a, b) { return a - b });
                 }).then(() => ProductController.getCategoryProducts(parameters.entity.category, CategoryProductDialog._pageLength, session.userData.categoryProductPage).then(productResponse => {
                     const categoryProductMessage = new builder.Message(session);

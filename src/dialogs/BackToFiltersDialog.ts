@@ -13,6 +13,7 @@ class BackToFiltersDialog extends BaseDialog {
 
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Brands 🍾");
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Categories 🍸");
+                // Defines message type depending on the chatting platform
                 switch (session.message.source) {
                     case "facebook":
                         session.send(MessengerController.MenuReplies(session));

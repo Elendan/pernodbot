@@ -14,6 +14,7 @@ class BuyProductDialog extends BaseDialog {
 
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                 carousel = MessagesController.BuyProductCarousel(session);
+                // Defines message type depending on the chatting platform
                 switch (session.message.source) {
                     case "facebook":
                         let facebookMessage = new builder.Message(session)

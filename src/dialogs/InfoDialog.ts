@@ -20,6 +20,7 @@ class InfoDialog extends BaseDialog {
                     productMessage.attachmentLayout(builder.AttachmentLayout.list);
                     let quickRepliesCard = new builder.HeroCard(session);
                     const quickRepliesButtons: builder.ICardAction[] = [];
+                    // Fill the array with the selected product informations
                     if (session.userData.informations && session.userData.informations.length) {
                         for (let i in session.userData.informations) {
                             quickRepliesButtons.push({
@@ -37,6 +38,7 @@ class InfoDialog extends BaseDialog {
                     quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                     productMessageAttachments.push(quickRepliesCard);
                     productMessage.attachments(productMessageAttachments);
+                    // Defines message type depending on the chatting platform
                     switch (session.message.source) {
                         case "facebook":
                             const facebookMessage = new builder.Message(session).text("Want to know more about");
