@@ -72,7 +72,7 @@ class DescriptionDialog extends BaseDialog {
                             break;
                         default:
                             quickRepliesCard.text("What do you want to do ?");
-                            quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Buy this product 🛒", "Buy this product")
+                            quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Buy this product 🛒", "Buy this product");
                             quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Back to Menu 🔙");
                             productMessageAttachments.push(quickRepliesCard);
                             productMessage.attachments(productMessageAttachments);

@@ -60,3 +60,5 @@ typings/
 # build
 build/
 package-lock\.json
+
+\.idea/

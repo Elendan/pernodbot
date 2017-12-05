@@ -1,5 +1,4 @@
 import * as builder from "botbuilder";
-import * as apiai from "apiai";
 import BaseDialog from "./basedialog";
 import MessageTypes from "../enums/MessageTypes";
 import MessengerController from "../controllers/MessengerController";
@@ -56,7 +55,7 @@ class DialogflowDialog extends BaseDialog {
               value: button.postback || button.text
             });
           });
-          card.buttons(buttons)
+          card.buttons(buttons);
           responseMessageAttachments.push(card);
           responseMessage.attachments(responseMessageAttachments);
           break;

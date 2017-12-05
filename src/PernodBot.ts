@@ -1,5 +1,4 @@
 import * as builder from "botbuilder";
-import * as apiai from "apiai";
 import DialogflowRecognizer from "./dialogs/DialogflowRecognizer";
 import DialogflowDialog from "./dialogs/DialogflowDialog";
 import BrandsDialog from "./dialogs/BrandsDialog";

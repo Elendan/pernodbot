@@ -73,7 +73,7 @@ class ProductInfoDialog extends BaseDialog {
                         session.send(facebookMessage);
                         break;
                     default:
-                        session.send(messageSent)
+                        session.send(messageSent);
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Buy this product 🛒");
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "More Details");
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);

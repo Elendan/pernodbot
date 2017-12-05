@@ -30,7 +30,6 @@ class CategoriesDialog extends BaseDialog {
                     let categoriesMessageAttachments: builder.AttachmentType[] = [];
                     categoriesMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                     categoryResponse.hits.forEach(category => {
-                        let categoriesProductQuery = category.label.replace(/ /g, '+');
                         categoriesMessageAttachments.push(CategoryController.buildCategoryCard(category, session));
                     });
                     if (categoryResponse.nbPages > categoryResponse.page + 1) {

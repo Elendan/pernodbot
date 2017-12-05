@@ -1,6 +1,5 @@
 import "dotenv/config";
 import * as restify from "restify";
-import * as builder from "botbuilder";
 import PernodBot from "./PernodBot";
 
 const bot = new PernodBot();

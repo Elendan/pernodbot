@@ -85,7 +85,7 @@ class ManualSearchDialog extends BaseDialog {
                                 session.send(facebookMessage);
                                 break;
                             default:
-                                quickRepliesCard.text("What do you want to do ?")
+                                quickRepliesCard.text("What do you want to do ?");
                                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Back to Menu 🔙", "Filters");
                                 session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                                 break;

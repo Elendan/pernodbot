@@ -1,7 +1,6 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import MessagesController from "../controllers/MessagesController";
-import MessageTypes from "../enums/MessageTypes";
 
 class GreetingsDialog extends BaseDialog {
     constructor() {

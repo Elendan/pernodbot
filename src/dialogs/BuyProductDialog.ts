@@ -1,6 +1,5 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./BaseDialog";
-import ProductController from "./../controllers/ProductController";
 import MessagesController from "./../controllers/MessagesController";
 
 class BuyProductDialog extends BaseDialog {
@@ -8,16 +7,15 @@ class BuyProductDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
-                let carousel = new builder.Message(session);
+                let carousel = MessagesController.BuyProductCarousel(session);
                 let quickRepliesCard = new builder.HeroCard(session);
                 let quickRepliesButtons: builder.ICardAction[] = [];
 
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
-                carousel = MessagesController.BuyProductCarousel(session);
                 // Defines message type depending on the chatting platform
                 switch (session.message.source) {
                     case "facebook":
-                        let facebookMessage = new builder.Message(session)
+                        let facebookMessage = new builder.Message(session);
                         facebookMessage = carousel;
                         facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                         facebookMessage.sourceEvent({
