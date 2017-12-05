@@ -23,9 +23,11 @@ class AvailableSizesDialog extends BaseDialog {
                     session.userData.repliesAlreadyDisplayed = 0;
                     session.userData.repliesToDisplay = AvailableSizesDialog._repliesPerCard;
                 }
+                // Calculates the amount of quick replies to display when clicking "more sizes"
                 else if (args.intent.intent === AvailableSizesDialog._filterMoreSizeIntentName) {
                     session.userData.repliesToDisplay += session.userData.rest !== 0 && session.userData.repliesToDisplay + session.userData.rest === session.userData.availableSizes.length ? session.userData.rest : AvailableSizesDialog._repliesPerCard;
                 }
+                // Adds quick replies for each available size
                 while (session.userData.repliesAlreadyDisplayed < session.userData.repliesToDisplay) {
                     quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, session.userData.availableSizes[session.userData.repliesAlreadyDisplayed]);
                     session.userData.quickReplies.facebook.quick_replies.push({
@@ -43,6 +45,7 @@ class AvailableSizesDialog extends BaseDialog {
                         payload: "More Sizes"
                     });
                 }
+                // Defines message type depending on the chatting platform
                 switch (session.message.source) {
                     case "facebook":
                         const facebookMessage = new builder.Message(session).text("Choose a size among the following.");
