@@ -54,7 +54,7 @@ class DescriptionDialog extends BaseDialog {
                     switch (session.message.source) {
                         case "facebook":
                             const facebookMessage = new builder.Message(session).text("What do you want to do ?");
-                            
+
                             session.userData.quickReplies.facebook.quick_replies.push(
                                 {
                                     content_type: "text",

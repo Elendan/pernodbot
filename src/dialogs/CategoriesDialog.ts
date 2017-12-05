@@ -55,7 +55,7 @@ class CategoriesDialog extends BaseDialog {
                     switch (session.message.source) {
                         case "facebook":
                             const facebookMessage = new builder.Message(session).attachments(categoriesMessageAttachments);
-                            
+
                             facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                             facebookMessage.sourceEvent({
                                 facebook: {

@@ -27,7 +27,7 @@ class ProductsPerSizeDialog extends BaseDialog {
                 }
                 switch (session.userData.productType) {
                     case ProductType.Brand:
-                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, null, "Brands");
+                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, null, "Brands");
                         ProductController.getBrandProducts(session.userData.idToRetrieve, ProductsPerSizeDialog._pageLength, 0).then(productResponse => {
                             productResponse.hits.forEach(product => {
                                 if (product.size && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {
@@ -57,7 +57,7 @@ class ProductsPerSizeDialog extends BaseDialog {
                         });
                         break;
                     case ProductType.Classic:
-                    quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
+                        quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                         ProductController.getProductFromInput(session.userData.idToRetrieve, ProductsPerSizeDialog._pageLength, 0).then(productResponse => {
                             productResponse.hits.forEach(product => {
                                 if (product.size && (product.size.id === <string>parameters.entity.number || product.size.id === <string>parameters.entity.number + "0")) {

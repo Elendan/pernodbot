@@ -46,7 +46,7 @@ class CategoryProductDialog extends BaseDialog {
                     const categoryProductMessageAttachments: builder.AttachmentType[] = [];
                     const quickRepliesButtons: builder.ICardAction[] = [];
                     let quickRepliesCard = new builder.HeroCard(session);
-                    
+
                     categoryProductMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                     productResponse.hits.forEach(product => {
                         categoryProductMessageAttachments.push(ProductController.buildProductCard(product, session));

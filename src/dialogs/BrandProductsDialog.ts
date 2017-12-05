@@ -73,7 +73,7 @@ class BrandProductsDialog extends BaseDialog {
                     switch (session.message.source) {
                         case "facebook":
                             const facebookMessage = new builder.Message(session);
-                            
+
                             session.userData.quickReplies = MessengerController.QuickReplies();
                             if (brandProductMessageAttachments.length) {
                                 facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);

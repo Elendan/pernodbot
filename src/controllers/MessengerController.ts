@@ -2,7 +2,7 @@ import * as https from "https";
 import * as builder from "botbuilder";
 
 class MessengerController {
-    public static QuickReplies() : any {
+    public static QuickReplies(): any {
         return {
             facebook: {
                 quick_replies: []
@@ -10,7 +10,7 @@ class MessengerController {
         }
     }
 
-    public static MenuReplies(session: builder.Session) : builder.Message  {
+    public static MenuReplies(session: builder.Session): builder.Message {
         const facebookMessage = new builder.Message(session).text("You can find products using the buttons below or simply typing the name of the product.");
         facebookMessage.sourceEvent({
             facebook: {

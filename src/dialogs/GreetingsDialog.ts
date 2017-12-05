@@ -17,7 +17,7 @@ class GreetingsDialog extends BaseDialog {
                 switch (session.message.source) {
                     case "facebook":
                         const facebookMessage = new builder.Message(session).text("Hello and welcome in the Pernod Ricard's catalog of products.");
-                        
+
                         session.send(facebookMessage);
                         facebookMessage.text("You can find products using the buttons below or simply typing the name of the product.");
                         facebookMessage.sourceEvent({

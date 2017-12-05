@@ -15,7 +15,7 @@ class AvailableSizesDialog extends BaseDialog {
             (session, args, next) => {
                 const quickRepliesButtons: builder.ICardAction[] = [];
                 let quickRepliesCard = new builder.HeroCard(session);
-                
+
                 session.userData.quickReplies = MessengerController.QuickReplies();
                 session.userData.sizeProductPage = 0;
                 session.userData.rest = session.userData.availableSizes.length % AvailableSizesDialog._repliesPerCard;
@@ -46,7 +46,7 @@ class AvailableSizesDialog extends BaseDialog {
                 switch (session.message.source) {
                     case "facebook":
                         const facebookMessage = new builder.Message(session).text("Choose a size among the following.");
-                        
+
                         facebookMessage.sourceEvent(session.userData.quickReplies);
                         session.send(facebookMessage);
                         break;

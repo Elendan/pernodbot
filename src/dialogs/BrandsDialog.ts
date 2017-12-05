@@ -27,7 +27,7 @@ class BrandsDialog extends BaseDialog {
                 BrandController.getBrands(BrandsDialog._pageLength, session.userData.brandPage).then(brandResponse => {
                     let brandsMessage = new builder.Message(session);
                     let brandsMessageAttachments: builder.AttachmentType[] = [];
-                    
+
                     session.userData.brandPage = brandResponse.page;
                     brandsMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                     brandResponse.hits.forEach(brand => {
