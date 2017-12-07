@@ -3,6 +3,7 @@ import BaseDialog from "./basedialog";
 import ProductController from "../controllers/ProductController";
 import MessagesController from "../controllers/MessagesController";
 import MessengerController from "../controllers/MessengerController";
+import ChatBase from "../controllers/ChatbaseController";
 
 class InfoDialog extends BaseDialog {
     constructor() {
@@ -41,11 +42,13 @@ class InfoDialog extends BaseDialog {
                     // Defines message type depending on the chatting platform
                     switch (session.message.source) {
                         case "facebook":
+                            ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                             const facebookMessage = new builder.Message(session).text("Want to know more about");
                             facebookMessage.sourceEvent(session.userData.quickReplies);
                             session.send(facebookMessage);
                             break;
                         default:
+                            ChatBase.sendHandled(session, "Web", session.message.text, args.intent.intent);
                             productMessage.text("Want to know more about");
                             session.send(productMessage);
                             break;

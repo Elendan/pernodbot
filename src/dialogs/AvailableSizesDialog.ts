@@ -1,7 +1,8 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
-import MessagesController from "./../controllers/MessagesController"
-import MessengerController from "./../controllers/MessengerController"
+import MessagesController from "./../controllers/MessagesController";
+import MessengerController from "./../controllers/MessengerController";
+import ChatBase from "./../controllers/ChatbaseController";
 
 class AvailableSizesDialog extends BaseDialog {
 
@@ -51,9 +52,11 @@ class AvailableSizesDialog extends BaseDialog {
                         const facebookMessage = new builder.Message(session).text("Choose a size among the following.");
 
                         facebookMessage.sourceEvent(session.userData.quickReplies);
+                        ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                         session.send(facebookMessage);
                         break;
                     default:
+                        ChatBase.sendHandled(session, "web", session.message.text, args.intent.intent);
                         session.send("Choose a size among the following.");
                         session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                         break;

@@ -3,7 +3,8 @@ import BaseDialog from "./basedialog";
 import ProductController from "../controllers/ProductController";
 import MessagesController from "../controllers/MessagesController";
 import ProductType from "../enums/ProductType";
-import MessengerController from "../controllers/MessengerController"
+import MessengerController from "../controllers/MessengerController";
+import ChatBase from "../controllers/ChatbaseController";
 
 class BrandProductsDialog extends BaseDialog {
 
@@ -53,6 +54,7 @@ class BrandProductsDialog extends BaseDialog {
                         brandProductMessageAttachments.push(ProductController.buildProductCard(product, session));
                     });
                     if (!brandProductMessageAttachments.length) {
+                        ChatBase.sendNotHandled(session, "facebook", session.message.text, args.intent.intent);
                         session.send("Sorry, we don't have any products of this brand yet");
                         session.endDialog();
                         return;
@@ -79,6 +81,7 @@ class BrandProductsDialog extends BaseDialog {
                         case "facebook":
                             const facebookMessage = new builder.Message(session);
 
+                            ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                             session.userData.quickReplies = MessengerController.QuickReplies();
                             facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                             facebookMessage.attachments(brandProductMessageAttachments);
@@ -99,6 +102,7 @@ class BrandProductsDialog extends BaseDialog {
                             break;
                         default:
                             session.send(brandProductMessage);
+                            ChatBase.sendHandled(session, "Web", session.message.text, args.intent.intent);
                             if (productResponse.nbHits > 8) {
                                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by Size");
                             }

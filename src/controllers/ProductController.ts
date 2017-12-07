@@ -4,6 +4,7 @@ import ProductResponse from "../models/ProductResponse";
 import Product from "../models/Product";
 import MessagesController from "../controllers/MessagesController";
 import ProductType from "../enums/ProductType";
+import ChatBase from "../controllers/ChatbaseController";
 
 class ProductController {
 
@@ -254,6 +255,7 @@ class ProductController {
         productMessage.attachments(productMessageAttachments);
         switch (session.message.source) {
             case "facebook":
+                ChatBase.sendHandled(session, "facebook", session.message.text, "product.size");
                 let facebookMessage = new builder.Message(session);
                 facebookMessage.attachments(productMessageAttachments);
                 facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
@@ -271,6 +273,7 @@ class ProductController {
                 session.send(facebookMessage);
                 break;
             default:
+                ChatBase.sendHandled(session, "Web", session.message.text, "product.size");
                 session.send(productMessage);
                 session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                 break;

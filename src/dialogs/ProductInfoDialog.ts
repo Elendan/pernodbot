@@ -1,6 +1,7 @@
 import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import MessagesController from "./../controllers/MessagesController";
+import ChatBase from "../controllers/ChatbaseController";
 
 class ProductInfoDialog extends BaseDialog {
     constructor() {
@@ -46,6 +47,7 @@ class ProductInfoDialog extends BaseDialog {
                 switch (session.message.source) {
                     // Defines message type depending on the chatting platform
                     case "facebook":
+                        ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                         const facebookMessage = new builder.Message(session).text(messageSent);
                         session.send(facebookMessage);
                         facebookMessage.text("What do you want to do ?");
@@ -73,6 +75,7 @@ class ProductInfoDialog extends BaseDialog {
                         session.send(facebookMessage);
                         break;
                     default:
+                        ChatBase.sendHandled(session, "web", session.message.text, args.intent.intent);
                         session.send(messageSent);
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Buy this product 🛒");
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "More Details");

@@ -4,6 +4,7 @@ import ProductController from "../controllers/ProductController";
 import ProductType from "../enums/ProductType";
 import MessagesController from "../controllers/MessagesController";
 import MessengerController from "../controllers/MessengerController";
+import ChatBase from "../controllers/ChatbaseController";
 
 class ManualSearchDialog extends BaseDialog {
 
@@ -66,6 +67,7 @@ class ManualSearchDialog extends BaseDialog {
                         session.userData.productPage = 0;
                     }
                     if (productResponse.nbHits === 0) {
+                        ChatBase.sendNotHandled(session, "facebook", session.message.text, args.intent.intent);
                         session.send("Sorry, we could not find this product.");
                         // Defines message type depending on the chatting platform
                         switch (session.message.source) {
@@ -96,6 +98,7 @@ class ManualSearchDialog extends BaseDialog {
                     // Defines message type depending on the chatting platform
                     switch (session.message.source) {
                         case "facebook":
+                            ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                             const facebookMessage = new builder.Message(session).attachments(productMessageAttachments);
                             facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                             if (productResponse.nbHits > 8) {
@@ -114,6 +117,7 @@ class ManualSearchDialog extends BaseDialog {
                             session.send(facebookMessage);
                             break;
                         default:
+                            ChatBase.sendHandled(session, "Web", session.message.text, args.intent.intent);
                             productMessage.attachments(productMessageAttachments);
                             session.send(productMessage);
                             if (productResponse.nbHits > 8) {

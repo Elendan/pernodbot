@@ -2,6 +2,7 @@ import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import BrandController from "../controllers/BrandController";
 import MessagesController from "../controllers/MessagesController";
+import ChatBase from "../controllers/ChatbaseController";
 
 class BrandsDialog extends BaseDialog {
 
@@ -54,6 +55,7 @@ class BrandsDialog extends BaseDialog {
                     // Defines message type depending on the chatting platform
                     switch (session.message.source) {
                         case "facebook":
+                            ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                             const facebookMessage = new builder.Message(session).attachments(brandsMessageAttachments);
                             facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                             facebookMessage.sourceEvent({
@@ -70,6 +72,7 @@ class BrandsDialog extends BaseDialog {
                             session.send(facebookMessage);
                             break;
                         default:
+                            ChatBase.sendHandled(session, "Web", session.message.text, args.intent.intent);
                             session.send(brandsMessage);
                             session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                             break;

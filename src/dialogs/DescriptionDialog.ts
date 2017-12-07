@@ -3,6 +3,7 @@ import BaseDialog from "./basedialog";
 import ProductController from "../controllers/ProductController";
 import MessagesController from "../controllers/MessagesController";
 import MessengerController from "../controllers/MessengerController";
+import ChatBase from "../controllers/ChatbaseController";
 
 class DescriptionDialog extends BaseDialog {
     constructor() {
@@ -21,6 +22,7 @@ class DescriptionDialog extends BaseDialog {
                         // Defines message type depending on the chatting platform
                         switch (session.message.source) {
                             case "facebook":
+                                ChatBase.sendHandled(session, "facebook", session.message.text + " Image", args.intent.intent);
                                 let image = new builder.Message(session).addAttachment({
                                     contentUrl: product.mediaList[0].urls.bamArticleFull,
                                     contentType: "image/png",
@@ -29,6 +31,7 @@ class DescriptionDialog extends BaseDialog {
                                 session.send(image);
                                 break;
                             default:
+                                ChatBase.sendHandled(session, "web", session.message.text + " Image", args.intent.intent);
                                 productMessageAttachments.push(
                                     new builder.HeroCard(session)
                                         .images([builder.CardImage.create(session, product.mediaList[0].urls.bamArticleFull)])
@@ -53,6 +56,7 @@ class DescriptionDialog extends BaseDialog {
                     // Defines message type depending on the chatting platform
                     switch (session.message.source) {
                         case "facebook":
+                            ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                             const facebookMessage = new builder.Message(session).text("What do you want to do ?");
 
                             session.userData.quickReplies.facebook.quick_replies.push(
@@ -71,6 +75,7 @@ class DescriptionDialog extends BaseDialog {
                             session.send(facebookMessage);
                             break;
                         default:
+                            ChatBase.sendHandled(session, "Web", session.message.text, args.intent.intent);
                             quickRepliesCard.text("What do you want to do ?");
                             quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Buy this product 🛒", "Buy this product");
                             quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Back to Menu 🔙");
