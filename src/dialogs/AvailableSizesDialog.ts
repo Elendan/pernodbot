@@ -47,16 +47,15 @@ class AvailableSizesDialog extends BaseDialog {
                     });
                 }
                 // Defines message type depending on the chatting platform
+                ChatBase.sendHandled(session, session.message.source, session.message.text, args.intent.intent);
                 switch (session.message.source) {
                     case "facebook":
                         const facebookMessage = new builder.Message(session).text("Choose a size among the following.");
 
                         facebookMessage.sourceEvent(session.userData.quickReplies);
-                        ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                         session.send(facebookMessage);
                         break;
                     default:
-                        ChatBase.sendHandled(session, "web", session.message.text, args.intent.intent);
                         session.send("Choose a size among the following.");
                         session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                         break;

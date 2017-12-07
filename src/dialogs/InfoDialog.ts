@@ -40,15 +40,14 @@ class InfoDialog extends BaseDialog {
                     productMessageAttachments.push(quickRepliesCard);
                     productMessage.attachments(productMessageAttachments);
                     // Defines message type depending on the chatting platform
+                    ChatBase.sendHandled(session, session.message.source, session.message.text, args.intent.intent);
                     switch (session.message.source) {
                         case "facebook":
-                            ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                             const facebookMessage = new builder.Message(session).text("Want to know more about");
                             facebookMessage.sourceEvent(session.userData.quickReplies);
                             session.send(facebookMessage);
                             break;
                         default:
-                            ChatBase.sendHandled(session, "Web", session.message.text, args.intent.intent);
                             productMessage.text("Want to know more about");
                             session.send(productMessage);
                             break;

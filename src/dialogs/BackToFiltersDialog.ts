@@ -15,13 +15,12 @@ class BackToFiltersDialog extends BaseDialog {
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Brands 🍾");
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Categories 🍸");
                 // Defines message type depending on the chatting platform
+                ChatBase.sendHandled(session, session.message.source, session.message.text, args.intent.intent);
                 switch (session.message.source) {
                     case "facebook":
-                        ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                         session.send(MessengerController.MenuReplies(session));
                         break;
                     default:
-                        ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                         session.send(MessagesController.sendQuickReplies(session, quickRepliesCard, "You can find products using the buttons below or simply typing the name of the product."));
                         break;
                 }

@@ -44,10 +44,10 @@ class ProductInfoDialog extends BaseDialog {
                         session.send("Not found");
                         break;
                 }
+                ChatBase.sendHandled(session, session.message.source, session.message.text, args.intent.intent);
                 switch (session.message.source) {
                     // Defines message type depending on the chatting platform
                     case "facebook":
-                        ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                         const facebookMessage = new builder.Message(session).text(messageSent);
                         session.send(facebookMessage);
                         facebookMessage.text("What do you want to do ?");
@@ -75,7 +75,6 @@ class ProductInfoDialog extends BaseDialog {
                         session.send(facebookMessage);
                         break;
                     default:
-                        ChatBase.sendHandled(session, "web", session.message.text, args.intent.intent);
                         session.send(messageSent);
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Buy this product 🛒");
                         quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "More Details");

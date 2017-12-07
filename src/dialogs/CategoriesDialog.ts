@@ -53,9 +53,9 @@ class CategoriesDialog extends BaseDialog {
                     }
                     categoriesMessage.attachments(categoriesMessageAttachments);
                     // Defines message type depending on the chatting platform
+                    ChatBase.sendHandled(session, session.message.source, session.message.text, args.intent.intent);
                     switch (session.message.source) {
                         case "facebook":
-                            ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                             const facebookMessage = new builder.Message(session).attachments(categoriesMessageAttachments);
 
                             facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
@@ -73,7 +73,6 @@ class CategoriesDialog extends BaseDialog {
                             session.send(facebookMessage);
                             break;
                         default:
-                            ChatBase.sendHandled(session, "web", session.message.text, args.intent.intent);
                             session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                             session.send(categoriesMessage);
                             break;

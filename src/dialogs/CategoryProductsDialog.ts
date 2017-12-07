@@ -53,7 +53,7 @@ class CategoryProductDialog extends BaseDialog {
                         categoryProductMessageAttachments.push(ProductController.buildProductCard(product, session));
                     });
                     if (!categoryProductMessageAttachments.length) {
-                        ChatBase.sendNotHandled(session, "facebook", session.message.text, args.intent.intent);
+                        ChatBase.sendNotHandled(session, session.message.source, session.message.text, args.intent.intent);
                         session.send("Sorry, we don't have any products in this category yet");
                         session.endDialog();
                         return;
@@ -75,9 +75,9 @@ class CategoryProductDialog extends BaseDialog {
                         session.userData.categoryProductPage = 0;
                     }
                     categoryProductMessage.attachments(categoryProductMessageAttachments);
+                    ChatBase.sendHandled(session, session.message.source, session.message.text, args.intent.intent);
                     switch (session.message.source) {
                         case "facebook":
-                            ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                             session.userData.quickReplies = MessengerController.QuickReplies();
                             const facebookMessage = new builder.Message(session);
 
@@ -99,7 +99,6 @@ class CategoryProductDialog extends BaseDialog {
                             session.send(facebookMessage);
                             break;
                         default:
-                            ChatBase.sendHandled(session, "Web", session.message.text, args.intent.intent);
                             session.send(categoryProductMessage);
                             if (productResponse.nbHits > 8) {
                                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Filter by Size");

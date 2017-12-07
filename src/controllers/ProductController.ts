@@ -253,9 +253,9 @@ class ProductController {
             session.userData.displayedProductsOfSize = 5;
         }
         productMessage.attachments(productMessageAttachments);
+        ChatBase.sendHandled(session, session.message.source, session.message.text, "product.size");
         switch (session.message.source) {
             case "facebook":
-                ChatBase.sendHandled(session, "facebook", session.message.text, "product.size");
                 let facebookMessage = new builder.Message(session);
                 facebookMessage.attachments(productMessageAttachments);
                 facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
@@ -273,7 +273,6 @@ class ProductController {
                 session.send(facebookMessage);
                 break;
             default:
-                ChatBase.sendHandled(session, "Web", session.message.text, "product.size");
                 session.send(productMessage);
                 session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                 break;

@@ -14,6 +14,7 @@ class GreetingsDialog extends BaseDialog {
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Brands 🍾");
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Categories 🍸");
                 // Defines message type depending on the chatting platform
+                ChatBase.sendHandled(session, session.message.source, session.message.text, args.intent.intent);
                 switch (session.message.source) {
                     case "facebook":
                         const facebookMessage = new builder.Message(session).text("Hello and welcome in the Pernod Ricard's catalog of products.");
@@ -35,11 +36,9 @@ class GreetingsDialog extends BaseDialog {
                                 ]
                             }
                         });
-                        ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                         session.send(facebookMessage);
                         break;
                     default:
-                        ChatBase.sendHandled(session, "webchat", session.message.text, args.intent.intent);
                         session.send("Hello and welcome in the Pernod Ricard's catalog of products.");
                         session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                         break;

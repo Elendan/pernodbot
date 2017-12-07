@@ -67,7 +67,7 @@ class ManualSearchDialog extends BaseDialog {
                         session.userData.productPage = 0;
                     }
                     if (productResponse.nbHits === 0) {
-                        ChatBase.sendNotHandled(session, "facebook", session.message.text, args.intent.intent);
+                        ChatBase.sendNotHandled(session, session.message.source, session.message.text, args.intent.intent);
                         session.send("Sorry, we could not find this product.");
                         // Defines message type depending on the chatting platform
                         switch (session.message.source) {
@@ -96,9 +96,9 @@ class ManualSearchDialog extends BaseDialog {
                         return;
                     }
                     // Defines message type depending on the chatting platform
+                    ChatBase.sendHandled(session, session.message.source, session.message.text, args.intent.intent);
                     switch (session.message.source) {
                         case "facebook":
-                            ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                             const facebookMessage = new builder.Message(session).attachments(productMessageAttachments);
                             facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
                             if (productResponse.nbHits > 8) {
@@ -117,7 +117,6 @@ class ManualSearchDialog extends BaseDialog {
                             session.send(facebookMessage);
                             break;
                         default:
-                            ChatBase.sendHandled(session, "Web", session.message.text, args.intent.intent);
                             productMessage.attachments(productMessageAttachments);
                             session.send(productMessage);
                             if (productResponse.nbHits > 8) {

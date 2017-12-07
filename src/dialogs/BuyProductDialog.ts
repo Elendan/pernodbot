@@ -14,9 +14,9 @@ class BuyProductDialog extends BaseDialog {
 
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons);
                 // Defines message type depending on the chatting platform
+                ChatBase.sendHandled(session, session.message.source, session.message.text, args.intent.intent);
                 switch (session.message.source) {
                     case "facebook":
-                        ChatBase.sendHandled(session, "facebook", session.message.text, args.intent.intent);
                         let facebookMessage = new builder.Message(session);
                         facebookMessage = carousel;
                         facebookMessage.attachmentLayout(builder.AttachmentLayout.carousel);
@@ -34,7 +34,6 @@ class BuyProductDialog extends BaseDialog {
                         session.send(facebookMessage);
                         break;
                     default:
-                        ChatBase.sendHandled(session, "web", session.message.text, args.intent.intent);
                         session.send(carousel);
                         session.send(MessagesController.sendQuickReplies(session, quickRepliesCard, "What do you want to do ?"));
                         break;
