@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/guillaumerenard/pernotbot#readme",
   "dependencies": {
+    "@google/chatbase": "^1.0.0",
     "@types/node": "^8.0.20",
     "apiai": "^4.0.3",
     "botbuilder": "^3.6.0",
