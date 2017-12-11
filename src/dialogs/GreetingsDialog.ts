@@ -14,7 +14,7 @@ class GreetingsDialog extends BaseDialog {
             (session, args, next) => {
                 // May need to store the conversation id's in database
                 BaseDialog.SessionDataStorage.forEach(s => {
-                    if (s.cid == session.message.address.conversation.id) {
+                    if (s.cid === session.message.address.conversation.id) {
                         GreetingsDialog._canPush = false;
                     }
                 });
@@ -34,7 +34,7 @@ class GreetingsDialog extends BaseDialog {
                 switch (session.message.source) {
                     case "facebook":
                         BaseDialog.SessionDataStorage.forEach(s => {
-                            s.send("test");
+                            s.s.send("This message has been sent to every registered session.");
                         });
                         const facebookMessage = new builder.Message(session).text("Hello and welcome in the Pernod Ricard's catalog of products.");
                         session.send(facebookMessage);
@@ -59,7 +59,7 @@ class GreetingsDialog extends BaseDialog {
                         break;
                     default:
                         BaseDialog.SessionDataStorage.forEach(s => {
-                            s.s.send("test");
+                            s.s.send("This message has been sent to every registered session.");
                         });
                         session.send("Hello and welcome in the Pernod Ricard's catalog of products.");
                         session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
