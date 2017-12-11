@@ -2,14 +2,28 @@ import * as builder from "botbuilder";
 import BaseDialog from "./basedialog";
 import MessagesController from "../controllers/MessagesController";
 import ChatBase from "../controllers/ChatbaseController";
+import { Session } from "botbuilder";
 
 class GreetingsDialog extends BaseDialog {
+
+    private static _canPush: boolean = true;
+
     constructor() {
         super();
         this.dialog = [
             (session, args, next) => {
                 // May need to store the conversation id's in database
-                BaseDialog.SessionDataStorage.add(session);
+                BaseDialog.SessionDataStorage.forEach(s => {
+                    if (s.cid == session.message.address.conversation.id) {
+                        GreetingsDialog._canPush = false;
+                    }
+                });
+                if (GreetingsDialog._canPush) {
+                    BaseDialog.SessionDataStorage.add({
+                        s: session,
+                        cid: session.message.address.conversation.id
+                    });
+                }
                 let quickRepliesCard = new builder.HeroCard(session);
                 const quickRepliesButtons: builder.ICardAction[] = [];
                 quickRepliesCard.text("You can find products using the buttons below or simply typing the name of the product.");
@@ -45,7 +59,7 @@ class GreetingsDialog extends BaseDialog {
                         break;
                     default:
                         BaseDialog.SessionDataStorage.forEach(s => {
-                            s.send("test");
+                            s.s.send("test");
                         });
                         session.send("Hello and welcome in the Pernod Ricard's catalog of products.");
                         session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
