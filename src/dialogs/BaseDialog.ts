@@ -3,6 +3,7 @@ import * as builder from "botbuilder";
 abstract class BaseDialog {
 
     protected dialog: builder.IDialogWaterfallStep[] | builder.IDialogWaterfallStep | builder.IntentDialog;
+    public static SessionDataStorage = new Set();
 
     /**
      * Register dialog to bot
