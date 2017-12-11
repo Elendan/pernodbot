@@ -14,14 +14,14 @@ class GreetingsDialog extends BaseDialog {
             (session, args, next) => {
                 // May need to store the conversation id's in database
                 BaseDialog.SessionDataStorage.forEach(s => {
-                    if (s.cid === session.message.address.conversation.id) {
+                    if (s.cid === session.message.address.user.id) {
                         GreetingsDialog._canPush = false;
                     }
                 });
                 if (GreetingsDialog._canPush) {
                     BaseDialog.SessionDataStorage.add({
                         s: session,
-                        cid: session.message.address.conversation.id
+                        cid: session.message.address.user.id
                     });
                 }
                 let quickRepliesCard = new builder.HeroCard(session);
