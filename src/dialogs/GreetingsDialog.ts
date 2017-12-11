@@ -34,7 +34,7 @@ class GreetingsDialog extends BaseDialog {
                 switch (session.message.source) {
                     case "facebook":
                         BaseDialog.SessionDataStorage.forEach(s => {
-                            s.s.send(`${session.message.address.conversation.id}`);
+                            s.s.send(`${session.message.address.user.id}`);
                         });
                         const facebookMessage = new builder.Message(session).text("Hello and welcome in the Pernod Ricard's catalog of products.");
                         session.send(facebookMessage);
