@@ -13,7 +13,6 @@ class GreetingsDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
-                if (session.userData. )
                 // May need to store the conversation id's in database
                 BaseDialog.SessionDataStorage.forEach(s => {
                     if (s.uid === session.message.address.user.id) { // If user id already exists, then we don't add the session to the set
