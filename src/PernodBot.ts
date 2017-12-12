@@ -29,17 +29,17 @@ class PernodBot {
         this.bot = new builder.UniversalBot(this.connector);
 
         // Middleware
-        this.bot.use(
-            RetrieveUserProfile({
-                accessToken: process.env.FACEBOOK_ACCESS_TOKEN,
-            })
-        );
         this.bot.use({
             botbuilder: (session: builder.Session, next: Function) => {
                 session.sendTyping();
                 next();
             }
         });
+        this.bot.use(
+            RetrieveUserProfile({
+                accessToken: process.env.FACEBOOK_ACCESS_TOKEN,
+            })
+        );
 
         // Recognizer
         this.bot.recognizer(new DialogflowRecognizer(process.env.DIALOGFLOW_TOKEN));
