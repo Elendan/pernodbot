@@ -14,6 +14,7 @@ import BuyProductDialog from "./dialogs/BuyProductDialog";
 import ManualSearchDialog from "./dialogs/ManualSearchDialog";
 import GreetingsDialog from "./dialogs/GreetingsDialog";
 import BackToFiltersDialog from "./dialogs/BackToFiltersDialog";
+import { RetrieveUserProfile } from 'botbuilder-facebookextension';
 
 class PernodBot {
 
@@ -33,7 +34,10 @@ class PernodBot {
                 session.sendTyping();
                 next();
             }
-        });
+        },
+            RetrieveUserProfile({
+                accessToken: process.env.FACEBOOK_ACCESS_TOKEN
+            }));
 
         // Recognizer
         this.bot.recognizer(new DialogflowRecognizer(process.env.DIALOGFLOW_TOKEN));
