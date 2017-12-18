@@ -2,6 +2,7 @@ import * as builder from "botbuilder";
 import * as facebook from "botbuilder-facebookextension";
 import BaseDialog from "./basedialog";
 import MessagesController from "../controllers/MessagesController";
+import BroadcastController from "../controllers/BroadcastController";
 import ChatBase from "../controllers/ChatbaseController";
 import { Session } from "botbuilder";
 
@@ -13,20 +14,10 @@ class GreetingsDialog extends BaseDialog {
         super();
         this.dialog = [
             (session, args, next) => {
-                // May need to store the conversation id's in database
-                BaseDialog.SessionDataStorage.forEach(s => {
-                    if (s.uid === session.message.address.user.id) { // If user id already exists, then we don't add the session to the set
-                        GreetingsDialog._canPush = false;
-                    }
-                });
-                if (GreetingsDialog._canPush) { // If it doesn't exist, we add the session and the uid to the set
-                    BaseDialog.SessionDataStorage.add({
-                        s: session,
-                        uid: session.message.address.user.id
-                    });
-                }
                 let quickRepliesCard = new builder.HeroCard(session);
                 const quickRepliesButtons: builder.ICardAction[] = [];
+                // registers the sessions
+                BroadcastController.RegisterSession(BaseDialog.SessionDataStorage, session);
                 quickRepliesCard.text("You can find products using the buttons below or simply typing the name of the product.");
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Brands 🍾");
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Categories 🍸");
@@ -34,9 +25,6 @@ class GreetingsDialog extends BaseDialog {
                 ChatBase.sendHandled(session, session.message.source, session.message.text, args.intent.intent);
                 switch (session.message.source) {
                     case "facebook":
-                        /*BaseDialog.SessionDataStorage.forEach(s => { // This is just an example for sending a message to all the registered sessions.
-                            s.s.send(`uid : ${session.message.address.user.id}`);
-                        });*/
                         const facebookMessage = new builder.Message(session).text(`Hello ${session.userData.first_name}, welcome in the Pernod Ricard's catalog of products.`);
                         session.send(facebookMessage);
                         facebookMessage.text("You can find products using the buttons below or simply typing the name of the product.");
