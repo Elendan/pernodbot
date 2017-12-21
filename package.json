@@ -27,10 +27,12 @@
     "@google/chatbase": "^1.0.0",
     "@types/node": "^8.0.20",
     "apiai": "^4.0.3",
+    "async": "^2.6.0",
     "botbuilder": "^3.6.0",
     "botbuilder-facebookextension": "^1.2.4",
     "dotenv": "^4.0.0",
     "restify": "^4.3.0",
+    "tedious": "^2.1.5",
     "typescript": "^2.4.2"
   },
   "engines": {

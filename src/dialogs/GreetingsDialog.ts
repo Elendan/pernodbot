@@ -47,9 +47,6 @@ class GreetingsDialog extends BaseDialog {
                         session.send(facebookMessage);
                         break;
                     default:
-                        BaseDialog.SessionDataStorage.forEach(s => {
-                            s.s.send("This message has been sent to every registered session.");
-                        });
                         session.send("Hello and welcome in the Pernod Ricard's catalog of products.");
                         session.send(MessagesController.sendQuickReplies(session, quickRepliesCard));
                         break;
