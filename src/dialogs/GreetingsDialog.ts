@@ -5,6 +5,17 @@ import MessagesController from "../controllers/MessagesController";
 import BroadcastController from "../controllers/BroadcastController";
 import ChatBase from "../controllers/ChatbaseController";
 import { Session } from "botbuilder";
+import * as Request from "tedious";
+
+let config = {
+    userName: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASS,
+    server: process.env.DATABASE_SERVER,
+    options: {
+        database: process.env.DATABASE_NAME,
+        encrypt: true
+    }
+}
 
 class GreetingsDialog extends BaseDialog {
 
@@ -17,6 +28,30 @@ class GreetingsDialog extends BaseDialog {
                 let quickRepliesCard = new builder.HeroCard(session);
                 const quickRepliesButtons: builder.ICardAction[] = [];
                 // registers the sessions
+                let connection = new Request.Connection(config);
+                function RegisterSession() {
+                    console.log('Reading rows from the Table...');
+            
+                    // Read all rows from table
+                    let request = new Request.Request(
+                        "INSERT INTO [pernotbotdb].[dbo].[Sessions] ([Session], [Type], [UserId]) VALUES (1, 1, 1)",
+                        function (err, rowCount, rows) {
+                            console.log(rowCount + ' row(s) returned');
+                            //process.exit();
+                        }
+                    );
+                    connection.execSql(request);
+                }
+                connection.on('connect', function (err) {
+                    if (err) {
+                        console.log(err);
+                        console.log("ERROR")
+                    }
+                    else {
+                        RegisterSession();
+                        console.log("test");
+                    }
+                });
                 BroadcastController.RegisterSession(BaseDialog.SessionDataStorage, session);
                 quickRepliesCard.text("You can find products using the buttons below or simply typing the name of the product.");
                 quickRepliesCard = MessagesController.addQuickRepliesButtons(quickRepliesCard, quickRepliesButtons, "Brands 🍾");

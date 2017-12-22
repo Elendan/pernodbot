@@ -12,7 +12,7 @@ let config = {
 
 let connection = new Request.Connection(config);
 
-connection.on('connect', function(err) {
+connection.on('connect', function (err) {
     if (err) {
         console.log(err);
     }
@@ -21,23 +21,22 @@ connection.on('connect', function(err) {
     }
 });
 
-function queryDatabase()
-   { console.log('Reading rows from the Table...');
+function queryDatabase() {
+    console.log('Reading rows from the Table...');
 
-       // Read all rows from table
-     let request = new Request.Request(
-          "SELECT * FROM Sessions",
-             function(err, rowCount, rows) 
-                {
-                    console.log(rowCount + ' row(s) returned');
-                    process.exit();
-                }
-            );
+    // Read all rows from table
+    let request = new Request.Request(
+        "SELECT * FROM Sessions",
+        function (err, rowCount, rows) {
+            console.log(rowCount + ' row(s) returned');
+            process.exit();
+        }
+    );
 
-     request.on('row', function(columns) {
-        columns.forEach(function(column) {
+    request.on('row', function (columns) {
+        columns.forEach(function (column) {
             console.log("%s\t%s", column.metadata.colName, column.value);
-         });
-             });
-     connection.execSql(request);
-   }
+        });
+    });
+    connection.execSql(request);
+}
